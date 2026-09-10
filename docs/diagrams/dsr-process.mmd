@@ -1,0 +1,15 @@
+flowchart TB
+    subgraph DSR["Design Science Research (DSR) Process — WMHS Study"]
+        P1["Phase 1: Problem Identification & Motivation<br/>Chapter One<br/>Maternal health monitoring challenges in Nigeria"]
+        P2["Phase 2: Objectives Definition<br/>Section 3.4<br/>System requirements & objectives"]
+        P3["Phase 3: Design & Development<br/>Sections 3.5–3.7<br/>Architecture & artefact implementation"]
+        P4["Phase 4: Demonstration<br/>Chapter Four<br/>System addresses identified problems"]
+        P5["Phase 5: Evaluation<br/>Section 3.8<br/>Performance & effectiveness assessment"]
+        P6["Phase 6: Communication<br/>Chapter Five<br/>Sharing research findings"]
+    end
+
+    P1 --> P2 --> P3 --> P4 --> P5 --> P6
+    P6 -.->|Iterative refinement| P1
+
+    SDLC["SDLC Elements<br/>Systematic & documented development"]
+    SDLC -.-> P3

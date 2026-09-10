@@ -1,0 +1,164 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 980" width="1200" height="980">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="100%" stop-color="#eef2f7"/>
+    </linearGradient>
+    <linearGradient id="cardFill" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#f8fafc"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#0f172a" flood-opacity="0.12"/>
+    </filter>
+    <marker id="arrowDown" markerWidth="10" markerHeight="10" refX="5" refY="8" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,0 L5,9 z" fill="#334155"/>
+    </marker>
+    <marker id="arrowUp" markerWidth="10" markerHeight="10" refX="5" refY="1" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,9 L10,9 L5,0 z" fill="#64748b"/>
+    </marker>
+  </defs>
+
+  <rect width="1200" height="980" fill="url(#bg)"/>
+
+  <text x="600" y="48" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="700" fill="#0f172a">
+    Three-Tier System Architecture
+  </text>
+  <text x="600" y="78" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#475569">
+    Web Maternal Health System (WMHS) - Nigeria
+  </text>
+
+  <!-- End users -->
+  <g transform="translate(160, 108)">
+    <rect width="260" height="56" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" filter="url(#shadow)"/>
+    <text x="130" y="35" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="15" font-weight="600" fill="#334155">Patients</text>
+  </g>
+  <g transform="translate(470, 108)">
+    <rect width="260" height="56" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" filter="url(#shadow)"/>
+    <text x="130" y="35" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="15" font-weight="600" fill="#334155">Healthcare Providers</text>
+  </g>
+  <g transform="translate(780, 108)">
+    <rect width="260" height="56" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" filter="url(#shadow)"/>
+    <text x="130" y="35" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="15" font-weight="600" fill="#334155">Web Browser</text>
+  </g>
+
+  <line x1="290" y1="164" x2="290" y2="198" stroke="#334155" stroke-width="2" marker-end="url(#arrowDown)"/>
+  <line x1="600" y1="164" x2="600" y2="198" stroke="#334155" stroke-width="2" marker-end="url(#arrowDown)"/>
+  <line x1="910" y1="164" x2="910" y2="198" stroke="#334155" stroke-width="2" marker-end="url(#arrowDown)"/>
+
+  <!-- Presentation Tier -->
+  <g transform="translate(90, 206)">
+    <rect width="1020" height="176" rx="16" fill="url(#cardFill)" stroke="#0f766e" stroke-width="2.5" filter="url(#shadow)"/>
+    <rect x="0" y="0" width="14" height="176" rx="8" fill="#0f766e"/>
+    <rect x="36" y="18" width="72" height="26" rx="13" fill="#0f766e"/>
+    <text x="72" y="36" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="12" font-weight="700" fill="#ffffff">TIER 1</text>
+    <text x="124" y="38" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="700" fill="#0f172a">Presentation Tier</text>
+    <text x="360" y="38" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="600" fill="#0f766e">React.js</text>
+    <text x="36" y="68" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#475569">User interface layer that renders dashboards, captures clinical inputs, and displays risk results</text>
+
+    <g transform="translate(36, 86)">
+      <rect width="228" height="68" rx="10" fill="#ecfdf5" stroke="#0f766e" stroke-width="1.4"/>
+      <text x="114" y="30" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="14" font-weight="700" fill="#065f46">Patient Portal</text>
+      <text x="114" y="50" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#047857">Symptoms, tests, history</text>
+    </g>
+    <g transform="translate(276, 86)">
+      <rect width="228" height="68" rx="10" fill="#ecfdf5" stroke="#0f766e" stroke-width="1.4"/>
+      <text x="114" y="30" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="14" font-weight="700" fill="#065f46">Provider Portal</text>
+      <text x="114" y="50" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#047857">Caseload, alerts, referrals</text>
+    </g>
+    <g transform="translate(516, 86)">
+      <rect width="228" height="68" rx="10" fill="#ecfdf5" stroke="#0f766e" stroke-width="1.4"/>
+      <text x="114" y="30" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="14" font-weight="700" fill="#065f46">UI Components</text>
+      <text x="114" y="50" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#047857">Forms, charts, navigation</text>
+    </g>
+    <g transform="translate(756, 86)">
+      <rect width="228" height="68" rx="10" fill="#ecfdf5" stroke="#0f766e" stroke-width="1.4"/>
+      <text x="114" y="30" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="14" font-weight="700" fill="#065f46">Client State</text>
+      <text x="114" y="50" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#047857">Session and view updates</text>
+    </g>
+  </g>
+
+  <!-- Flow: Presentation <-> Application -->
+  <line x1="460" y1="382" x2="460" y2="448" stroke="#334155" stroke-width="2.4" marker-end="url(#arrowDown)"/>
+  <line x1="740" y1="448" x2="740" y2="382" stroke="#64748b" stroke-width="2.2" stroke-dasharray="6 5" marker-end="url(#arrowUp)"/>
+  <text x="448" y="422" text-anchor="end" font-family="Segoe UI, Arial, sans-serif" font-size="12" font-weight="600" fill="#334155">HTTPS / REST JSON requests</text>
+  <text x="752" y="422" font-family="Segoe UI, Arial, sans-serif" font-size="12" font-weight="600" fill="#64748b">JSON responses</text>
+
+  <!-- Application Tier -->
+  <g transform="translate(90, 456)">
+    <rect width="1020" height="196" rx="16" fill="url(#cardFill)" stroke="#0891b2" stroke-width="2.5" filter="url(#shadow)"/>
+    <rect x="0" y="0" width="14" height="196" rx="8" fill="#0891b2"/>
+    <rect x="36" y="18" width="72" height="26" rx="13" fill="#0891b2"/>
+    <text x="72" y="36" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="12" font-weight="700" fill="#ffffff">TIER 2</text>
+    <text x="124" y="38" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="700" fill="#0f172a">Application Tier</text>
+    <text x="348" y="38" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="600" fill="#0891b2">Node.js / Express</text>
+    <text x="36" y="68" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#475569">Server layer that authenticates users, applies business rules, and exposes REST APIs</text>
+
+    <g transform="translate(36, 86)">
+      <rect width="228" height="88" rx="10" fill="#ecfeff" stroke="#0891b2" stroke-width="1.4"/>
+      <text x="114" y="32" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="14" font-weight="700" fill="#155e75">REST API</text>
+      <text x="114" y="52" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#0e7490">HTTP endpoints</text>
+      <text x="114" y="70" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#0e7490">Request routing</text>
+    </g>
+    <g transform="translate(276, 86)">
+      <rect width="228" height="88" rx="10" fill="#ecfeff" stroke="#0891b2" stroke-width="1.4"/>
+      <text x="114" y="32" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="14" font-weight="700" fill="#155e75">Authentication</text>
+      <text x="114" y="52" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#0e7490">Role-based access</text>
+      <text x="114" y="70" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#0e7490">Session / JWT</text>
+    </g>
+    <g transform="translate(516, 86)">
+      <rect width="228" height="88" rx="10" fill="#ecfeff" stroke="#0891b2" stroke-width="1.4"/>
+      <text x="114" y="32" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="14" font-weight="700" fill="#155e75">Clinical Risk Engine</text>
+      <text x="114" y="52" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#0e7490">Scoring and alerts</text>
+      <text x="114" y="70" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#0e7490">Decision support</text>
+    </g>
+    <g transform="translate(756, 86)">
+      <rect width="228" height="88" rx="10" fill="#ecfeff" stroke="#0891b2" stroke-width="1.4"/>
+      <text x="114" y="32" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="14" font-weight="700" fill="#155e75">Business Logic</text>
+      <text x="114" y="52" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#0e7490">Validation and rules</text>
+      <text x="114" y="70" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#0e7490">Referrals and records</text>
+    </g>
+  </g>
+
+  <!-- Flow: Application <-> Data -->
+  <line x1="460" y1="652" x2="460" y2="718" stroke="#334155" stroke-width="2.4" marker-end="url(#arrowDown)"/>
+  <line x1="740" y1="718" x2="740" y2="652" stroke="#64748b" stroke-width="2.2" stroke-dasharray="6 5" marker-end="url(#arrowUp)"/>
+  <text x="448" y="692" text-anchor="end" font-family="Segoe UI, Arial, sans-serif" font-size="12" font-weight="600" fill="#334155">SQL queries</text>
+  <text x="752" y="692" font-family="Segoe UI, Arial, sans-serif" font-size="12" font-weight="600" fill="#64748b">Result sets</text>
+
+  <!-- Data Tier -->
+  <g transform="translate(90, 726)">
+    <rect width="1020" height="176" rx="16" fill="url(#cardFill)" stroke="#2563eb" stroke-width="2.5" filter="url(#shadow)"/>
+    <rect x="0" y="0" width="14" height="176" rx="8" fill="#2563eb"/>
+    <rect x="36" y="18" width="72" height="26" rx="13" fill="#2563eb"/>
+    <text x="72" y="36" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="12" font-weight="700" fill="#ffffff">TIER 3</text>
+    <text x="124" y="38" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="700" fill="#0f172a">Data Tier</text>
+    <text x="248" y="38" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="600" fill="#2563eb">PostgreSQL</text>
+    <text x="36" y="68" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#475569">Persistent storage for users, maternal records, alerts, and referral data</text>
+
+    <g transform="translate(36, 86)">
+      <rect width="228" height="68" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.4"/>
+      <text x="114" y="30" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="14" font-weight="700" fill="#1e40af">Users and Roles</text>
+      <text x="114" y="50" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#1d4ed8">Patients and providers</text>
+    </g>
+    <g transform="translate(276, 86)">
+      <rect width="228" height="68" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.4"/>
+      <text x="114" y="30" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="14" font-weight="700" fill="#1e40af">Health Records</text>
+      <text x="114" y="50" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#1d4ed8">Symptoms and test results</text>
+    </g>
+    <g transform="translate(516, 86)">
+      <rect width="228" height="68" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.4"/>
+      <text x="114" y="30" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="14" font-weight="700" fill="#1e40af">Alerts</text>
+      <text x="114" y="50" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#1d4ed8">Risk notifications</text>
+    </g>
+    <g transform="translate(756, 86)">
+      <rect width="228" height="68" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.4"/>
+      <text x="114" y="30" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="14" font-weight="700" fill="#1e40af">Referrals</text>
+      <text x="114" y="50" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#1d4ed8">Facility recommendations</text>
+    </g>
+  </g>
+
+  <text x="600" y="948" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#64748b">
+    Figure: Three-tier architecture of WMHS showing Presentation, Application, and Data tiers with bidirectional communication
+  </text>
+</svg>

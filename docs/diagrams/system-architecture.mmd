@@ -1,0 +1,39 @@
+flowchart TB
+    subgraph Actors["Actors"]
+        P["Patients"]
+        H["Healthcare Providers"]
+    end
+
+    subgraph Client["Client Access"]
+        B["Web Browser - HTTPS / TLS"]
+    end
+
+    subgraph PRES["Presentation Layer - Next.js 14 / React 18"]
+        PP["Patient Portal"]
+        PR["Provider Portal"]
+        AU["Auth and Marketing"]
+        UI["Dashboards, Forms and Charts"]
+    end
+
+    subgraph APP["Application Layer - Next.js API Routes"]
+        API["REST API"]
+        AUTH["NextAuth JWT and RBAC"]
+        RISK["Clinical Risk Engine"]
+        REF["Referral and Facility Matching"]
+        AST["Health Assistant"]
+    end
+
+    subgraph DATA["Data Layer - Prisma / Neon PostgreSQL"]
+        U["Users and Roles"]
+        R["Maternal Health Records"]
+        A["Risk Assessments and Alerts"]
+        F["Referrals and Facilities"]
+    end
+
+    P --> B
+    H --> B
+    B --> PRES
+    PRES -->|"HTTPS / REST JSON requests"| APP
+    APP -->|"JSON responses"| PRES
+    APP -->|"Prisma ORM / SQL queries"| DATA
+    DATA -->|"Result sets"| APP

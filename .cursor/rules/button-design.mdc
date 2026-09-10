@@ -1,0 +1,49 @@
+---
+description: WMHS button design system — variants, sizes, Montserrat, accessibility.
+globs: "**/*.{tsx,jsx}"
+alwaysApply: false
+---
+
+# Buttons
+
+Use `@/components/ui/Button` for every visible action. Do not style a raw `<button>` or `<a>` as a CTA.
+
+## Anatomy
+
+- Shape: `rounded-full` (pill). Never square or `rounded-md` CTAs.
+- Typeface: **Montserrat** (`font-heading`) semibold, slight tracking.
+- Touch target: at least 40px (`sm` = `h-10`). Prefer `md` in forms, `lg` on marketing heroes.
+- Motion: 200ms lift on hover. Disabled = no lift, 55% opacity, `cursor-not-allowed`.
+- Loading: set `loading` — spinner + `disabled`. Do not swap the label for the word “Loading…”.
+
+## Variants (pick one, do not invent colors)
+
+| Variant | Use |
+|---|---|
+| `primary` | One main action per view (save, submit, get started) |
+| `secondary` | Supporting navy action |
+| `outline` | Secondary / cancel / print |
+| `ghost` | Tertiary on light surfaces |
+| `danger` | Destructive only (reject, delete) |
+| `inverse` | On navy / photo heroes (white fill) |
+| `ghostDark` | On navy / photo heroes (glass) |
+
+Never put two `primary` buttons side by side. Pair `primary` + `outline`, or `inverse` + `ghostDark`.
+
+```tsx
+// ❌ BAD
+<button className="rounded-lg bg-blue-600 px-3 py-1 text-white">Save</button>
+<Button variant="primary">Save</Button>
+<Button variant="primary">Cancel</Button>
+
+// ✅ GOOD
+<Button type="submit" loading={saving}>Save record</Button>
+<Button variant="outline" type="button">Cancel</Button>
+<Button size="lg" variant="inverse">Start as a patient</Button>
+```
+
+## Do not
+
+- Override `rounded-full`, `font-heading`, or height unless the control is an icon-only chrome button (menu, close, bell).
+- Use `danger` for navigation or “log out”.
+- Nest a `Button` inside another button. Wrap with `Link` outside.

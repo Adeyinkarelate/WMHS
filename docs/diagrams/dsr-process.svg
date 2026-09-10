@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="100%" stop-color="#eef2f7"/>
+    </linearGradient>
+    <linearGradient id="phaseFill" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#f1f5f9"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#0f172a" flood-opacity="0.12"/>
+    </filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#334155"/>
+    </marker>
+    <marker id="arrowDash" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#64748b"/>
+    </marker>
+  </defs>
+
+  <rect width="1200" height="900" fill="url(#bg)"/>
+
+  <text x="600" y="52" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="700" fill="#0f172a">
+    Six-Phase Design Science Research (DSR) Process
+  </text>
+  <text x="600" y="82" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#475569">
+    Web Maternal Health System (WMHS) - Nigeria
+  </text>
+
+  <circle cx="600" cy="430" r="72" fill="#0f766e" filter="url(#shadow)"/>
+  <text x="600" y="418" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="15" font-weight="700" fill="#ffffff">DSR</text>
+  <text x="600" y="438" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#ccfbf1">Methodology</text>
+  <text x="600" y="456" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#ccfbf1">+ SDLC</text>
+
+  <g transform="translate(420, 120)">
+    <rect width="360" height="110" rx="14" fill="url(#phaseFill)" stroke="#0f766e" stroke-width="2.5" filter="url(#shadow)"/>
+    <circle cx="28" cy="28" r="18" fill="#0f766e"/>
+    <text x="28" y="34" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="14" font-weight="700" fill="#ffffff">1</text>
+    <text x="58" y="32" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="700" fill="#0f172a">Problem Identification &amp; Motivation</text>
+    <text x="58" y="54" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#475569">Identifying maternal health monitoring challenges in Nigeria</text>
+    <text x="58" y="76" font-family="Segoe UI, Arial, sans-serif" font-size="12" font-style="italic" fill="#64748b">Detailed in Chapter One</text>
+  </g>
+
+  <g transform="translate(760, 210)">
+    <rect width="340" height="110" rx="14" fill="url(#phaseFill)" stroke="#0891b2" stroke-width="2.5" filter="url(#shadow)"/>
+    <circle cx="28" cy="28" r="18" fill="#0891b2"/>
+    <text x="28" y="34" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="14" font-weight="700" fill="#ffffff">2</text>
+    <text x="58" y="32" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="700" fill="#0f172a">Objectives Definition</text>
+    <text x="58" y="54" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#475569">Defining system requirements and objectives</text>
+    <text x="58" y="76" font-family="Segoe UI, Arial, sans-serif" font-size="12" font-style="italic" fill="#64748b">Section 3.4</text>
+  </g>
+
+  <g transform="translate(760, 520)">
+    <rect width="340" height="110" rx="14" fill="url(#phaseFill)" stroke="#2563eb" stroke-width="2.5" filter="url(#shadow)"/>
+    <circle cx="28" cy="28" r="18" fill="#2563eb"/>
+    <text x="28" y="34" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="14" font-weight="700" fill="#ffffff">3</text>
+    <text x="58" y="32" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="700" fill="#0f172a">Design &amp; Development</text>
+    <text x="58" y="54" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#475569">System architecture and artefact implementation</text>
+    <text x="58" y="76" font-family="Segoe UI, Arial, sans-serif" font-size="12" font-style="italic" fill="#64748b">Sections 3.5-3.7</text>
+  </g>
+
+  <g transform="translate(420, 630)">
+    <rect width="360" height="110" rx="14" fill="url(#phaseFill)" stroke="#7c3aed" stroke-width="2.5" filter="url(#shadow)"/>
+    <circle cx="28" cy="28" r="18" fill="#7c3aed"/>
+    <text x="28" y="34" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="14" font-weight="700" fill="#ffffff">4</text>
+    <text x="58" y="32" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="700" fill="#0f172a">Demonstration</text>
+    <text x="58" y="54" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#475569">Showing how the system addresses identified problems</text>
+    <text x="58" y="76" font-family="Segoe UI, Arial, sans-serif" font-size="12" font-style="italic" fill="#64748b">Chapter Four</text>
+  </g>
+
+  <g transform="translate(100, 520)">
+    <rect width="340" height="110" rx="14" fill="url(#phaseFill)" stroke="#c026d3" stroke-width="2.5" filter="url(#shadow)"/>
+    <circle cx="28" cy="28" r="18" fill="#c026d3"/>
+    <text x="28" y="34" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="14" font-weight="700" fill="#ffffff">5</text>
+    <text x="58" y="32" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="700" fill="#0f172a">Evaluation</text>
+    <text x="58" y="54" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#475569">Assessing artefact performance and effectiveness</text>
+    <text x="58" y="76" font-family="Segoe UI, Arial, sans-serif" font-size="12" font-style="italic" fill="#64748b">Section 3.8</text>
+  </g>
+
+  <g transform="translate(100, 210)">
+    <rect width="340" height="110" rx="14" fill="url(#phaseFill)" stroke="#ea580c" stroke-width="2.5" filter="url(#shadow)"/>
+    <circle cx="28" cy="28" r="18" fill="#ea580c"/>
+    <text x="28" y="34" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="14" font-weight="700" fill="#ffffff">6</text>
+    <text x="58" y="32" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="700" fill="#0f172a">Communication</text>
+    <text x="58" y="54" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#475569">Sharing research findings</text>
+    <text x="58" y="76" font-family="Segoe UI, Arial, sans-serif" font-size="12" font-style="italic" fill="#64748b">Chapter Five</text>
+  </g>
+
+  <path d="M 600 175 L 600 230" fill="none" stroke="#334155" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <path d="M 780 230 Q 880 280 880 360 L 880 430" fill="none" stroke="#334155" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <path d="M 880 520 L 880 575 Q 880 650 780 680 L 720 680" fill="none" stroke="#334155" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <path d="M 480 685 L 420 685" fill="none" stroke="#334155" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <path d="M 270 575 Q 200 520 200 430 L 200 320" fill="none" stroke="#334155" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <path d="M 270 265 Q 380 175 520 175" fill="none" stroke="#334155" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+  <path d="M 130 175 Q 40 430 130 685" fill="none" stroke="#64748b" stroke-width="2" stroke-dasharray="8 6" marker-end="url(#arrowDash)"/>
+  <text x="48" y="430" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#64748b" transform="rotate(-90 48 430)">Iterative refinement</text>
+
+  <g transform="translate(380, 360)">
+    <rect width="440" height="88" rx="12" fill="#ecfdf5" stroke="#059669" stroke-width="2" stroke-dasharray="6 4" filter="url(#shadow)"/>
+    <text x="220" y="30" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="15" font-weight="700" fill="#065f46">System Development Life Cycle (SDLC)</text>
+    <text x="220" y="52" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#047857">Requirements - Design - Implementation - Testing - Documentation</text>
+    <text x="220" y="72" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#059669">Incorporated in Phase 3 for systematic and documented development</text>
+  </g>
+
+  <path d="M 820 404 L 760 404 L 760 575" fill="none" stroke="#059669" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#arrowDash)"/>
+
+  <text x="600" y="870" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#64748b">
+    Figure: Six-phase DSR process adopted in this study, mapped to thesis chapters and sections
+  </text>
+</svg>

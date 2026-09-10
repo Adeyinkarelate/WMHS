@@ -1,0 +1,32 @@
+---
+description: WMHS typography — Montserrat headings, Roboto body. Apply on every UI change.
+alwaysApply: true
+---
+
+# Typography
+
+Never invent a third font. Load both only via `next/font/google` in `app/layout.tsx`.
+
+| Role | Font | Tailwind | Weight |
+|---|---|---|---|
+| Headings, display numbers, buttons, nav, kickers | **Montserrat** | `font-heading` | 600–800 |
+| Paragraphs, lists, labels, inputs, helper text | **Roboto** | `font-sans` (default) | 400–500 |
+
+## Rules
+
+- `h1`–`h6` inherit Montserrat from `globals.css`. Do not add `font-serif` or a Google `<link>`.
+- Body copy uses Roboto. Do not put `font-heading` on `<p>` unless it is a **display numeral** (stat value).
+- Page titles use `text-h1` / `text-h2` / `text-h3` when possible. Keep `text-balance` on long titles.
+- Kickers (uppercase eyebrows) stay Montserrat: `font-heading text-xs font-semibold uppercase tracking-[0.18em]`.
+- Never use Fraunces, Newsreader, Plus Jakarta, Inter, or Georgia for new UI.
+
+```tsx
+// ❌ BAD
+<h1 className="font-serif text-3xl">Dashboard</h1>
+<p className="font-heading">Your next antenatal visit is Tuesday.</p>
+
+// ✅ GOOD
+<h1 className="font-heading text-h2 text-navy text-balance">Dashboard</h1>
+<p className="text-base leading-relaxed text-ink-muted">Your next antenatal visit is Tuesday.</p>
+<p className="font-heading text-3xl font-bold text-navy">32 weeks</p>
+```

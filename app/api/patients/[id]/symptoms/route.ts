@@ -1,0 +1,16 @@
+import { prisma } from "@/lib/db/prisma";
+import { assertPatientAccess, requireUser } from "@/lib/auth/guards";
+import { jsonError } from "@/lib/utils/helpers";
+
+type Ctx = { params: { id: string } };
+
+export async function GET(_req: Request, { params }: Ctx) {
+  const { error, user } = await requireUser();
+  if (error || !user) return error!;
+  if (!(await assertPatientAccess(params.id, user))) return jsonError("Forbidden", 403);
+  const symptoms = await prisma.symptom.findMany({
+    where: { patientId: params.id },
+    orderBy: { submissionDate: "desc" },
+  });
+  return Response.json(symptoms);
+}

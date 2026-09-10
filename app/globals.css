@@ -1,0 +1,152 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary: #1a56b0;
+  --primary-light: #4a7ec8;
+  --gold: #d4bc8a;
+  --navy: #0b1f3a;
+  --canvas: #f3f5f8;
+  --ink: #132033;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-canvas text-ink font-sans antialiased;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @apply font-heading tracking-tight;
+}
+
+p,
+li,
+label,
+figcaption {
+  @apply font-sans;
+}
+
+:focus-visible {
+  @apply outline-none ring-2 ring-primary ring-offset-2 ring-offset-canvas;
+}
+
+.font-heading,
+.font-serif {
+  font-feature-settings: "kern" 1, "ss01" 1;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .glass {
+    @apply border border-white/80 bg-white/80 shadow-card backdrop-blur-2xl;
+  }
+
+  .surface-hover {
+    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-lift;
+  }
+
+  .stagger-fade > * {
+    @apply animate-fade-up;
+  }
+  .stagger-fade > *:nth-child(1) {
+    animation-delay: 0.04s;
+  }
+  .stagger-fade > *:nth-child(2) {
+    animation-delay: 0.12s;
+  }
+  .stagger-fade > *:nth-child(3) {
+    animation-delay: 0.2s;
+  }
+  .stagger-fade > *:nth-child(4) {
+    animation-delay: 0.28s;
+  }
+  .stagger-fade > *:nth-child(5) {
+    animation-delay: 0.36s;
+  }
+  .stagger-fade > *:nth-child(6) {
+    animation-delay: 0.44s;
+  }
+
+  /* Tailwind's default `lime` scale swallows custom tokens; keep brand gold utilities explicit. */
+  .bg-gold {
+    background-color: var(--gold);
+  }
+  .text-gold {
+    color: var(--gold);
+  }
+  .bg-gold-dark {
+    background-color: #b89e6c;
+  }
+  .hover\:bg-gold-dark:hover {
+    background-color: #b89e6c;
+  }
+  .bg-gold\/10 {
+    background-color: rgb(212 188 138 / 0.1);
+  }
+  .bg-gold\/15 {
+    background-color: rgb(212 188 138 / 0.15);
+  }
+  .bg-gold\/50,
+  .disabled\:bg-gold\/50:disabled {
+    background-color: rgb(212 188 138 / 0.5);
+  }
+}
+
+@layer components {
+  .page-shell {
+    @apply mx-auto w-full max-w-6xl px-4 sm:px-6;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  /* `both` fill-mode + a 0.01ms duration can leave fade-up stuck at opacity 0. */
+  .animate-fade-up,
+  .stagger-fade > * {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+@media print {
+  nav,
+  footer,
+  .no-print,
+  aside,
+  header {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+  }
+
+  .referral-letter {
+    box-shadow: none !important;
+    border: none !important;
+  }
+}

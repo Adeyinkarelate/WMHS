@@ -1,0 +1,341 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1480 1240" width="1480" height="1240">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="100%" stop-color="#eef2f7"/>
+    </linearGradient>
+    <linearGradient id="cardFill" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#f8fafc"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#0f172a" flood-opacity="0.10"/>
+    </filter>
+  </defs>
+
+  <rect width="1480" height="1240" fill="url(#bg)"/>
+
+  <text x="740" y="42" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="700" fill="#0f172a">
+    Database Entity-Relationship Diagram
+  </text>
+  <text x="740" y="70" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#475569">
+    Web Maternal Health System (WMHS) - Logical data model
+  </text>
+
+  <!-- ========== BAND 1: Identity ========== -->
+  <rect x="36" y="90" width="1408" height="248" rx="16" fill="#f0fdfa" stroke="#99f6e4" stroke-width="1.5"/>
+  <text x="56" y="116" font-family="Segoe UI, Arial, sans-serif" font-size="13" font-weight="700" fill="#0f766e">IDENTITY AND ACCESS</text>
+
+  <!-- PasswordResetToken -->
+  <g transform="translate(70, 132)">
+    <rect width="250" height="184" rx="10" fill="url(#cardFill)" stroke="#0f766e" stroke-width="1.8" filter="url(#shadow)"/>
+    <rect x="0" y="0" width="250" height="34" rx="10" fill="#0f766e"/>
+    <rect x="0" y="20" width="250" height="14" fill="#0f766e"/>
+    <text x="125" y="23" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="14" font-weight="700" fill="#ffffff">PasswordResetToken</text>
+    <text x="14" y="56" font-family="Consolas, Courier New, monospace" font-size="12" fill="#0f172a">id</text>
+    <text x="236" y="56" text-anchor="end" font-family="Segoe UI, Arial, sans-serif" font-size="10" font-weight="700" fill="#0f766e">PK</text>
+    <text x="14" y="76" font-family="Consolas, Courier New, monospace" font-size="12" fill="#0f172a">userId</text>
+    <text x="236" y="76" text-anchor="end" font-family="Segoe UI, Arial, sans-serif" font-size="10" font-weight="700" fill="#0369a1">FK</text>
+    <text x="14" y="96" font-family="Consolas, Courier New, monospace" font-size="12" fill="#334155">token  UK</text>
+    <text x="14" y="116" font-family="Consolas, Courier New, monospace" font-size="12" fill="#334155">expiresAt</text>
+    <text x="14" y="136" font-family="Consolas, Courier New, monospace" font-size="12" fill="#334155">used</text>
+    <text x="14" y="156" font-family="Consolas, Courier New, monospace" font-size="12" fill="#334155">createdAt</text>
+  </g>
+
+  <!-- User -->
+  <g transform="translate(615, 124)">
+    <rect width="250" height="196" rx="10" fill="url(#cardFill)" stroke="#0f766e" stroke-width="2.2" filter="url(#shadow)"/>
+    <rect x="0" y="0" width="250" height="34" rx="10" fill="#0f766e"/>
+    <rect x="0" y="20" width="250" height="14" fill="#0f766e"/>
+    <text x="125" y="23" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="15" font-weight="700" fill="#ffffff">User</text>
+    <text x="14" y="56" font-family="Consolas, Courier New, monospace" font-size="12" fill="#0f172a">id</text>
+    <text x="236" y="56" text-anchor="end" font-family="Segoe UI, Arial, sans-serif" font-size="10" font-weight="700" fill="#0f766e">PK</text>
+    <text x="14" y="76" font-family="Consolas, Courier New, monospace" font-size="12" fill="#334155">name</text>
+    <text x="14" y="96" font-family="Consolas, Courier New, monospace" font-size="12" fill="#334155">email  UK</text>
+    <text x="14" y="116" font-family="Consolas, Courier New, monospace" font-size="12" fill="#334155">passwordHash</text>
+    <text x="14" y="136" font-family="Consolas, Courier New, monospace" font-size="12" fill="#334155">role</text>
+    <text x="14" y="156" font-family="Consolas, Courier New, monospace" font-size="12" fill="#334155">createdAt</text>
+    <text x="14" y="176" font-family="Consolas, Courier New, monospace" font-size="12" fill="#334155">updatedAt</text>
+  </g>
+
+  <!-- Notification -->
+  <g transform="translate(1160, 132)">
+    <rect width="250" height="184" rx="10" fill="url(#cardFill)" stroke="#0f766e" stroke-width="1.8" filter="url(#shadow)"/>
+    <rect x="0" y="0" width="250" height="34" rx="10" fill="#0f766e"/>
+    <rect x="0" y="20" width="250" height="14" fill="#0f766e"/>
+    <text x="125" y="23" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="14" font-weight="700" fill="#ffffff">Notification</text>
+    <text x="14" y="56" font-family="Consolas, Courier New, monospace" font-size="12" fill="#0f172a">id</text>
+    <text x="236" y="56" text-anchor="end" font-family="Segoe UI, Arial, sans-serif" font-size="10" font-weight="700" fill="#0f766e">PK</text>
+    <text x="14" y="76" font-family="Consolas, Courier New, monospace" font-size="12" fill="#0f172a">userId</text>
+    <text x="236" y="76" text-anchor="end" font-family="Segoe UI, Arial, sans-serif" font-size="10" font-weight="700" fill="#0369a1">FK</text>
+    <text x="14" y="96" font-family="Consolas, Courier New, monospace" font-size="12" fill="#334155">title</text>
+    <text x="14" y="116" font-family="Consolas, Courier New, monospace" font-size="12" fill="#334155">content</text>
+    <text x="14" y="136" font-family="Consolas, Courier New, monospace" font-size="12" fill="#334155">read</text>
+    <text x="14" y="156" font-family="Consolas, Courier New, monospace" font-size="12" fill="#334155">createdAt</text>
+  </g>
+
+  <!-- Rel: User 1 to N PasswordResetToken -->
+  <path d="M615 220 L320 220" fill="none" stroke="#334155" stroke-width="1.6"/>
+  <path d="M320 214 L320 226" stroke="#334155" stroke-width="1.8"/>
+  <path d="M615 214 L615 226" stroke="#334155" stroke-width="1.8"/>
+  <path d="M328 220 L338 214 M328 220 L338 220 M328 220 L338 226" stroke="#334155" stroke-width="1.5" fill="none"/>
+  <text x="468" y="210" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600" fill="#475569">1 : N</text>
+
+  <!-- Rel: User 1 to N Notification -->
+  <path d="M865 220 L1160 220" fill="none" stroke="#334155" stroke-width="1.6"/>
+  <path d="M865 214 L865 226" stroke="#334155" stroke-width="1.8"/>
+  <path d="M1160 214 L1160 226" stroke="#334155" stroke-width="1.8"/>
+  <path d="M1152 220 L1142 214 M1152 220 L1142 220 M1152 220 L1142 226" stroke="#334155" stroke-width="1.5" fill="none"/>
+  <text x="1012" y="210" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600" fill="#475569">1 : N</text>
+
+  <!-- ========== BAND 2: Care delivery ========== -->
+  <rect x="36" y="356" width="1408" height="288" rx="16" fill="#ecfeff" stroke="#a5f3fc" stroke-width="1.5"/>
+  <text x="56" y="382" font-family="Segoe UI, Arial, sans-serif" font-size="13" font-weight="700" fill="#0e7490">CARE DELIVERY</text>
+
+  <!-- Patient -->
+  <g transform="translate(56, 400)">
+    <rect width="260" height="226" rx="10" fill="url(#cardFill)" stroke="#0891b2" stroke-width="2" filter="url(#shadow)"/>
+    <rect x="0" y="0" width="260" height="34" rx="10" fill="#0891b2"/>
+    <rect x="0" y="20" width="260" height="14" fill="#0891b2"/>
+    <text x="130" y="23" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="15" font-weight="700" fill="#ffffff">Patient</text>
+    <text x="14" y="56" font-family="Consolas, Courier New, monospace" font-size="12" fill="#0f172a">id</text>
+    <text x="246" y="56" text-anchor="end" font-family="Segoe UI, Arial, sans-serif" font-size="10" font-weight="700" fill="#0f766e">PK</text>
+    <text x="14" y="76" font-family="Consolas, Courier New, monospace" font-size="12" fill="#0f172a">userId</text>
+    <text x="246" y="76" text-anchor="end" font-family="Segoe UI, Arial, sans-serif" font-size="10" font-weight="700" fill="#0369a1">FK UK</text>
+    <text x="14" y="96" font-family="Consolas, Courier New, monospace" font-size="12" fill="#334155">dateOfBirth</text>
+    <text x="14" y="116" font-family="Consolas, Courier New, monospace" font-size="12" fill="#334155">phone, address</text>
+    <text x="14" y="136" font-family="Consolas, Courier New, monospace" font-size="12" fill="#334155">lmp, edd</text>
+    <text x="14" y="156" font-family="Consolas, Courier New, monospace" font-size="12" fill="#334155">parity</text>
+    <text x="14" y="176" font-family="Consolas, Courier New, monospace" font-size="12" fill="#334155">heightCm, weightKg</text>
+    <text x="14" y="196" font-family="Consolas, Courier New, monospace" font-size="12" fill="#334155">locationLat, locationLng</text>
+    <text x="14" y="216" font-family="Consolas, Courier New, monospace" font-size="12" fill="#334155">preExistingConditions</text>
+  </g>
+
+  <!-- PatientAssignment -->
+  <g transform="translate(430, 430)">
+    <rect width="250" height="164" rx="10" fill="url(#cardFill)" stroke="#0891b2" stroke-width="1.8" filter="url(#shadow)"/>
+    <rect x="0" y="0" width="250" height="34" rx="10" fill="#0891b2"/>
+    <rect x="0" y="20" width="250" height="14" fill="#0891b2"/>
+    <text x="125" y="23" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="14" font-weight="700" fill="#ffffff">PatientAssignment</text>
+    <text x="14" y="56" font-family="Consolas, Courier New, monospace" font-size="12" fill="#0f172a">id</text>
+    <text x="236" y="56" text-anchor="end" font-family="Segoe UI, Arial, sans-serif" font-size="10" font-weight="700" fill="#0f766e">PK</text>
+    <text x="14" y="76" font-family="Consolas, Courier New, monospace" font-size="12" fill="#0f172a">patientId</text>
+    <text x="236" y="76" text-anchor="end" font-family="Segoe UI, Arial, sans-serif" font-size="10" font-weight="700" fill="#0369a1">FK</text>
+    <text x="14" y="96" font-family="Consolas, Courier New, monospace" font-size="12" fill="#0f172a">providerId</text>
+    <text x="236" y="96" text-anchor="end" font-family="Segoe UI, Arial, sans-serif" font-size="10" font-weight="700" fill="#0369a1">FK</text>
+    <text x="14" y="116" font-family="Consolas, Courier New, monospace" font-size="12" fill="#334155">createdAt</text>
+    <text x="14" y="144" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-style="italic" fill="#64748b">UK (patientId, providerId)</text>
+  </g>
+
+  <!-- Provider -->
+  <g transform="translate(800, 418)">
+    <rect width="250" height="184" rx="10" fill="url(#cardFill)" stroke="#0891b2" stroke-width="2" filter="url(#shadow)"/>
+    <rect x="0" y="0" width="250" height="34" rx="10" fill="#0891b2"/>
+    <rect x="0" y="20" width="250" height="14" fill="#0891b2"/>
+    <text x="125" y="23" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="15" font-weight="700" fill="#ffffff">Provider</text>
+    <text x="14" y="56" font-family="Consolas, Courier New, monospace" font-size="12" fill="#0f172a">id</text>
+    <text x="236" y="56" text-anchor="end" font-family="Segoe UI, Arial, sans-serif" font-size="10" font-weight="700" fill="#0f766e">PK</text>
+    <text x="14" y="76" font-family="Consolas, Courier New, monospace" font-size="12" fill="#0f172a">userId</text>
+    <text x="236" y="76" text-anchor="end" font-family="Segoe UI, Arial, sans-serif" font-size="10" font-weight="700" fill="#0369a1">FK UK</text>
+    <text x="14" y="96" font-family="Consolas, Courier New, monospace" font-size="12" fill="#334155">specialization</text>
+    <text x="14" y="116" font-family="Consolas, Courier New, monospace" font-size="12" fill="#0f172a">facilityId</text>
+    <text x="236" y="116" text-anchor="end" font-family="Segoe UI, Arial, sans-serif" font-size="10" font-weight="700" fill="#0369a1">FK</text>
+    <text x="14" y="136" font-family="Consolas, Courier New, monospace" font-size="12" fill="#334155">createdAt</text>
+    <text x="14" y="156" font-family="Consolas, Courier New, monospace" font-size="12" fill="#334155">updatedAt</text>
+  </g>
+
+  <!-- Facility -->
+  <g transform="translate(1160, 400)">
+    <rect width="250" height="226" rx="10" fill="url(#cardFill)" stroke="#2563eb" stroke-width="2" filter="url(#shadow)"/>
+    <rect x="0" y="0" width="250" height="34" rx="10" fill="#2563eb"/>
+    <rect x="0" y="20" width="250" height="14" fill="#2563eb"/>
+    <text x="125" y="23" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="15" font-weight="700" fill="#ffffff">Facility</text>
+    <text x="14" y="56" font-family="Consolas, Courier New, monospace" font-size="12" fill="#0f172a">id</text>
+    <text x="236" y="56" text-anchor="end" font-family="Segoe UI, Arial, sans-serif" font-size="10" font-weight="700" fill="#0f766e">PK</text>
+    <text x="14" y="76" font-family="Consolas, Courier New, monospace" font-size="12" fill="#334155">name</text>
+    <text x="14" y="96" font-family="Consolas, Courier New, monospace" font-size="12" fill="#334155">address</text>
+    <text x="14" y="116" font-family="Consolas, Courier New, monospace" font-size="12" fill="#334155">locationLat, locationLng</text>
+    <text x="14" y="136" font-family="Consolas, Courier New, monospace" font-size="12" fill="#334155">servicesOffered</text>
+    <text x="14" y="156" font-family="Consolas, Courier New, monospace" font-size="12" fill="#334155">capacity</text>
+    <text x="14" y="176" font-family="Consolas, Courier New, monospace" font-size="12" fill="#334155">contactPhone</text>
+    <text x="14" y="196" font-family="Consolas, Courier New, monospace" font-size="12" fill="#334155">emergencyAvailable</text>
+    <text x="14" y="216" font-family="Consolas, Courier New, monospace" font-size="12" fill="#334155">createdAt, updatedAt</text>
+  </g>
+
+  <!-- Rel: User 1 to optional Patient -->
+  <path d="M680 320 L680 356 L186 356 L186 400" fill="none" stroke="#334155" stroke-width="1.6"/>
+  <path d="M680 320 L674 328 M680 320 L686 328" stroke="#334155" stroke-width="1.6" fill="none"/>
+  <path d="M180 400 L192 400" stroke="#334155" stroke-width="1.8"/>
+  <circle cx="186" cy="392" r="4.5" fill="#f8fafc" stroke="#334155" stroke-width="1.5"/>
+  <text x="430" y="348" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600" fill="#475569">1 : 0..1  (role = PATIENT)</text>
+
+  <!-- Rel: User 1 to optional Provider -->
+  <path d="M800 320 L800 356 L925 356 L925 418" fill="none" stroke="#334155" stroke-width="1.6"/>
+  <path d="M919 418 L931 418" stroke="#334155" stroke-width="1.8"/>
+  <circle cx="925" cy="410" r="4.5" fill="#f8fafc" stroke="#334155" stroke-width="1.5"/>
+  <text x="932" y="348" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600" fill="#475569">1 : 0..1  (role = PROVIDER)</text>
+
+  <!-- Rel: Patient 1 to N Assignment -->
+  <path d="M316 512 L430 512" fill="none" stroke="#334155" stroke-width="1.6"/>
+  <path d="M316 506 L316 518" stroke="#334155" stroke-width="1.8"/>
+  <path d="M438 512 L448 506 M438 512 L448 512 M438 512 L448 518" stroke="#334155" stroke-width="1.5" fill="none"/>
+  <text x="373" y="502" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600" fill="#475569">1 : N</text>
+
+  <!-- Rel: Provider 1 to N Assignment -->
+  <path d="M800 512 L680 512" fill="none" stroke="#334155" stroke-width="1.6"/>
+  <path d="M800 506 L800 518" stroke="#334155" stroke-width="1.8"/>
+  <path d="M672 512 L662 506 M672 512 L662 512 M672 512 L662 518" stroke="#334155" stroke-width="1.5" fill="none"/>
+  <text x="740" y="502" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600" fill="#475569">N : 1</text>
+
+  <!-- Rel: Provider N to optional Facility -->
+  <path d="M1050 510 L1160 510" fill="none" stroke="#334155" stroke-width="1.6"/>
+  <path d="M1058 510 L1068 504 M1058 510 L1068 510 M1058 510 L1068 516" stroke="#334155" stroke-width="1.5" fill="none"/>
+  <circle cx="1152" cy="510" r="4.5" fill="#f8fafc" stroke="#334155" stroke-width="1.5"/>
+  <path d="M1160 504 L1160 516" stroke="#334155" stroke-width="1.8"/>
+  <text x="1105" y="500" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600" fill="#475569">N : 0..1</text>
+
+  <!-- ========== BAND 3: Clinical records ========== -->
+  <rect x="36" y="662" width="1408" height="478" rx="16" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1.5"/>
+  <text x="56" y="688" font-family="Segoe UI, Arial, sans-serif" font-size="13" font-weight="700" fill="#1d4ed8">CLINICAL RECORDS</text>
+
+  <!-- Symptom -->
+  <g transform="translate(56, 710)">
+    <rect width="250" height="184" rx="10" fill="url(#cardFill)" stroke="#2563eb" stroke-width="1.8" filter="url(#shadow)"/>
+    <rect x="0" y="0" width="250" height="34" rx="10" fill="#2563eb"/>
+    <rect x="0" y="20" width="250" height="14" fill="#2563eb"/>
+    <text x="125" y="23" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="14" font-weight="700" fill="#ffffff">Symptom</text>
+    <text x="14" y="56" font-family="Consolas, Courier New, monospace" font-size="12" fill="#0f172a">id</text>
+    <text x="236" y="56" text-anchor="end" font-family="Segoe UI, Arial, sans-serif" font-size="10" font-weight="700" fill="#0f766e">PK</text>
+    <text x="14" y="76" font-family="Consolas, Courier New, monospace" font-size="12" fill="#0f172a">patientId</text>
+    <text x="236" y="76" text-anchor="end" font-family="Segoe UI, Arial, sans-serif" font-size="10" font-weight="700" fill="#0369a1">FK</text>
+    <text x="14" y="96" font-family="Consolas, Courier New, monospace" font-size="12" fill="#334155">symptomType</text>
+    <text x="14" y="116" font-family="Consolas, Courier New, monospace" font-size="12" fill="#334155">severity</text>
+    <text x="14" y="136" font-family="Consolas, Courier New, monospace" font-size="12" fill="#334155">notes</text>
+    <text x="14" y="156" font-family="Consolas, Courier New, monospace" font-size="12" fill="#334155">submissionDate</text>
+  </g>
+
+  <!-- TestResult -->
+  <g transform="translate(326, 710)">
+    <rect width="250" height="184" rx="10" fill="url(#cardFill)" stroke="#2563eb" stroke-width="1.8" filter="url(#shadow)"/>
+    <rect x="0" y="0" width="250" height="34" rx="10" fill="#2563eb"/>
+    <rect x="0" y="20" width="250" height="14" fill="#2563eb"/>
+    <text x="125" y="23" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="14" font-weight="700" fill="#ffffff">TestResult</text>
+    <text x="14" y="56" font-family="Consolas, Courier New, monospace" font-size="12" fill="#0f172a">id</text>
+    <text x="236" y="56" text-anchor="end" font-family="Segoe UI, Arial, sans-serif" font-size="10" font-weight="700" fill="#0f766e">PK</text>
+    <text x="14" y="76" font-family="Consolas, Courier New, monospace" font-size="12" fill="#0f172a">patientId</text>
+    <text x="236" y="76" text-anchor="end" font-family="Segoe UI, Arial, sans-serif" font-size="10" font-weight="700" fill="#0369a1">FK</text>
+    <text x="14" y="96" font-family="Consolas, Courier New, monospace" font-size="12" fill="#334155">testType</text>
+    <text x="14" y="116" font-family="Consolas, Courier New, monospace" font-size="12" fill="#334155">resultValue, resultUnit</text>
+    <text x="14" y="136" font-family="Consolas, Courier New, monospace" font-size="12" fill="#334155">testDate</text>
+    <text x="14" y="156" font-family="Consolas, Courier New, monospace" font-size="12" fill="#334155">fileReference, notes</text>
+  </g>
+
+  <!-- RiskAssessment -->
+  <g transform="translate(596, 710)">
+    <rect width="250" height="184" rx="10" fill="url(#cardFill)" stroke="#2563eb" stroke-width="1.8" filter="url(#shadow)"/>
+    <rect x="0" y="0" width="250" height="34" rx="10" fill="#2563eb"/>
+    <rect x="0" y="20" width="250" height="14" fill="#2563eb"/>
+    <text x="125" y="23" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="14" font-weight="700" fill="#ffffff">RiskAssessment</text>
+    <text x="14" y="56" font-family="Consolas, Courier New, monospace" font-size="12" fill="#0f172a">id</text>
+    <text x="236" y="56" text-anchor="end" font-family="Segoe UI, Arial, sans-serif" font-size="10" font-weight="700" fill="#0f766e">PK</text>
+    <text x="14" y="76" font-family="Consolas, Courier New, monospace" font-size="12" fill="#0f172a">patientId</text>
+    <text x="236" y="76" text-anchor="end" font-family="Segoe UI, Arial, sans-serif" font-size="10" font-weight="700" fill="#0369a1">FK</text>
+    <text x="14" y="96" font-family="Consolas, Courier New, monospace" font-size="12" fill="#334155">riskLevel, riskScore</text>
+    <text x="14" y="116" font-family="Consolas, Courier New, monospace" font-size="12" fill="#334155">riskFactors</text>
+    <text x="14" y="136" font-family="Consolas, Courier New, monospace" font-size="12" fill="#334155">assessmentSource</text>
+    <text x="14" y="156" font-family="Consolas, Courier New, monospace" font-size="12" fill="#334155">assessedAt, recommendations</text>
+  </g>
+
+  <!-- Alert -->
+  <g transform="translate(866, 710)">
+    <rect width="250" height="184" rx="10" fill="url(#cardFill)" stroke="#2563eb" stroke-width="1.8" filter="url(#shadow)"/>
+    <rect x="0" y="0" width="250" height="34" rx="10" fill="#2563eb"/>
+    <rect x="0" y="20" width="250" height="14" fill="#2563eb"/>
+    <text x="125" y="23" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="14" font-weight="700" fill="#ffffff">Alert</text>
+    <text x="14" y="56" font-family="Consolas, Courier New, monospace" font-size="12" fill="#0f172a">id</text>
+    <text x="236" y="56" text-anchor="end" font-family="Segoe UI, Arial, sans-serif" font-size="10" font-weight="700" fill="#0f766e">PK</text>
+    <text x="14" y="76" font-family="Consolas, Courier New, monospace" font-size="12" fill="#0f172a">patientId</text>
+    <text x="236" y="76" text-anchor="end" font-family="Segoe UI, Arial, sans-serif" font-size="10" font-weight="700" fill="#0369a1">FK</text>
+    <text x="14" y="96" font-family="Consolas, Courier New, monospace" font-size="12" fill="#334155">alertType</text>
+    <text x="14" y="116" font-family="Consolas, Courier New, monospace" font-size="12" fill="#334155">severity, status</text>
+    <text x="14" y="136" font-family="Consolas, Courier New, monospace" font-size="12" fill="#334155">notes</text>
+    <text x="14" y="156" font-family="Consolas, Courier New, monospace" font-size="12" fill="#334155">alertedAt, resolvedAt</text>
+  </g>
+
+  <!-- Referral -->
+  <g transform="translate(1136, 710)">
+    <rect width="274" height="204" rx="10" fill="url(#cardFill)" stroke="#7c3aed" stroke-width="1.8" filter="url(#shadow)"/>
+    <rect x="0" y="0" width="274" height="34" rx="10" fill="#7c3aed"/>
+    <rect x="0" y="20" width="274" height="14" fill="#7c3aed"/>
+    <text x="137" y="23" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="14" font-weight="700" fill="#ffffff">Referral</text>
+    <text x="14" y="56" font-family="Consolas, Courier New, monospace" font-size="12" fill="#0f172a">id</text>
+    <text x="260" y="56" text-anchor="end" font-family="Segoe UI, Arial, sans-serif" font-size="10" font-weight="700" fill="#0f766e">PK</text>
+    <text x="14" y="76" font-family="Consolas, Courier New, monospace" font-size="12" fill="#0f172a">patientId</text>
+    <text x="260" y="76" text-anchor="end" font-family="Segoe UI, Arial, sans-serif" font-size="10" font-weight="700" fill="#0369a1">FK</text>
+    <text x="14" y="96" font-family="Consolas, Courier New, monospace" font-size="12" fill="#0f172a">facilityId</text>
+    <text x="260" y="96" text-anchor="end" font-family="Segoe UI, Arial, sans-serif" font-size="10" font-weight="700" fill="#0369a1">FK</text>
+    <text x="14" y="116" font-family="Consolas, Courier New, monospace" font-size="12" fill="#334155">reason</text>
+    <text x="14" y="136" font-family="Consolas, Courier New, monospace" font-size="12" fill="#334155">status  (PENDING default)</text>
+    <text x="14" y="156" font-family="Consolas, Courier New, monospace" font-size="12" fill="#334155">transportNotes</text>
+    <text x="14" y="176" font-family="Consolas, Courier New, monospace" font-size="12" fill="#334155">referredAt, completedAt</text>
+  </g>
+
+  <!-- Patient to clinical records: vertical then bus -->
+  <path d="M186 626 L186 662 L186 690" fill="none" stroke="#334155" stroke-width="1.6"/>
+  <path d="M180 626 L192 626" stroke="#334155" stroke-width="1.8"/>
+  <path d="M186 690 L1273 690" fill="none" stroke="#334155" stroke-width="1.6"/>
+
+  <path d="M181 710 L181 698" fill="none" stroke="#334155" stroke-width="1.6"/>
+  <path d="M181 702 L175 692 M181 702 L181 692 M181 702 L187 692" stroke="#334155" stroke-width="1.5" fill="none"/>
+
+  <path d="M451 710 L451 690" fill="none" stroke="#334155" stroke-width="1.6"/>
+  <path d="M451 702 L445 692 M451 702 L451 692 M451 702 L457 692" stroke="#334155" stroke-width="1.5" fill="none"/>
+
+  <path d="M721 710 L721 690" fill="none" stroke="#334155" stroke-width="1.6"/>
+  <path d="M721 702 L715 692 M721 702 L721 692 M721 702 L727 692" stroke="#334155" stroke-width="1.5" fill="none"/>
+
+  <path d="M991 710 L991 690" fill="none" stroke="#334155" stroke-width="1.6"/>
+  <path d="M991 702 L985 692 M991 702 L991 692 M991 702 L997 692" stroke="#334155" stroke-width="1.5" fill="none"/>
+
+  <path d="M1273 710 L1273 690" fill="none" stroke="#334155" stroke-width="1.6"/>
+  <path d="M1273 702 L1267 692 M1273 702 L1273 692 M1273 702 L1279 692" stroke="#334155" stroke-width="1.5" fill="none"/>
+
+  <text x="360" y="678" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600" fill="#475569">Patient 1 : N  Symptom, TestResult, RiskAssessment, Alert, Referral</text>
+
+  <!-- Facility 1 to N Referral -->
+  <path d="M1410 626 L1410 662 L1410 710" fill="none" stroke="#7c3aed" stroke-width="1.6"/>
+  <path d="M1404 626 L1416 626" stroke="#7c3aed" stroke-width="1.8"/>
+  <path d="M1410 702 L1404 692 M1410 702 L1410 692 M1410 702 L1416 692" stroke="#7c3aed" stroke-width="1.5" fill="none"/>
+  <text x="1400" y="678" text-anchor="end" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600" fill="#6d28d9">Facility 1 : N Referral</text>
+
+  <!-- Legend -->
+  <g transform="translate(56, 930)">
+    <rect width="1370" height="178" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/>
+    <text x="20" y="28" font-family="Segoe UI, Arial, sans-serif" font-size="13" font-weight="700" fill="#0f172a">Legend and cardinality</text>
+
+    <rect x="20" y="44" width="28" height="16" rx="3" fill="#0f766e"/>
+    <text x="56" y="57" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#334155">Identity entities</text>
+    <rect x="200" y="44" width="28" height="16" rx="3" fill="#0891b2"/>
+    <text x="236" y="57" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#334155">Care-delivery entities</text>
+    <rect x="420" y="44" width="28" height="16" rx="3" fill="#2563eb"/>
+    <text x="456" y="57" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#334155">Clinical-record entities</text>
+    <rect x="660" y="44" width="28" height="16" rx="3" fill="#7c3aed"/>
+    <text x="696" y="57" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#334155">Referral / facility link</text>
+
+    <text x="20" y="90" font-family="Segoe UI, Arial, sans-serif" font-size="12" font-weight="700" fill="#0f766e">PK</text>
+    <text x="46" y="90" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#334155">Primary key</text>
+    <text x="160" y="90" font-family="Segoe UI, Arial, sans-serif" font-size="12" font-weight="700" fill="#0369a1">FK</text>
+    <text x="184" y="90" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#334155">Foreign key</text>
+    <text x="300" y="90" font-family="Segoe UI, Arial, sans-serif" font-size="12" font-weight="700" fill="#334155">UK</text>
+    <text x="326" y="90" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#334155">Unique key</text>
+    <text x="430" y="90" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#334155">Crow's foot = many    Bar = one    Circle = optional (0)</text>
+
+    <text x="20" y="118" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#334155">User 1:1 Patient or Provider (exclusive by role). Patient N:M Provider through PatientAssignment.</text>
+    <text x="20" y="140" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#334155">Patient 1:N Symptom, TestResult, RiskAssessment, Alert, Referral. Facility 1:N Provider (optional) and 1:N Referral.</text>
+    <text x="20" y="162" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#64748b">Selected attributes shown. Full field list is in prisma/schema.prisma. Production target is PostgreSQL; local demo may use SQLite.</text>
+  </g>
+
+  <text x="740" y="1214" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#64748b">
+    Figure: Entity-relationship diagram of the WMHS database showing identity, care-delivery, and clinical-record entities
+  </text>
+</svg>

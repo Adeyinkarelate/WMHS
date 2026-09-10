@@ -1,0 +1,255 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id             String               @id @default(uuid())
+  name           String
+  email          String               @unique
+  passwordHash   String
+  role           String
+  createdAt      DateTime             @default(now())
+  updatedAt      DateTime             @updatedAt
+  patient        Patient?
+  provider       Provider?
+  notifications  Notification[]
+  passwordResets PasswordResetToken[]
+  clinicalNotes  ClinicalNote[]
+
+  @@index([role])
+}
+
+model Patient {
+  id                    String             @id @default(uuid())
+  userId                String             @unique
+  user                  User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  dateOfBirth           DateTime
+  phone                 String
+  address               String
+  lmp                   DateTime?
+  edd                   DateTime?
+  parity                Int                @default(0)
+  preExistingConditions String             @default("[]")
+  heightCm              Float?
+  weightKg              Float?
+  locationLat           Float?
+  locationLng           Float?
+  notifyAlerts          Boolean            @default(true)
+  createdAt             DateTime           @default(now())
+  updatedAt             DateTime           @updatedAt
+  symptoms              Symptom[]
+  testResults           TestResult[]
+  riskAssessments       RiskAssessment[]
+  referrals             Referral[]
+  alerts                Alert[]
+  assignments           PatientAssignment[]
+  clinicalNotes         ClinicalNote[]
+  outboundMessages      OutboundMessage[]
+
+  @@index([userId])
+}
+
+model Provider {
+  id             String              @id @default(uuid())
+  userId         String              @unique
+  user           User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  specialization String
+  facilityId     String?
+  facility       Facility?           @relation(fields: [facilityId], references: [id])
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
+  assignments    PatientAssignment[]
+
+  @@index([userId])
+  @@index([facilityId])
+}
+
+model PatientAssignment {
+  id         String   @id @default(uuid())
+  patientId  String
+  providerId String
+  patient    Patient  @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  provider   Provider @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+
+  @@unique([patientId, providerId])
+  @@index([providerId])
+  @@index([patientId])
+}
+
+model Facility {
+  id                 String     @id @default(uuid())
+  name               String
+  address            String
+  locationLat        Float
+  locationLng        Float
+  servicesOffered    String
+  capacity           Int
+  contactPhone       String
+  emergencyAvailable Boolean    @default(false)
+  createdAt          DateTime   @default(now())
+  updatedAt          DateTime   @updatedAt
+  providers          Provider[]
+  referrals          Referral[]
+}
+
+model Symptom {
+  id             String   @id @default(uuid())
+  patientId      String
+  patient        Patient  @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  symptomType    String
+  severity       Int
+  notes          String   @default("")
+  submissionDate DateTime
+  createdAt      DateTime @default(now())
+
+  @@index([patientId])
+  @@index([submissionDate])
+}
+
+model TestResult {
+  id            String   @id @default(uuid())
+  patientId     String
+  patient       Patient  @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  testType      String
+  resultValue   Float
+  resultUnit    String
+  testDate      DateTime
+  fileReference String?
+  fileUrl       String?
+  filePublicId  String?
+  notes         String   @default("")
+  createdAt     DateTime @default(now())
+
+  @@index([patientId])
+  @@index([testDate])
+}
+
+model RiskAssessment {
+  id               String   @id @default(uuid())
+  patientId        String
+  patient          Patient  @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  riskLevel        String
+  riskScore        Float
+  riskFactors      String
+  assessmentSource String
+  assessedAt       DateTime
+  createdAt        DateTime @default(now())
+  recommendations  String?
+
+  @@index([patientId])
+  @@index([riskLevel])
+  @@index([assessedAt])
+}
+
+model Referral {
+  id             String    @id @default(uuid())
+  patientId      String
+  patient        Patient   @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  facilityId     String
+  facility       Facility  @relation(fields: [facilityId], references: [id])
+  reason         String
+  status         String    @default("PENDING")
+  transportNotes String    @default("")
+  referredAt     DateTime  @default(now())
+  completedAt    DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  @@index([patientId])
+  @@index([facilityId])
+  @@index([status])
+}
+
+model Alert {
+  id               String         @id @default(uuid())
+  patientId        String
+  patient          Patient        @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  alertType        String
+  severity         String
+  status           String         @default("ACTIVE")
+  source           String         @default("RISK_ENGINE")
+  notes            String         @default("")
+  alertedAt        DateTime       @default(now())
+  acknowledgedAt   DateTime?
+  acknowledgedById String?
+  resolvedAt       DateTime?
+  resolvedById     String?
+  escalatedAt      DateTime?
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  notifications    Notification[]
+
+  @@index([patientId])
+  @@index([status])
+  @@index([severity])
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  content   String
+  type      String   @default("INFO")
+  severity  String?
+  alertId   String?
+  alert     Alert?   @relation(fields: [alertId], references: [id], onDelete: SetNull)
+  link      String?
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([read])
+  @@index([alertId])
+}
+
+model ClinicalNote {
+  id        String   @id @default(uuid())
+  patientId String
+  patient   Patient  @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([patientId])
+  @@index([authorId])
+}
+
+model OutboundMessage {
+  id        String   @id @default(uuid())
+  patientId String?
+  patient   Patient? @relation(fields: [patientId], references: [id], onDelete: SetNull)
+  channel   String   @default("SMS")
+  toPhone   String
+  body      String
+  status    String   @default("STUBBED")
+  provider  String   @default("STUB")
+  alertId   String?
+  createdAt DateTime @default(now())
+
+  @@index([patientId])
+  @@index([createdAt])
+}
+
+model PasswordResetToken {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token     String   @unique
+  expiresAt DateTime
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([token])
+}

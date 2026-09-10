@@ -1,0 +1,125 @@
+erDiagram
+    User ||--o| Patient : "has profile"
+    User ||--o| Provider : "has profile"
+    User ||--o{ Notification : "receives"
+    User ||--o{ PasswordResetToken : "owns"
+
+    Patient ||--o{ Symptom : "logs"
+    Patient ||--o{ TestResult : "records"
+    Patient ||--o{ RiskAssessment : "has"
+    Patient ||--o{ Referral : "receives"
+    Patient ||--o{ Alert : "triggers"
+    Patient ||--o{ PatientAssignment : "assigned via"
+    Provider ||--o{ PatientAssignment : "manages via"
+    Facility ||--o{ Provider : "employs"
+    Facility ||--o{ Referral : "receives"
+
+    User {
+        string id PK
+        string name
+        string email UK
+        string passwordHash
+        string role
+        datetime createdAt
+        datetime updatedAt
+    }
+
+    Patient {
+        string id PK
+        string userId FK
+        datetime dateOfBirth
+        string phone
+        string address
+        datetime lmp
+        datetime edd
+        int parity
+        float heightCm
+        float weightKg
+    }
+
+    Provider {
+        string id PK
+        string userId FK
+        string specialization
+        string facilityId FK
+        datetime createdAt
+    }
+
+    PatientAssignment {
+        string id PK
+        string patientId FK
+        string providerId FK
+        datetime createdAt
+    }
+
+    Facility {
+        string id PK
+        string name
+        string address
+        float locationLat
+        float locationLng
+        string servicesOffered
+        int capacity
+        boolean emergencyAvailable
+    }
+
+    Symptom {
+        string id PK
+        string patientId FK
+        string symptomType
+        int severity
+        datetime submissionDate
+    }
+
+    TestResult {
+        string id PK
+        string patientId FK
+        string testType
+        float resultValue
+        string resultUnit
+        datetime testDate
+    }
+
+    RiskAssessment {
+        string id PK
+        string patientId FK
+        string riskLevel
+        float riskScore
+        string riskFactors
+        datetime assessedAt
+    }
+
+    Referral {
+        string id PK
+        string patientId FK
+        string facilityId FK
+        string reason
+        string status
+        datetime referredAt
+    }
+
+    Alert {
+        string id PK
+        string patientId FK
+        string alertType
+        string severity
+        string status
+        datetime alertedAt
+    }
+
+    Notification {
+        string id PK
+        string userId FK
+        string title
+        string content
+        boolean read
+        datetime createdAt
+    }
+
+    PasswordResetToken {
+        string id PK
+        string userId FK
+        string token UK
+        datetime expiresAt
+        boolean used
+    }

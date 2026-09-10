@@ -1,0 +1,33 @@
+flowchart TB
+    subgraph Users["End Users"]
+        U1["Patients"]
+        U2["Healthcare Providers"]
+        U3["Web Browser"]
+    end
+
+    subgraph PRES["Presentation Tier — React.js"]
+        P1["Patient Portal"]
+        P2["Provider Portal"]
+        P3["Dashboards, Forms and Charts"]
+    end
+
+    subgraph APP["Application Tier — Node.js / Express"]
+        A1["REST API"]
+        A2["Authentication"]
+        A3["Clinical Risk Engine"]
+        A4["Business Logic"]
+    end
+
+    subgraph DATA["Data Tier — PostgreSQL"]
+        D1["Users and Roles"]
+        D2["Maternal Health Records"]
+        D3["Alerts and Referrals"]
+    end
+
+    U1 --> PRES
+    U2 --> PRES
+    U3 --> PRES
+    PRES -->|"HTTPS / REST JSON requests"| APP
+    APP -->|"JSON responses"| PRES
+    APP -->|"SQL queries"| DATA
+    DATA -->|"Result sets"| APP
