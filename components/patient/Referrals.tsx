@@ -4,14 +4,10 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { EmptyState } from "@/components/shared/EmptyState";
-import { formatDistance } from "@/lib/utils/haversine";
+import { FacilityMap, type MapFacility } from "@/components/shared/FacilityMap";
+import { formatDistance, mapsDirectionsUrl } from "@/lib/utils/haversine";
 
-type Facility = {
-  id: string;
-  name: string;
-  address: string;
-  contactPhone: string;
-  emergencyAvailable: boolean;
+type Facility = MapFacility & {
   servicesOffered: string[];
   distanceKm: number;
   capacity: number;
@@ -20,9 +16,11 @@ type Facility = {
 export function NearbyFacilities({
   facilities,
   rankedForRisk = false,
+  origin = null,
 }: {
   facilities: Facility[];
   rankedForRisk?: boolean;
+  origin?: { lat: number; lng: number } | null;
 }) {
   const router = useRouter();
   const [busy, setBusy] = useState<string | null>(null);
@@ -68,7 +66,7 @@ export function NearbyFacilities({
   }
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-4">
       {error && (
         <p className="rounded-xl bg-danger-soft px-3 py-2 text-sm text-danger-ink" role="alert">
           {error}
@@ -79,6 +77,7 @@ export function NearbyFacilities({
           {ok}
         </p>
       )}
+      <FacilityMap facilities={facilities} origin={origin} />
       {facilities.map((f) => (
         <article key={f.id} className="rounded-2xl border border-line bg-white p-5 shadow-card">
           <div className="flex flex-wrap items-start justify-between gap-3">
@@ -98,9 +97,23 @@ export function NearbyFacilities({
                 {(Array.isArray(f.servicesOffered) ? f.servicesOffered : []).join(" · ")}
               </p>
             </div>
-            <Button size="sm" loading={busy === f.id} onClick={() => refer(f.id, f.name)}>
-              Request referral
-            </Button>
+            <div className="flex flex-wrap gap-2">
+              <a
+                href={mapsDirectionsUrl(
+                  { lat: f.locationLat, lng: f.locationLng },
+                  origin
+                )}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <Button type="button" variant="outline" size="sm">
+                  Directions
+                </Button>
+              </a>
+              <Button size="sm" loading={busy === f.id} onClick={() => refer(f.id, f.name)}>
+                Request referral
+              </Button>
+            </div>
           </div>
         </article>
       ))}

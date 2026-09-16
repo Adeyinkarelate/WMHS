@@ -20,6 +20,9 @@ Logical data dictionary for the Web Maternal Health System. Types are shown in P
 | RiskAssessment | Clinical records | N:1 Patient | Scored maternal risk result |
 | Alert | Clinical records | N:1 Patient | Active or resolved risk alerts |
 | Referral | Clinical records | N:1 Patient; N:1 Facility | Referral to a receiving facility |
+| AncAttendance | Clinical records | N:1 Patient | Recorded WHO ANC contact attendance |
+| ClinicalNote | Clinical records | N:1 Patient; N:1 User | Provider notes on a patient chart |
+| OutboundMessage | Notifications | N:0..1 Patient | SMS stub / outbound alert pathway |
 
 ## Table 2. User
 

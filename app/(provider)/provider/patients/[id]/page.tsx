@@ -15,8 +15,10 @@ import { AlertsPanel } from "@/components/provider/AlertsPanel";
 import { RaiseAlertForm } from "@/components/provider/RaiseAlertForm";
 import { fromJsonString } from "@/lib/utils/json";
 import { alertTypeLabel, toAlertRow } from "@/lib/alerts/labels";
-import { buildAncSchedule } from "@/lib/utils/anc";
+import { buildAncSchedule, nextAncVisit } from "@/lib/utils/anc";
 import { AncSchedule } from "@/components/shared/AncSchedule";
+import { MaternalSummary } from "@/components/shared/MaternalSummary";
+import { SmsLog } from "@/components/shared/SmsLog";
 import { RiskExplainer } from "@/components/shared/RiskExplainer";
 import { LabFileLink } from "@/components/shared/LabFileLink";
 import { RecalculateRisk } from "@/components/patient/RecalculateRisk";
@@ -41,6 +43,7 @@ export default async function ProviderPatientPage({ params }: Ctx) {
       referrals: { include: { facility: true }, orderBy: { referredAt: "desc" } },
       clinicalNotes: { include: { author: { select: { name: true } } }, orderBy: { createdAt: "desc" } },
       outboundMessages: { orderBy: { createdAt: "desc" }, take: 6 },
+      ancAttendances: true,
     },
   });
   if (!patient) notFound();
@@ -54,7 +57,8 @@ export default async function ProviderPatientPage({ params }: Ctx) {
       })
     : null;
   const screens: ComplicationScreen[] = rec?.complications ?? [];
-  const ancVisits = buildAncSchedule(patient.lmp);
+  const ancVisits = buildAncSchedule(patient.lmp, new Date(), patient.ancAttendances);
+  const nextAnc = nextAncVisit(ancVisits);
   const conditions = fromJsonString<string[]>(patient.preExistingConditions, []);
   const openAlerts = patient.alerts.filter((a) => a.status !== "RESOLVED");
   const liveBmi =
@@ -78,6 +82,28 @@ export default async function ProviderPatientPage({ params }: Ctx) {
         </div>
         </div>
         <RecalculateRisk patientId={patient.id} />
+      </div>
+      <div className="mb-6">
+        <MaternalSummary
+          data={{
+            patientName: patient.user.name,
+            phone: patient.phone,
+            address: patient.address,
+            lmp: patient.lmp,
+            edd: patient.edd,
+            parity: patient.parity,
+            riskLevel: latest?.riskLevel,
+            riskScore: latest?.riskScore,
+            openAlerts: openAlerts.map((a) => alertTypeLabel(a.alertType)),
+            nextAnc: nextAnc
+              ? `${nextAnc.title} · ${formatDate(nextAnc.dueDate)}`
+              : ancVisits.length
+                ? "All eight contacts attended"
+                : null,
+            lastVitals: patient.testResults.slice(0, 4).map((t) => `${t.testType}: ${t.resultValue} ${t.resultUnit}`),
+            conditions,
+          }}
+        />
       </div>
       <div className="mt-6 grid gap-6 lg:grid-cols-3">
         {latest ? (
@@ -211,29 +237,8 @@ export default async function ProviderPatientPage({ params }: Ctx) {
         </Card>
       </div>
       <div className="mt-6 grid gap-6 lg:grid-cols-2">
-        <AncSchedule visits={ancVisits} />
-        <Card>
-          <CardTitle className="text-xl">SMS log</CardTitle>
-          {patient.outboundMessages.length === 0 ? (
-            <p className="mt-3 text-sm text-ink-muted">
-              Critical alerts queue an SMS stub to the patient&apos;s phone so the pathway is visible
-              in demo.
-            </p>
-          ) : (
-            <ul className="mt-3 space-y-3 text-sm">
-              {patient.outboundMessages.map((m) => (
-                <li key={m.id} className="rounded-xl bg-canvas px-3 py-2">
-                  <div className="flex justify-between gap-2">
-                    <span className="font-semibold text-navy">{m.toPhone}</span>
-                    <StatusBadge value={m.status} />
-                  </div>
-                  <p className="mt-1 text-ink-muted">{m.body}</p>
-                  <p className="mt-1 text-caption text-ink-muted">{formatDateTime(m.createdAt)}</p>
-                </li>
-              ))}
-            </ul>
-          )}
-        </Card>
+        <AncSchedule visits={ancVisits} patientId={patient.id} canEdit />
+        <SmsLog messages={patient.outboundMessages} />
       </div>
     </PageTransition>
   );

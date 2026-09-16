@@ -24,6 +24,9 @@ export function StatusBadge({
     UPCOMING: { tone: "info", label: "Upcoming" },
     UNASSESSED: { tone: "default", label: "Not assessed" },
     STUBBED: { tone: "info", label: "SMS stub" },
+    SENT: { tone: "success", label: "Sent" },
+    FAILED: { tone: "danger", label: "Failed" },
+    QUEUED: { tone: "warning", label: "Queued" },
   };
   const item = map[value] ?? { tone: "default" as const, label: value };
   return <Badge tone={item.tone}>{item.label}</Badge>;

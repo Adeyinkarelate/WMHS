@@ -77,6 +77,7 @@ function day(iso: string) {
 async function main() {
   await prisma.notification.deleteMany();
   await prisma.outboundMessage.deleteMany();
+  await prisma.ancAttendance.deleteMany();
   await prisma.clinicalNote.deleteMany();
   await prisma.alert.deleteMany();
   await prisma.referral.deleteMany();
@@ -352,6 +353,17 @@ async function main() {
       status: "PENDING",
       transportNotes: "Family can provide a car; prefer morning slot.",
     },
+  });
+
+  await prisma.ancAttendance.createMany({
+    data: [
+      { patientId: amina.patient!.id, contact: 1, attendedAt: day("2026-04-10"), markedById: providerUser.id },
+      { patientId: amina.patient!.id, contact: 2, attendedAt: day("2026-06-05"), markedById: providerUser.id },
+      { patientId: amina.patient!.id, contact: 3, attendedAt: day("2026-07-18"), markedById: providerUser.id },
+      { patientId: amina.patient!.id, contact: 4, attendedAt: day("2026-08-14"), markedById: providerUser.id },
+      { patientId: fatima.patient!.id, contact: 1, attendedAt: day("2026-06-12"), markedById: providerUser.id },
+      { patientId: hadiza.patient!.id, contact: 1, attendedAt: day("2026-07-02"), markedById: providerUser.id },
+    ],
   });
 
   await prisma.clinicalNote.create({

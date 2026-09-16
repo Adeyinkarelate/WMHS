@@ -14,31 +14,47 @@ export const WHO_ANC_CONTACTS: Array<{ contact: number; week: number; title: str
 
 export type AncVisitStatus = "COMPLETED" | "DUE" | "UPCOMING" | "OVERDUE";
 
+export type AncAttendanceRecord = {
+  contact: number;
+  attendedAt?: Date | string | null;
+};
+
 export type AncVisit = {
   contact: number;
   week: number;
   title: string;
   dueDate: Date;
   status: AncVisitStatus;
+  attendedAt: Date | null;
 };
 
 export function ancDueDate(lmp: Date, week: number): Date {
   return new Date(lmp.getTime() + week * 7 * 24 * 60 * 60 * 1000);
 }
 
-export function buildAncSchedule(lmp: Date | null | undefined, on: Date = new Date()): AncVisit[] {
+export function buildAncSchedule(
+  lmp: Date | null | undefined,
+  on: Date = new Date(),
+  attendances: AncAttendanceRecord[] = []
+): AncVisit[] {
   if (!lmp) return [];
   const ga = gestationalAgeWeeks(lmp, on);
   const todayStart = Date.UTC(on.getUTCFullYear(), on.getUTCMonth(), on.getUTCDate());
+  const attendedByContact = new Map(
+    attendances
+      .filter((row) => row.contact >= 1 && row.contact <= 8)
+      .map((row) => [row.contact, row.attendedAt ? new Date(row.attendedAt) : new Date()])
+  );
 
   return WHO_ANC_CONTACTS.map((row) => {
     const dueDate = ancDueDate(lmp, row.week);
     const dueStart = Date.UTC(dueDate.getUTCFullYear(), dueDate.getUTCMonth(), dueDate.getUTCDate());
+    const attendedAt = attendedByContact.get(row.contact) ?? null;
     let status: AncVisitStatus = "UPCOMING";
-    if (ga > row.week + 1) status = "COMPLETED";
-    else if (dueStart < todayStart && ga >= row.week) status = "OVERDUE";
+    if (attendedAt) status = "COMPLETED";
+    else if (dueStart < todayStart) status = "OVERDUE";
     else if (Math.abs(ga - row.week) <= 1) status = "DUE";
-    return { ...row, dueDate, status };
+    return { ...row, dueDate, status, attendedAt };
   });
 }
 

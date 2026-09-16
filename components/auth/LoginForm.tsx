@@ -7,24 +7,24 @@ import Link from "next/link";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { safeInternalPath } from "@/lib/utils/helpers";
+import { DEMO_ACCOUNTS } from "@/lib/auth/demoAccounts";
 
 export function LoginForm() {
   const router = useRouter();
   const params = useSearchParams();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [demoRole, setDemoRole] = useState<string | null>(null);
 
-  async function onSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+  async function signInWith(nextEmail: string, nextPassword: string) {
     setError("");
     setLoading(true);
-    const form = new FormData(e.currentTarget);
-    const email = String(form.get("email") ?? "");
-    const password = String(form.get("password") ?? "");
     try {
       const res = await signIn("credentials", {
-        email,
-        password,
+        email: nextEmail,
+        password: nextPassword,
         redirect: false,
       });
       if (!res?.ok) {
@@ -56,7 +56,20 @@ export function LoginForm() {
       setError("Could not sign in. Try again.");
     } finally {
       setLoading(false);
+      setDemoRole(null);
     }
+  }
+
+  async function onSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    await signInWith(email, password);
+  }
+
+  async function onDemo(account: (typeof DEMO_ACCOUNTS)[number]) {
+    setEmail(account.email);
+    setPassword(account.password);
+    setDemoRole(account.role);
+    await signInWith(account.email, account.password);
   }
 
   return (
@@ -71,17 +84,51 @@ export function LoginForm() {
           {error}
         </p>
       )}
-      <Input name="email" type="email" label="Email" required autoComplete="email" />
+      <Input
+        name="email"
+        type="email"
+        label="Email"
+        required
+        autoComplete="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
       <Input
         name="password"
         type="password"
         label="Password"
         required
         autoComplete="current-password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
       />
-      <Button type="submit" className="w-full" loading={loading}>
+      <Button type="submit" className="w-full" loading={loading && !demoRole}>
         Log in
       </Button>
+      <div className="rounded-2xl border border-line bg-canvas px-4 py-3">
+        <p className="font-heading text-xs font-semibold uppercase tracking-[0.18em] text-sage">
+          Supervisor demo
+        </p>
+        <p className="mt-1 text-caption text-ink-muted">
+          Seeded walkthrough accounts. One tap signs in.
+        </p>
+        <div className="mt-3 grid gap-2 sm:grid-cols-2">
+          {DEMO_ACCOUNTS.map((account) => (
+            <Button
+              key={account.email}
+              type="button"
+              variant="outline"
+              size="sm"
+              className="w-full"
+              loading={loading && demoRole === account.role}
+              disabled={loading}
+              onClick={() => onDemo(account)}
+            >
+              {account.label}
+            </Button>
+          ))}
+        </div>
+      </div>
       <p className="text-center text-sm text-ink-muted">
         <Link href="/forgot-password" className="text-primary font-semibold">
           Forgot password?

@@ -77,6 +77,12 @@ export const clinicalNoteSchema = z.object({
   content: z.string().min(3, "Add a clinical note").max(4000),
 });
 
+export const ancAttendanceSchema = z.object({
+  contact: z.coerce.number().int().min(1).max(8),
+  attended: z.boolean().optional().default(true),
+  notes: z.string().max(500).optional().default(""),
+});
+
 const optionalCoord = z.preprocess((value) => {
   if (value === "" || value === null || value === undefined) return null;
   const n = Number(value);

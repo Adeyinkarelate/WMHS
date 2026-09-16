@@ -52,6 +52,7 @@ model Patient {
   assignments           PatientAssignment[]
   clinicalNotes         ClinicalNote[]
   outboundMessages      OutboundMessage[]
+  ancAttendances        AncAttendance[]
 
   @@index([userId])
 }
@@ -239,6 +240,21 @@ model OutboundMessage {
 
   @@index([patientId])
   @@index([createdAt])
+}
+
+model AncAttendance {
+  id         String   @id @default(uuid())
+  patientId  String
+  patient    Patient  @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  contact    Int
+  attendedAt DateTime @default(now())
+  notes      String   @default("")
+  markedById String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([patientId, contact])
+  @@index([patientId])
 }
 
 model PasswordResetToken {

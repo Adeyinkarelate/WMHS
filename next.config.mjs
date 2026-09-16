@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  experimental: {
+    experimental: {
     serverActions: {
       bodySizeLimit: "8mb",
     },
@@ -14,6 +14,7 @@ const nextConfig = {
       "cloudinary",
     ],
   },
+  transpilePackages: ["leaflet"],
   // Next 14 on Windows can drop `.next/server/vendor-chunks` during HMR when
   // two compiles race (register → NextAuth). Keep server deps in one bundle.
   webpack: (config, { isServer }) => {

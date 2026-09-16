@@ -19,7 +19,9 @@ export default function LoginPage() {
             <Logo />
           </div>
           <h2 className="font-heading text-3xl text-navy">Log in</h2>
-          <p className="mt-2 text-sm text-ink-muted">Use your WMHS email and password.</p>
+          <p className="mt-2 text-sm text-ink-muted">
+            Use your WMHS email, or the supervisor demo buttons below the form.
+          </p>
           <div className="mt-8">
             <Suspense fallback={<LoadingSpinner label="Loading form" />}>
               <LoginForm />

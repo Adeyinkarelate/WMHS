@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { safeInternalPath } from "@/lib/utils/helpers";
 import { profileSchema } from "@/lib/utils/validators";
+import { mapsDirectionsUrl } from "@/lib/utils/haversine";
 
 describe("safeInternalPath", () => {
   it("allows relative app paths", () => {
@@ -17,6 +18,14 @@ describe("safeInternalPath", () => {
     expect(safeInternalPath("http://localhost:3000/patient")).toBeNull();
     expect(safeInternalPath(null)).toBeNull();
     expect(safeInternalPath("")).toBeNull();
+  });
+});
+
+describe("maps URLs", () => {
+  it("builds a directions link with origin", () => {
+    expect(mapsDirectionsUrl({ lat: 6.5, lng: 3.3 }, { lat: 6.6, lng: 3.35 })).toContain(
+      "origin=6.6,3.35"
+    );
   });
 });
 

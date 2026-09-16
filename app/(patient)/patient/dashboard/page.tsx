@@ -10,15 +10,17 @@ import { StatusBadge } from "@/components/shared/StatusBadge";
 import { Icons } from "@/components/shared/Icons";
 import { gestationalAgeLabel } from "@/lib/utils/clinical";
 import { formatDate } from "@/lib/utils/formatters";
-import { buildAncSchedule } from "@/lib/utils/anc";
+import { buildAncSchedule, nextAncVisit } from "@/lib/utils/anc";
 import type { RiskLevel } from "@/types";
 import { photos } from "@/lib/media";
 import { alertTypeLabel } from "@/lib/alerts/labels";
 import { AncSchedule } from "@/components/shared/AncSchedule";
+import { MaternalSummary } from "@/components/shared/MaternalSummary";
+import { fromJsonString } from "@/lib/utils/json";
 
 export default async function PatientDashboardPage() {
   const { patient } = await getPatientContext();
-  const [latestRisk, symptoms, tests, referrals, alerts] = await Promise.all([
+  const [latestRisk, symptoms, tests, referrals, alerts, attendances] = await Promise.all([
     prisma.riskAssessment.findFirst({
       where: { patientId: patient.id },
       orderBy: { assessedAt: "desc" },
@@ -44,10 +46,21 @@ export default async function PatientDashboardPage() {
       orderBy: { alertedAt: "desc" },
       take: 3,
     }),
+    prisma.ancAttendance.findMany({ where: { patientId: patient.id } }),
   ]);
 
   const firstName = patient.user.name.split(" ")[0];
-  const ancVisits = buildAncSchedule(patient.lmp);
+  const ancVisits = buildAncSchedule(patient.lmp, new Date(), attendances);
+  const nextAnc = nextAncVisit(ancVisits);
+  const conditions = fromJsonString<string[]>(patient.preExistingConditions, []);
+  const lastVitals: string[] = [];
+  const seenTests = new Set<string>();
+  for (const t of tests) {
+    if (seenTests.has(t.testType)) continue;
+    seenTests.add(t.testType);
+    lastVitals.push(`${t.testType}: ${t.resultValue} ${t.resultUnit}`);
+    if (lastVitals.length >= 4) break;
+  }
 
   return (
     <PageTransition>
@@ -140,7 +153,28 @@ export default async function PatientDashboardPage() {
           ))}
         </div>
 
-        <AncSchedule visits={ancVisits} />
+        <MaternalSummary
+          data={{
+            patientName: patient.user.name,
+            phone: patient.phone,
+            address: patient.address,
+            lmp: patient.lmp,
+            edd: patient.edd,
+            parity: patient.parity,
+            riskLevel: latestRisk?.riskLevel,
+            riskScore: latestRisk?.riskScore,
+            openAlerts: alerts.map((a) => alertTypeLabel(a.alertType)),
+            nextAnc: nextAnc
+              ? `${nextAnc.title} · ${formatDate(nextAnc.dueDate)}`
+              : ancVisits.length
+                ? "All eight contacts attended"
+                : null,
+            lastVitals,
+            conditions,
+          }}
+        />
+
+        <AncSchedule visits={ancVisits} patientId={patient.id} canEdit />
 
         <div className="grid gap-6 lg:grid-cols-2">
           <Card>

@@ -92,6 +92,9 @@ export default async function ReferralsPage() {
         </div>
       )}
       <h2 className="mt-10 font-heading text-h3 text-navy">Nearby facilities</h2>
+      <p className="mt-1 text-sm text-ink-muted">
+        Map pins use your saved location. Red is emergency-capable; open Directions for turn-by-turn.
+      </p>
       <div className="mt-4">
         <NearbyFacilities
           facilities={nearby.map((f) => ({
@@ -99,6 +102,9 @@ export default async function ReferralsPage() {
             servicesOffered: f.servicesOffered,
           }))}
           rankedForRisk={match.emergencyFirst || match.services.length > 0}
+          origin={
+            hasLocation ? { lat: patient.locationLat!, lng: patient.locationLng! } : null
+          }
         />
       </div>
     </PageTransition>

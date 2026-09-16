@@ -56,14 +56,16 @@ npm test
 
 - `/` marketing site
 - `/login` `/register` `/forgot-password`
-- `/patient/dashboard` symptoms, tests, risk, ANC contacts, referrals, history, assistant, profile
-- `/provider/dashboard` caseload, patients, alerts, referrals, clinical notes
+- `/patient/dashboard` symptoms, tests, risk, ANC attendance, printable summary, referrals, history, assistant, profile
+- `/patient/referrals` nearby facilities on a map, directions, printable referral letter
+- `/login` one-tap supervisor demo (mother / clinician)
+- `/provider/dashboard` caseload, patients, alerts, referrals, clinical notes, SMS pathway log
 
 ## Clinical engine
 
 Fourteen features (age, SBP, DBP, glucose, heart rate, temperature, eight danger-sign symptoms) produce Low / Medium / High and a 0–1 score. **Missing vitals are skipped** — they are never treated as normal. High risk opens rule-based screens for pre-eclampsia, gestational diabetes, and preterm labour. The risk-results page shows feature contributions. Helpers implement Naegele’s EDD, MAP, BMI, WHO eight-contact ANC timing, and Haversine distance for nearby facilities.
 
-Critical alerts also write an **SMS stub** (visible on the patient chart) so the notification pathway can be demonstrated without a live SMS vendor.
+ANC contacts can be marked attended; elapsed visits stay **overdue** until ticked. Critical alerts also write an **SMS stub** (visible on the patient chart) so the notification pathway can be demonstrated without a live SMS vendor. Nearby facilities render on an OpenStreetMap view ranked by Haversine distance.
 
 WMHS is decision support, not a diagnosis and not an emergency dispatch service.
 
