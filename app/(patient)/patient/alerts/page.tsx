@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { getPatientContext } from "@/lib/auth/patientContext";
 import { prisma } from "@/lib/db/prisma";
 import { PageTransition } from "@/components/shared/PageTransition";
@@ -6,7 +5,9 @@ import { PageHeader } from "@/components/shared/PageHeader";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { StatusBadge } from "@/components/shared/StatusBadge";
 import { AlertBanner } from "@/components/shared/AlertBanner";
-import { Button } from "@/components/ui/Button";
+import { ButtonLink } from "@/components/ui/Button";
+import { EmergencyActions } from "@/components/shared/EmergencyActions";
+import { contactsFromBooking } from "@/lib/clinical/emergency";
 import { alertSourceLabel, alertTypeLabel } from "@/lib/alerts/labels";
 import { formatDateTime } from "@/lib/utils/formatters";
 
@@ -18,6 +19,13 @@ export default async function PatientAlertsPage() {
   });
   const open = alerts.filter((a) => a.status !== "RESOLVED");
   const critical = open.filter((a) => a.severity === "CRITICAL" || a.alertType === "EMERGENCY");
+  const named = patient.assignments.find((row) => row.role === "PRIMARY") ?? patient.assignments[0];
+  const contacts = contactsFromBooking({
+    facility: patient.bookedFacility,
+    originLat: patient.locationLat,
+    originLng: patient.locationLng,
+    clinicianName: named?.provider.user.name ?? null,
+  });
 
   return (
     <PageTransition>
@@ -26,14 +34,17 @@ export default async function PatientAlertsPage() {
         title="Your alerts"
         description="Clinical flags from your symptoms, tests, and your care team."
       />
-      {critical.length > 0 && (
-        <div className="mt-6">
+      <div className="mt-6">
+        {critical.length > 0 && (
           <AlertBanner title="Seek care now" tone="danger">
-            You have an urgent alert. Go to the nearest emergency-capable facility or call your midwife. This
+            You have an urgent alert. Call your clinic or 112, then go to an emergency-capable facility. This
             system is not an emergency line.
           </AlertBanner>
+        )}
+        <div className={critical.length > 0 ? "mt-4" : undefined}>
+          <EmergencyActions contacts={contacts} tone={critical.length > 0 ? "full" : "compact"} />
         </div>
-      )}
+      </div>
       <div className="mt-6 space-y-3">
         {alerts.length === 0 ? (
           <EmptyState
@@ -61,12 +72,10 @@ export default async function PatientAlertsPage() {
                     <span className="text-caption text-ink-muted">{alertSourceLabel(a.source)}</span>
                   </div>
                 </div>
-                {a.status !== "RESOLVED" && (
-                  <Link href="/patient/assistant">
-                    <Button size="sm" variant="outline">
-                      Ask the assistant
-                    </Button>
-                  </Link>
+                {a.status !== "RESOLVED" && a.severity !== "CRITICAL" && a.alertType !== "EMERGENCY" && (
+                  <ButtonLink href="/patient/assistant" size="sm" variant="outline">
+                    Ask the assistant
+                  </ButtonLink>
                 )}
               </div>
             </article>

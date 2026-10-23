@@ -90,6 +90,14 @@ describe("assessRisk", () => {
     expect(result.complications.find((c) => c.type === "GESTATIONAL_DIABETES")?.triggered).toBe(true);
   });
 
+  it("does not also add pre-existing diabetes from GDM history alone", () => {
+    const result = assessRisk(baseline, {
+      preExistingConditions: ["Previous gestational diabetes"],
+    });
+    expect(result.riskFactors.join(" ")).toMatch(/gestational diabetes/i);
+    expect(result.riskFactors.join(" ")).not.toMatch(/pre-existing/i);
+  });
+
   it("raises risk when a documented hypertensive history is present", () => {
     const withHistory = assessRisk(baseline, {
       preExistingConditions: ["Previous gestational hypertension"],
@@ -97,6 +105,21 @@ describe("assessRisk", () => {
     const without = assessRisk(baseline);
     expect(withHistory.riskScore).toBeGreaterThan(without.riskScore);
     expect(withHistory.riskFactors.join(" ")).toMatch(/hypertension/i);
+  });
+
+  it("raises risk for previous CS, stillbirth and multiple pregnancy", () => {
+    const withHistory = assessRisk(baseline, {
+      preExistingConditions: [
+        "Previous caesarean section",
+        "Previous stillbirth",
+        "Multiple pregnancy (twins+)",
+      ],
+    });
+    const without = assessRisk(baseline);
+    expect(withHistory.riskScore).toBeGreaterThan(without.riskScore);
+    expect(withHistory.riskFactors.join(" ")).toMatch(/caesarean/i);
+    expect(withHistory.riskFactors.join(" ")).toMatch(/stillbirth/i);
+    expect(withHistory.riskFactors.join(" ")).toMatch(/multiple/i);
   });
 });
 

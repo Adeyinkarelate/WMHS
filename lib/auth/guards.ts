@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getSession } from "@/lib/auth/auth";
 import { prisma } from "@/lib/db/prisma";
+import { ASSIGNMENT_STATUS, activeAssignmentOnPatient, activeAssignmentSome } from "@/lib/assignments/rules";
 import type { Role } from "@/types";
 
 export async function getAuthContext() {
@@ -31,21 +32,28 @@ export async function assertPatientAccess(patientId: string, user: AuthUser) {
         patientId_providerId: { patientId, providerId: user.providerId },
       },
     });
-    return Boolean(assignment);
+    return Boolean(assignment && assignment.status === ASSIGNMENT_STATUS.ACTIVE);
   }
   return false;
 }
 
-/** Assigned patients only. Missing providerId must not fall through to “all rows”. */
+/** Patients may only write their own record. Clinicians pass an assigned patientId. */
+export function resolveRecordPatientId(user: AuthUser, requested?: string | null) {
+  if (user.role === "PATIENT") return user.patientId ?? null;
+  const id = requested?.trim();
+  return id || null;
+}
+
+/** Named caseload only. Missing providerId must not fall through to “all rows”. */
 export function assignedPatientsWhere(user: { role: string; providerId?: string | null }) {
   if (user.role === "ADMIN") return {};
-  if (user.providerId) return { assignments: { some: { providerId: user.providerId } } };
+  if (user.providerId) return activeAssignmentSome(user.providerId);
   return { id: "__none__" };
 }
 
 /** Alerts / referrals belonging to assigned patients. */
 export function assignedCaseloadWhere(user: { role: string; providerId?: string | null }) {
   if (user.role === "ADMIN") return {};
-  if (user.providerId) return { patient: { assignments: { some: { providerId: user.providerId } } } };
+  if (user.providerId) return activeAssignmentOnPatient(user.providerId);
   return { id: "__none__" };
 }

@@ -1,9 +1,14 @@
 import { prisma } from "@/lib/db/prisma";
-import { requireUser } from "@/lib/auth/guards";
 
 export async function GET() {
-  const { error } = await requireUser();
-  if (error) return error;
-  const facilities = await prisma.facility.findMany({ orderBy: { name: "asc" } });
+  const facilities = await prisma.facility.findMany({
+    orderBy: { name: "asc" },
+    select: {
+      id: true,
+      name: true,
+      address: true,
+      emergencyAvailable: true,
+    },
+  });
   return Response.json(facilities);
 }

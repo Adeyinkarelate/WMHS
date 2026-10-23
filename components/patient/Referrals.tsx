@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/Button";
+import { Button, ButtonLink } from "@/components/ui/Button";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { FacilityMap, type MapFacility } from "@/components/shared/FacilityMap";
 import { formatDistance, mapsDirectionsUrl } from "@/lib/utils/haversine";
@@ -98,18 +98,17 @@ export function NearbyFacilities({
               </p>
             </div>
             <div className="flex flex-wrap gap-2">
-              <a
+              <ButtonLink
                 href={mapsDirectionsUrl(
                   { lat: f.locationLat, lng: f.locationLng },
                   origin
                 )}
-                target="_blank"
-                rel="noreferrer"
+                variant="outline"
+                size="sm"
+                external
               >
-                <Button type="button" variant="outline" size="sm">
-                  Directions
-                </Button>
-              </a>
+                Directions
+              </ButtonLink>
               <Button size="sm" loading={busy === f.id} onClick={() => refer(f.id, f.name)}>
                 Request referral
               </Button>

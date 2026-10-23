@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import Link from "next/link";
-import { Button } from "@/components/ui/Button";
+import { Button, ButtonLink } from "@/components/ui/Button";
 
 export default function ErrorPage({
   error,
@@ -23,9 +22,9 @@ export default function ErrorPage({
       </p>
       <div className="mt-6 flex gap-3">
         <Button onClick={reset}>Try again</Button>
-        <Link href="/">
-          <Button variant="outline">Home</Button>
-        </Link>
+        <ButtonLink href="/" variant="outline">
+          Home
+        </ButtonLink>
       </div>
     </div>
   );

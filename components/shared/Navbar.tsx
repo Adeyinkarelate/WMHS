@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Logo } from "@/components/shared/Logo";
-import { Button } from "@/components/ui/Button";
+import { ButtonLink } from "@/components/ui/Button";
 import { Icons } from "@/components/shared/Icons";
 
 const links = [
@@ -33,21 +33,18 @@ export function Navbar() {
           ))}
         </nav>
         <div className="hidden items-center gap-2.5 md:flex">
-          <Link href="/login">
-            <Button
-              size="sm"
-              variant="outline"
-              className="min-w-[5.75rem] border-navy/25 bg-white text-navy shadow-none hover:border-navy hover:bg-sage-light"
-            >
-              Log in
-            </Button>
-          </Link>
-          <Link href="/register">
-            <Button size="sm" className="min-w-[7.5rem] shadow-sm">
-              Get started
-              <Icons.arrowUp size={14} />
-            </Button>
-          </Link>
+          <ButtonLink
+            href="/login"
+            size="sm"
+            variant="outline"
+            className="min-w-[5.75rem] border-navy/25 bg-white text-navy shadow-none hover:border-navy hover:bg-sage-light"
+          >
+            Log in
+          </ButtonLink>
+          <ButtonLink href="/register" size="sm" className="min-w-[7.5rem] shadow-sm">
+            Get started
+            <Icons.arrowUp size={14} />
+          </ButtonLink>
         </div>
         <button
           type="button"
@@ -80,20 +77,18 @@ export function Navbar() {
                 </Link>
               ))}
               <div className="mt-3 grid grid-cols-2 gap-2.5">
-                <Link href="/login" onClick={() => setOpen(false)}>
-                  <Button
-                    variant="outline"
-                    className="w-full border-navy/25 bg-white text-navy shadow-none hover:border-navy hover:bg-sage-light"
-                  >
-                    Log in
-                  </Button>
-                </Link>
-                <Link href="/register" onClick={() => setOpen(false)}>
-                  <Button className="w-full">
-                    Get started
-                    <Icons.arrowUp size={14} />
-                  </Button>
-                </Link>
+                <ButtonLink
+                  href="/login"
+                  variant="outline"
+                  className="w-full border-navy/25 bg-white text-navy shadow-none hover:border-navy hover:bg-sage-light"
+                  onClick={() => setOpen(false)}
+                >
+                  Log in
+                </ButtonLink>
+                <ButtonLink href="/register" className="w-full" onClick={() => setOpen(false)}>
+                  Get started
+                  <Icons.arrowUp size={14} />
+                </ButtonLink>
               </div>
             </div>
           </motion.div>

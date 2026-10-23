@@ -24,9 +24,14 @@ export const registerSchema = z
       .refine((value) => !value || Boolean(parseDateOnly(value)), "Enter a valid last menstrual period"),
     parity: z.coerce.number().int().min(0).optional(),
     specialization: z.string().optional(),
-    terms: z.literal(true, {
-      errorMap: () => ({ message: "You must accept the terms to continue" }),
-    }),
+    facilityId: z.string().min(1).optional(),
+    inviteCode: z.string().optional(),
+    terms: z.preprocess(
+      (value) => value === true || value === "true" || value === "on",
+      z.literal(true, {
+        errorMap: () => ({ message: "You must accept the terms to continue" }),
+      })
+    ),
   })
   .superRefine((data, ctx) => {
     if (data.role === "PATIENT") {
@@ -47,9 +52,17 @@ export const registerSchema = z
         message: "Specialisation is required",
       });
     }
+    if (!data.facilityId) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["facilityId"],
+        message: data.role === "PROVIDER" ? "Select the facility you work at" : "Select your antenatal clinic",
+      });
+    }
   });
 
 export const symptomSchema = z.object({
+  patientId: z.string().optional(),
   symptomType: z.string().min(1, "Select a symptom"),
   severity: z.coerce.number().int().min(1).max(5),
   notes: z.string().max(2000).optional().default(""),
@@ -68,9 +81,10 @@ export const testResultSchema = z.object({
     .min(1, "Test date is required")
     .refine((value) => Boolean(parseDateOnly(value)), "Enter a valid test date"),
   notes: z.string().max(2000).optional().default(""),
-  fileReference: z.string().optional(),
+  fileReference: z.string().max(200).optional(),
   fileUrl: z.string().url().optional(),
-  filePublicId: z.string().optional(),
+  filePublicId: z.string().max(300).optional(),
+  patientId: z.string().optional(),
 });
 
 export const clinicalNoteSchema = z.object({
@@ -108,7 +122,18 @@ export const profileSchema = z.object({
   weightKg: optionalPositive,
   locationLat: optionalCoord,
   locationLng: optionalCoord,
-  preExistingConditions: z.string().optional().default(""),
+  preExistingConditions: z
+    .union([z.array(z.string()), z.string()])
+    .optional()
+    .transform((value) => {
+      if (!value) return [] as string[];
+      const items = Array.isArray(value) ? value : value.split(",");
+      return items.map((item) => item.trim()).filter(Boolean).slice(0, 20);
+    }),
+  bookedFacilityId: z.preprocess(
+    (value) => (value === "" || value === null ? undefined : value),
+    z.string().min(1).optional()
+  ),
   notifyAlerts: z.preprocess((value) => {
     if (value === undefined || value === null || value === "") return undefined;
     const raw = Array.isArray(value) ? value[value.length - 1] : value;
@@ -139,14 +164,25 @@ export const passwordChangeSchema = z
     path: ["confirmPassword"],
   });
 
+export const createReferralSchema = z.object({
+  facilityId: z.string().min(1, "Select a facility"),
+  patientId: z.string().optional(),
+  reason: z.string().min(3, "Add a referral reason").max(500),
+  transportNotes: z.string().max(1000).optional().default(""),
+});
+
 export const referralStatusSchema = z.object({
   status: z.enum(["PENDING", "APPROVED", "COMPLETED", "CANCELLED"]),
-  transportNotes: z.string().optional(),
+  transportNotes: z.string().max(1000).optional(),
 });
 
 export const alertStatusSchema = z.object({
   status: z.enum(["ACTIVE", "ACKNOWLEDGED", "RESOLVED"]),
   notes: z.string().optional(),
+});
+
+export const assignmentActionSchema = z.object({
+  patientId: z.string().min(1, "Patient is required"),
 });
 
 export const createAlertSchema = z.object({

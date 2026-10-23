@@ -4,14 +4,25 @@ import { NextRequest, NextResponse } from "next/server";
 const patient = ["/patient"];
 const provider = ["/provider"];
 
+function isPublicApi(pathname: string) {
+  if (pathname.startsWith("/api/auth")) return true;
+  return pathname === "/api/facilities";
+}
+
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
   const isPatient = patient.some((p) => pathname.startsWith(p));
   const isProvider = provider.some((p) => pathname.startsWith(p));
-  if (!isPatient && !isProvider) return NextResponse.next();
+  const isApi = pathname.startsWith("/api/");
+
+  if (!isPatient && !isProvider && !isApi) return NextResponse.next();
+  if (isApi && isPublicApi(pathname)) return NextResponse.next();
 
   const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
   if (!token) {
+    if (isApi) {
+      return NextResponse.json({ error: "Unauthorised" }, { status: 401 });
+    }
     const login = new URL("/login", req.url);
     login.searchParams.set("callbackUrl", pathname);
     return NextResponse.redirect(login);
@@ -26,5 +37,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/patient/:path*", "/provider/:path*"],
+  matcher: ["/patient/:path*", "/provider/:path*", "/api/:path*"],
 };

@@ -12,6 +12,8 @@ import { ComplicationScreens } from "@/components/shared/ComplicationScreens";
 import { RiskExplainer } from "@/components/shared/RiskExplainer";
 import { fromJsonString } from "@/lib/utils/json";
 import { QueryNotice } from "@/components/shared/QueryNotice";
+import { EmergencyActions } from "@/components/shared/EmergencyActions";
+import { contactsFromBooking } from "@/lib/clinical/emergency";
 import { bodyMassIndex, gestationalAgeWeeks } from "@/lib/utils/clinical";
 import type { ComplicationScreen, RiskLevel, RiskRecommendation } from "@/types";
 
@@ -65,6 +67,14 @@ export default async function RiskResultsPage({
       ? Number(bodyMassIndex(patient.weightKg, patient.heightCm).toFixed(1))
       : rec.bmi ?? null;
   const liveWeeks = patient.lmp ? gestationalAgeWeeks(patient.lmp) : rec.gestationalAgeWeeks ?? null;
+  const named = patient.assignments.find((row) => row.role === "PRIMARY") ?? patient.assignments[0];
+  const contacts = contactsFromBooking({
+    facility: patient.bookedFacility,
+    originLat: patient.locationLat,
+    originLng: patient.locationLng,
+    clinicianName: named?.provider.user.name ?? null,
+  });
+  const urgent = latest.riskLevel === "HIGH" || rec.urgency === "emergency";
 
   return (
     <PageTransition>
@@ -80,6 +90,11 @@ export default async function RiskResultsPage({
         }
       />
       <QueryNotice notice={searchParams?.notice} />
+      {urgent && (
+        <div className="mb-6">
+          <EmergencyActions contacts={contacts} />
+        </div>
+      )}
       <div className="grid gap-6 lg:grid-cols-3">
         <div className="lg:col-span-1">
           <RiskIndicator level={latest.riskLevel as RiskLevel} score={latest.riskScore} />

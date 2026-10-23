@@ -4,7 +4,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { Navbar } from "@/components/shared/Navbar";
 import { Footer } from "@/components/shared/Footer";
-import { Button } from "@/components/ui/Button";
+import { ButtonLink } from "@/components/ui/Button";
 import { Icons } from "@/components/shared/Icons";
 import { Reveal, Stagger, StaggerItem, FadeIn } from "@/components/shared/Reveal";
 import { photos } from "@/lib/media";
@@ -138,26 +138,19 @@ export default function LandingPage() {
                 Built for Nigerian maternal care
               </p>
               <h1 className="mt-6 font-heading text-4xl font-bold uppercase leading-[0.95] tracking-tight text-white sm:text-5xl lg:text-[3.6rem]">
-                Closer
-                <br />
-                Smart Care
+                WMHS
               </h1>
               <p className="mt-6 max-w-md text-base leading-relaxed text-white/85">
-                WMHS helps mothers and clinicians share one antenatal record — symptom logging,
-                guideline-backed triage, and referral when minutes matter.
+                One antenatal record for mother and midwife — symptom logging, guideline-backed
+                triage, and referral when minutes matter.
               </p>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <Link href="/#features">
-                  <Button size="lg" variant="ghostDark" className="w-full sm:w-auto">
-                    Explore More
-                    <Icons.arrowUp size={16} />
-                  </Button>
-                </Link>
-                <Link href="/register">
-                  <Button size="lg" variant="inverse" className="w-full sm:w-auto">
-                    Start as a patient
-                  </Button>
-                </Link>
+                <ButtonLink href="/register" size="lg" variant="inverse" className="w-full sm:w-auto">
+                  Start as a patient
+                </ButtonLink>
+                <ButtonLink href="/register" size="lg" variant="ghostDark" className="w-full sm:w-auto">
+                  I am a clinician
+                </ButtonLink>
               </div>
               {process.env.NODE_ENV !== "production" && (
                 <p className="mt-5 text-caption text-white/70">
@@ -295,17 +288,15 @@ export default function LandingPage() {
               carry gestational age, vitals and the nearest CEmONC.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-              <Link href="/register">
-                <Button size="lg" variant="secondary">
-                  Create an account
-                  <Icons.arrow size={16} />
-                </Button>
-              </Link>
-              <a href="tel:+2348000000000" className="inline-flex items-center gap-3 text-sm font-semibold text-navy">
+              <ButtonLink href="/register" size="lg" variant="secondary">
+                Create an account
+                <Icons.arrow size={16} />
+              </ButtonLink>
+              <a href="tel:112" className="inline-flex items-center gap-3 text-sm font-semibold text-navy">
                 <span className="flex h-11 w-11 items-center justify-center rounded-full bg-sage-light text-sage">
                   <Icons.phone size={16} />
                 </span>
-                +234 800 000 0000
+                Emergency · 112
               </a>
             </div>
           </Reveal>
@@ -446,17 +437,13 @@ export default function LandingPage() {
                 the product before you invite a clinic.
               </p>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-                <Link href="/register">
-                  <Button size="lg" variant="inverse" className="w-full sm:w-auto">
-                    Create an account
-                    <Icons.arrowUp size={16} />
-                  </Button>
-                </Link>
-                <Link href="/login">
-                  <Button size="lg" variant="ghostDark" className="w-full sm:w-auto">
-                    Open the demo
-                  </Button>
-                </Link>
+                <ButtonLink href="/register" size="lg" variant="inverse" className="w-full sm:w-auto">
+                  Create an account
+                  <Icons.arrowUp size={16} />
+                </ButtonLink>
+                <ButtonLink href="/login" size="lg" variant="ghostDark" className="w-full sm:w-auto">
+                  Open the demo
+                </ButtonLink>
               </div>
             </div>
           </div>

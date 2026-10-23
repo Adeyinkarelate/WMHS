@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/Input";
 import { Textarea } from "@/components/ui/Textarea";
 import { Button } from "@/components/ui/Button";
 import { todayInputDate } from "@/lib/utils/formatters";
+import type { VisitSaveResult } from "@/types/visit";
 
 const ACCEPT = ".pdf,.jpg,.jpeg,.png";
 const MAX_BYTES = 8 * 1024 * 1024;
@@ -16,7 +17,15 @@ function isLabFile(file: File) {
   return /pdf|jpe?g|png/i.test(file.type) || /\.(pdf|jpe?g|png)$/i.test(file.name);
 }
 
-export function TestUpload() {
+export function TestUpload({
+  patientId,
+  mode = "patient",
+  onSaved,
+}: {
+  patientId?: string;
+  mode?: "patient" | "clinician";
+  onSaved?: (result?: VisitSaveResult) => void;
+}) {
   const router = useRouter();
   const [testType, setTestType] = useState<string>(TEST_TYPES[0].value);
   const unit = useMemo(
@@ -49,6 +58,7 @@ export function TestUpload() {
     if (!file) return null;
     const body = new FormData();
     body.append("file", file);
+    if (patientId) body.append("patientId", patientId);
     const res = await fetch("/api/uploads", { method: "POST", body });
     const data = await res.json().catch(() => ({}));
     if (!res.ok) {
@@ -74,12 +84,13 @@ export function TestUpload() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          patientId,
           testType,
           resultValue: form.get("resultValue"),
           resultUnit: unit,
           testDate: form.get("testDate"),
           notes: form.get("notes"),
-          fileReference: uploaded?.fileName ?? (fileSkipped ? undefined : file?.name),
+          fileReference: uploaded?.fileName,
           fileUrl: uploaded?.url,
           filePublicId: uploaded?.publicId,
         }),
@@ -89,10 +100,27 @@ export function TestUpload() {
         setError(typeof data.error === "string" ? data.error : "Could not save test");
         return;
       }
-      if (data.warning || !data.assessment) {
-        router.push("/patient/tests?notice=risk-pending");
-      } else if (fileSkipped) {
-        router.push("/patient/tests?notice=file-skipped");
+      const riskPending = Boolean(data.warning) || !data.assessment;
+      const warnings = [
+        fileSkipped
+          ? "Numeric result saved. The lab file could not be stored — attach it again from Tests."
+          : "",
+        riskPending ? "Risk could not be recalculated. Use Recalculate now." : "",
+      ].filter(Boolean);
+      if (mode === "clinician") {
+        onSaved?.(
+          warnings.length
+            ? { warning: warnings.join(" ") }
+            : { ok: "Result saved. Risk was recalculated." }
+        );
+        return;
+      }
+      const notices = [
+        riskPending ? "risk-pending" : "",
+        fileSkipped ? "file-skipped" : "",
+      ].filter(Boolean);
+      if (notices.length) {
+        router.push(`/patient/tests?notice=${notices.join(",")}`);
       } else {
         router.push("/patient/risk-results");
       }
@@ -164,7 +192,7 @@ export function TestUpload() {
       </div>
       <Textarea name="notes" label="Notes" />
       <Button type="submit" loading={loading}>
-        Save and assess risk
+        {mode === "clinician" ? "Save to chart" : "Save and assess risk"}
       </Button>
     </form>
   );

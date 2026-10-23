@@ -15,6 +15,8 @@ export type AlertSeverity = "CRITICAL" | "HIGH" | "MEDIUM" | "LOW";
 export type AlertStatus = "ACTIVE" | "ACKNOWLEDGED" | "RESOLVED";
 export type AlertSource = "RISK_ENGINE" | "VITAL" | "MANUAL";
 export type NotificationType = "ALERT" | "REFERRAL" | "INFO";
+export type AssignmentRole = "PRIMARY" | "COVERING";
+export type AssignmentStatus = "ACTIVE" | "ENDED";
 
 export type RiskFeatures = {
   age: number;

@@ -22,6 +22,9 @@ import { SmsLog } from "@/components/shared/SmsLog";
 import { RiskExplainer } from "@/components/shared/RiskExplainer";
 import { LabFileLink } from "@/components/shared/LabFileLink";
 import { RecalculateRisk } from "@/components/patient/RecalculateRisk";
+import { ReleaseCaseloadButton } from "@/components/provider/ReleaseCaseloadButton";
+import { VisitEntry } from "@/components/provider/VisitEntry";
+import { CreateReferralForm } from "@/components/provider/CreateReferralForm";
 import type { ComplicationScreen, RiskLevel, RiskRecommendation } from "@/types";
 
 export const dynamic = "force-dynamic";
@@ -36,6 +39,7 @@ export default async function ProviderPatientPage({ params }: Ctx) {
     where: { id: params.id },
     include: {
       user: true,
+      bookedFacility: { select: { name: true } },
       symptoms: { orderBy: { submissionDate: "desc" }, take: 10 },
       testResults: { orderBy: { testDate: "desc" }, take: 10 },
       riskAssessments: { orderBy: { assessedAt: "desc" }, take: 6 },
@@ -47,6 +51,10 @@ export default async function ProviderPatientPage({ params }: Ctx) {
     },
   });
   if (!patient) notFound();
+  const facilities = await prisma.facility.findMany({
+    orderBy: { name: "asc" },
+    select: { id: true, name: true, address: true, emergencyAvailable: true },
+  });
   const latest = patient.riskAssessments[0];
   const rec = latest
     ? fromJsonString<RiskRecommendation>(latest.recommendations, {
@@ -81,7 +89,10 @@ export default async function ProviderPatientPage({ params }: Ctx) {
           </p>
         </div>
         </div>
-        <RecalculateRisk patientId={patient.id} />
+        <div className="flex flex-wrap items-center gap-2">
+          <RecalculateRisk patientId={patient.id} />
+          <ReleaseCaseloadButton patientId={patient.id} patientName={patient.user.name} />
+        </div>
       </div>
       <div className="mb-6">
         <MaternalSummary
@@ -118,6 +129,9 @@ export default async function ProviderPatientPage({ params }: Ctx) {
         <Card>
           <p className="text-caption text-ink-muted">Address</p>
           <p className="mt-2 text-sm">{patient.address}</p>
+          <p className="mt-3 text-caption text-ink-muted">
+            Booked at {patient.bookedFacility?.name ?? "no clinic yet"}
+          </p>
           <p className="mt-3 text-caption text-ink-muted">Parity {patient.parity}</p>
           {conditions.length > 0 && (
             <p className="mt-3 text-sm text-ink">
@@ -169,9 +183,27 @@ export default async function ProviderPatientPage({ params }: Ctx) {
       </div>
       <div className="mt-6 grid gap-6 lg:grid-cols-2">
         <Card>
+          <CardTitle className="text-xl">Record this visit</CardTitle>
+          <p className="mt-1 text-sm text-ink-muted">
+            Log symptoms and vitals if she did not enter them from her phone. Risk recalculates on save.
+          </p>
+          <div className="mt-4">
+            <VisitEntry patientId={patient.id} />
+          </div>
+        </Card>
+        <Card>
+          <CardTitle className="text-xl">Refer to a facility</CardTitle>
+          <p className="mt-1 text-sm text-ink-muted">Creates a referral letter on her record and notifies her.</p>
+          <div className="mt-4">
+            <CreateReferralForm patientId={patient.id} facilities={facilities} />
+          </div>
+        </Card>
+      </div>
+      <div className="mt-6 grid gap-6 lg:grid-cols-2">
+        <Card>
           <CardTitle className="text-xl">Symptoms</CardTitle>
           {patient.symptoms.length === 0 ? (
-            <p className="mt-3 text-sm text-ink-muted">No symptoms logged.</p>
+            <p className="mt-3 text-sm text-ink-muted">No symptoms logged. Use Record this visit above.</p>
           ) : (
             <ul className="mt-3 divide-y divide-line text-sm">
               {patient.symptoms.map((s) => (

@@ -32,11 +32,13 @@ Additional seeded patients: `fatima@wmhs.ng`, `hadiza@wmhs.ng` (same password).
 cp .env.example .env
 ```
 
-2. Create a Neon project (PostgreSQL), then set `DATABASE_URL` to the **pooled** connection string (`-pooler` host) and `DIRECT_URL` to the **direct** connection string. The app uses the Neon serverless driver adapter. Also set `NEXTAUTH_SECRET` and `JWT_SECRET`.
+2. Create a Neon project (PostgreSQL), then set `DATABASE_URL` to the **pooled** connection string (`-pooler` host) and `DIRECT_URL` to the **direct** connection string. The app uses the Neon serverless driver adapter. Set `NEXTAUTH_SECRET` to a long random string.
 
-3. Create a [Cloudinary](https://cloudinary.com) account and set `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, and `CLOUDINARY_API_SECRET`. Lab files (PDF, JPG, PNG up to 8 MB) upload through `/api/uploads` into the `wmhs/tests` folder. Numeric results still save if you skip the file.
+3. Create a [Cloudinary](https://cloudinary.com) account and set `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, and `CLOUDINARY_API_SECRET`. Lab files (PDF, JPG, PNG up to 8 MB) upload through `/api/uploads` into `wmhs/tests/{patientId}`. Numeric results still save if you skip the file.
 
-4. Install, migrate, seed, run:
+4. For production, set `PROVIDER_INVITE_CODE` so only invited clinicians can register. Leave it empty on a local machine. Demo one-tap login is hidden in production unless `NEXT_PUBLIC_SHOW_DEMO_LOGIN=true`.
+
+5. Install, migrate, seed, run:
 
 ```bash
 npm install
@@ -60,6 +62,8 @@ npm test
 - `/patient/referrals` nearby facilities on a map, directions, printable referral letter
 - `/login` one-tap supervisor demo (mother / clinician)
 - `/provider/dashboard` caseload, patients, alerts, referrals, clinical notes, SMS pathway log
+- `/provider/patients/[id]` chart with visit entry (symptoms, vitals) and clinician-created referrals
+- `/terms` `/privacy` NDPR-aligned notices linked from registration
 
 ## Clinical engine
 

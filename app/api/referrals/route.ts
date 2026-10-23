@@ -1,29 +1,29 @@
 import { prisma } from "@/lib/db/prisma";
-import { assertPatientAccess, assignedCaseloadWhere, requireUser } from "@/lib/auth/guards";
+import { assertPatientAccess, assignedCaseloadWhere, requireUser, resolveRecordPatientId } from "@/lib/auth/guards";
 import { jsonError } from "@/lib/utils/helpers";
 import { createUserNotification } from "@/lib/alerts/notify";
+import { createReferralSchema } from "@/lib/utils/validators";
 
 export async function POST(req: Request) {
   const { error, user } = await requireUser();
   if (error || !user) return error!;
   const body = await req.json().catch(() => null);
-  const patientId =
-    user.role === "PATIENT" ? user.patientId : String(body?.patientId ?? "");
+  const parsed = createReferralSchema.safeParse(body);
+  if (!parsed.success) return jsonError(parsed.error.issues[0]?.message ?? "Invalid input");
+
+  const patientId = resolveRecordPatientId(user, parsed.data.patientId);
   if (!patientId) return jsonError("patientId is required");
   if (!(await assertPatientAccess(patientId, user))) return jsonError("Forbidden", 403);
-  const facilityId = String(body?.facilityId ?? "");
-  const reason = String(body?.reason ?? "Clinical referral");
-  if (!facilityId) return jsonError("facilityId is required");
 
-  const facility = await prisma.facility.findUnique({ where: { id: facilityId } });
+  const facility = await prisma.facility.findUnique({ where: { id: parsed.data.facilityId } });
   if (!facility) return jsonError("Facility not found", 404);
 
   const referral = await prisma.referral.create({
     data: {
       patientId,
-      facilityId,
-      reason,
-      transportNotes: String(body?.transportNotes ?? ""),
+      facilityId: parsed.data.facilityId,
+      reason: parsed.data.reason,
+      transportNotes: parsed.data.transportNotes ?? "",
     },
     include: { facility: true },
   });

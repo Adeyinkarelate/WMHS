@@ -21,3 +21,13 @@ export function safeInternalPath(value: string | null | undefined): string | nul
   if (value.includes("://") || value.includes("\\")) return null;
   return value;
 }
+
+/** `tel:` href for a clinic or emergency number. Returns null if too short. */
+export function telHref(phone: string | null | undefined): string | null {
+  if (!phone) return null;
+  const trimmed = phone.trim();
+  if (!trimmed) return null;
+  const digits = trimmed.replace(/[^\d+]/g, "");
+  if (digits.replace(/\D/g, "").length < 3) return null;
+  return `tel:${digits}`;
+}

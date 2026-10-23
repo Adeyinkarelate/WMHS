@@ -17,7 +17,10 @@ export async function escalateStaleCriticalAlerts() {
       patient: {
         include: {
           user: { select: { name: true } },
-          assignments: { include: { provider: { select: { userId: true } } } },
+          assignments: {
+            where: { status: "ACTIVE" },
+            include: { provider: { select: { userId: true } } },
+          },
         },
       },
     },

@@ -1,6 +1,7 @@
-import { requireUser } from "@/lib/auth/guards";
+import { assertPatientAccess, requireUser, resolveRecordPatientId } from "@/lib/auth/guards";
 import { jsonError } from "@/lib/utils/helpers";
 import { assertLabFile, isCloudinaryConfigured, uploadLabFile } from "@/lib/cloudinary";
+import { labFolderForPatient } from "@/lib/media/labOwnership";
 import { rateLimit } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
@@ -25,14 +26,17 @@ export async function POST(req: Request) {
     return jsonError(err instanceof Error ? err.message : "Invalid file");
   }
 
-  const folder =
-    user.role === "PATIENT" && user.patientId
-      ? `wmhs/tests/${user.patientId}`
-      : `wmhs/tests/${user.id}`;
+  const patientId = resolveRecordPatientId(user, String(form?.get("patientId") ?? ""));
+  if (!patientId) return jsonError("Choose a patient record before uploading a lab file");
+  if (!(await assertPatientAccess(patientId, user))) return jsonError("Forbidden", 403);
 
   try {
     const buffer = Buffer.from(await file.arrayBuffer());
-    const uploaded = await uploadLabFile({ buffer, filename: file.name, folder });
+    const uploaded = await uploadLabFile({
+      buffer,
+      filename: file.name,
+      folder: labFolderForPatient(patientId),
+    });
     return Response.json({
       url: uploaded.url,
       publicId: uploaded.publicId,

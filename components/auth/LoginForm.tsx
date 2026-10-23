@@ -7,7 +7,7 @@ import Link from "next/link";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { safeInternalPath } from "@/lib/utils/helpers";
-import { DEMO_ACCOUNTS } from "@/lib/auth/demoAccounts";
+import { DEMO_ACCOUNTS, showDemoLogin } from "@/lib/auth/demoAccounts";
 
 export function LoginForm() {
   const router = useRouter();
@@ -105,30 +105,32 @@ export function LoginForm() {
       <Button type="submit" className="w-full" loading={loading && !demoRole}>
         Log in
       </Button>
-      <div className="rounded-2xl border border-line bg-canvas px-4 py-3">
-        <p className="font-heading text-xs font-semibold uppercase tracking-[0.18em] text-sage">
-          Supervisor demo
-        </p>
-        <p className="mt-1 text-caption text-ink-muted">
-          Seeded walkthrough accounts. One tap signs in.
-        </p>
-        <div className="mt-3 grid gap-2 sm:grid-cols-2">
-          {DEMO_ACCOUNTS.map((account) => (
-            <Button
-              key={account.email}
-              type="button"
-              variant="outline"
-              size="sm"
-              className="w-full"
-              loading={loading && demoRole === account.role}
-              disabled={loading}
-              onClick={() => onDemo(account)}
-            >
-              {account.label}
-            </Button>
-          ))}
+      {showDemoLogin() && (
+        <div className="rounded-2xl border border-line bg-canvas px-4 py-3">
+          <p className="font-heading text-xs font-semibold uppercase tracking-[0.18em] text-sage">
+            Supervisor demo
+          </p>
+          <p className="mt-1 text-caption text-ink-muted">
+            Seeded walkthrough accounts. One tap signs in.
+          </p>
+          <div className="mt-3 grid gap-2 sm:grid-cols-2">
+            {DEMO_ACCOUNTS.map((account) => (
+              <Button
+                key={account.email}
+                type="button"
+                variant="outline"
+                size="sm"
+                className="w-full"
+                loading={loading && demoRole === account.role}
+                disabled={loading}
+                onClick={() => onDemo(account)}
+              >
+                {account.label}
+              </Button>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
       <p className="text-center text-sm text-ink-muted">
         <Link href="/forgot-password" className="text-primary font-semibold">
           Forgot password?

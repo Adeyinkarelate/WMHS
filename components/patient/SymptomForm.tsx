@@ -9,8 +9,17 @@ import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { Slider } from "@/components/ui/Slider";
 import { todayInputDate } from "@/lib/utils/formatters";
+import type { VisitSaveResult } from "@/types/visit";
 
-export function SymptomForm() {
+export function SymptomForm({
+  patientId,
+  mode = "patient",
+  onSaved,
+}: {
+  patientId?: string;
+  mode?: "patient" | "clinician";
+  onSaved?: (result?: VisitSaveResult) => void;
+}) {
   const router = useRouter();
   const [severity, setSeverity] = useState(3);
   const [error, setError] = useState("");
@@ -26,6 +35,7 @@ export function SymptomForm() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          patientId,
           symptomType: form.get("symptomType"),
           severity,
           notes: form.get("notes"),
@@ -37,7 +47,17 @@ export function SymptomForm() {
         setError(typeof data.error === "string" ? data.error : "Could not save symptom");
         return;
       }
-      if (data.warning || !data.assessment) {
+      const warning =
+        typeof data.warning === "string"
+          ? data.warning
+          : !data.assessment
+            ? "Saved, but risk could not be recalculated."
+            : undefined;
+      if (mode === "clinician") {
+        onSaved?.(warning ? { warning } : { ok: "Symptom saved. Risk was recalculated." });
+        return;
+      }
+      if (warning) {
         router.push("/patient/symptoms?notice=risk-pending");
       } else {
         router.push("/patient/risk-results");
@@ -71,10 +91,10 @@ export function SymptomForm() {
         defaultValue={SYMPTOM_TYPES[0]}
         options={SYMPTOM_TYPES.map((s) => ({ value: s, label: s }))}
       />
-      <Slider label="Severity" value={severity} onChange={setSeverity} />
-      <Textarea name="notes" label="Notes" placeholder="Anything else your midwife should know" />
+      <Slider label="How severe is it now?" value={severity} onChange={setSeverity} />
+      <Textarea name="notes" label="Notes" placeholder="Anything else the care team should know" />
       <Button type="submit" loading={loading}>
-        Save and assess risk
+        {mode === "clinician" ? "Save to chart" : "Save and assess risk"}
       </Button>
     </form>
   );

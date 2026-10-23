@@ -11,9 +11,9 @@ Logical data dictionary for the Web Maternal Health System. Types are shown in P
 | User | Identity | 1:0..1 Patient or Provider; 1:N Notification, PasswordResetToken | Account, login, and role |
 | PasswordResetToken | Identity | N:1 User | One-time password reset tokens |
 | Notification | Identity | N:1 User | In-app messages for a user |
-| Patient | Care delivery | 1:1 User; 1:N clinical records; N:M Provider | Maternal profile and obstetric data |
+| Patient | Care delivery | 1:1 User; N:0..1 booked Facility; 1:N clinical records; N:M Provider | Maternal profile, booking clinic, and obstetric data |
 | Provider | Care delivery | 1:1 User; N:0..1 Facility; N:M Patient | Clinician profile and facility link |
-| PatientAssignment | Care delivery | N:1 Patient; N:1 Provider | Junction of patient and provider caseload |
+| PatientAssignment | Care delivery | N:1 Patient; N:1 Provider; N:0..1 User | Named caseload with role, status, and audit |
 | Facility | Care delivery | 1:N Provider; 1:N Referral | Health facility used for care and referral |
 | Symptom | Clinical records | N:1 Patient | Patient-reported danger signs |
 | TestResult | Clinical records | N:1 Patient | Numeric clinical test values |
@@ -83,6 +83,7 @@ Maternal profile linked 1:1 to User. Owns symptoms, tests, risk scores, alerts, 
 | weightKg | DOUBLE | NULL | - | Weight in kilograms |
 | locationLat | DOUBLE | NULL | - | Latitude for nearby-facility search |
 | locationLng | DOUBLE | NULL | - | Longitude for nearby-facility search |
+| bookedFacilityId | UUID | FK, NULL, INDEX | - | Antenatal clinic the mother booked |
 | createdAt | TIMESTAMP | NOT NULL | now() | Created timestamp |
 | updatedAt | TIMESTAMP | NOT NULL | auto | Last update timestamp |
 
@@ -101,14 +102,19 @@ Clinician profile linked 1:1 to User. Optionally belongs to a facility.
 
 ## Table 7. PatientAssignment
 
-Junction table for the many-to-many caseload between patients and providers. Composite unique key on `(patientId, providerId)`.
+Named caseload link between a mother and a clinician. Composite unique key on `(patientId, providerId)`. A mother has at most one active `PRIMARY` clinician. Ended rows stay for audit and can be reactivated.
 
 | Attribute | Data type | Constraint | Default | Description |
 |---|---|---|---|---|
 | id | UUID | PK, NOT NULL | uuid() | Primary key |
 | patientId | UUID | FK, NOT NULL, INDEX | - | References Patient.id; cascade delete |
 | providerId | UUID | FK, NOT NULL, INDEX | - | References Provider.id; cascade delete |
-| createdAt | TIMESTAMP | NOT NULL | now() | Assignment timestamp |
+| role | VARCHAR | NOT NULL | PRIMARY | PRIMARY or COVERING |
+| status | VARCHAR | NOT NULL, INDEX | ACTIVE | ACTIVE or ENDED |
+| assignedById | UUID | FK, NULL | - | User who created or reactivated the link |
+| assignedAt | TIMESTAMP | NOT NULL | now() | When the active link began |
+| endedAt | TIMESTAMP | NULL | - | When the clinician released the mother |
+| createdAt | TIMESTAMP | NOT NULL | now() | Row created timestamp |
 
 ## Table 8. Facility
 

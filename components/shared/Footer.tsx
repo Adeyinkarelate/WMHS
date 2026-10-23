@@ -40,17 +40,25 @@ export function Footer() {
         <div>
           <p className="font-heading text-sm font-semibold text-navy">Trust</p>
           <ul className="mt-3 space-y-2 text-sm text-ink-muted">
+            <li>
+              <Link href="/privacy" className="transition-colors hover:text-navy">
+                Privacy notice
+              </Link>
+            </li>
+            <li>
+              <Link href="/terms" className="transition-colors hover:text-navy">
+                Terms of use
+              </Link>
+            </li>
             <li>NDPR-aligned data handling</li>
-            <li>Role-based access</li>
             <li>Clinical decision support — not a diagnosis</li>
-            <li>Built for low-bandwidth clinics</li>
           </ul>
         </div>
       </div>
       <div className="border-t border-line/70">
         <div className="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-6 text-xs text-ink-muted sm:flex-row sm:justify-between sm:px-6">
           <p>© {new Date().getFullYear()} WMHS. Web Maternal Health System.</p>
-          <p>Not a medical emergency service. Call your nearest facility for danger signs.</p>
+          <p>Not a medical emergency service. For danger signs call 112 or go to the nearest facility.</p>
         </div>
       </div>
     </footer>

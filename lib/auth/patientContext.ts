@@ -7,7 +7,16 @@ export async function getPatientContext() {
   if (!session?.user?.patientId) redirect("/login");
   const patient = await prisma.patient.findUnique({
     where: { id: session.user.patientId },
-    include: { user: true },
+    include: {
+      user: true,
+      bookedFacility: true,
+      assignments: {
+        where: { status: "ACTIVE" },
+        include: {
+          provider: { include: { user: { select: { name: true } }, facility: { select: { name: true } } } },
+        },
+      },
+    },
   });
   if (!patient) redirect("/login");
   return { session, patient };

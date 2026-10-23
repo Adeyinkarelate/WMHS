@@ -52,7 +52,10 @@ async function fanOutAlertNotifications(
     where: { id: patientId },
     include: {
       user: { select: { id: true, name: true } },
-      assignments: { include: { provider: { select: { userId: true } } } },
+      assignments: {
+        where: { status: "ACTIVE" },
+        include: { provider: { select: { userId: true } } },
+      },
     },
   });
   if (!patient) return;

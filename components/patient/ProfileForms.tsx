@@ -3,9 +3,11 @@
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/Input";
+import { Select } from "@/components/ui/Select";
 import { Button } from "@/components/ui/Button";
 import { Textarea } from "@/components/ui/Textarea";
 import { toInputDate } from "@/lib/utils/formatters";
+import { OBSTETRIC_HISTORY_OPTIONS } from "@/lib/clinical/history";
 
 type Patient = {
   id: string;
@@ -19,6 +21,7 @@ type Patient = {
   locationLng: number | null;
   preExistingConditions: string[];
   notifyAlerts: boolean;
+  bookedFacilityId: string | null;
   user: { name: string; email: string };
 };
 
@@ -31,7 +34,13 @@ function FormMessage({ ok, msg }: { ok: boolean; msg: string }) {
   );
 }
 
-export function ProfileForms({ patient }: { patient: Patient }) {
+export function ProfileForms({
+  patient,
+  facilities,
+}: {
+  patient: Patient;
+  facilities: Array<{ id: string; name: string; address: string }>;
+}) {
   const router = useRouter();
   const [profileMsg, setProfileMsg] = useState("");
   const [profileOk, setProfileOk] = useState(false);
@@ -48,9 +57,14 @@ export function ProfileForms({ patient }: { patient: Patient }) {
     setProfileLoading(true);
     setProfileMsg("");
     const form = new FormData(e.currentTarget);
-    const payload = Object.fromEntries(form.entries());
+    const payload: Record<string, unknown> = Object.fromEntries(form.entries());
     payload.locationLat = lat;
     payload.locationLng = lng;
+    const known = form.getAll("history").map(String);
+    const extra = String(form.get("historyNotes") ?? "").trim();
+    payload.preExistingConditions = extra ? [...known, extra] : known;
+    delete payload.history;
+    delete payload.historyNotes;
     try {
       const res = await fetch(`/api/patients/${patient.id}`, {
         method: "PUT",
@@ -133,16 +147,50 @@ export function ProfileForms({ patient }: { patient: Patient }) {
         <Input label="Email" value={patient.user.email} readOnly />
         <Input name="phone" label="Phone" defaultValue={patient.phone} required />
         <Input name="address" label="Address" defaultValue={patient.address} required />
+        <Select
+          name="bookedFacilityId"
+          label="Antenatal clinic"
+          defaultValue={patient.bookedFacilityId ?? ""}
+          options={facilities.map((f) => ({
+            value: f.id,
+            label: `${f.name} — ${f.address}`,
+          }))}
+        />
+        <p className="text-caption text-ink-muted">
+          Changing clinic moves you onto that facility’s waiting list if you do not already have a named clinician.
+        </p>
         <Input name="lmp" type="date" label="Last menstrual period" defaultValue={toInputDate(patient.lmp)} />
-        <Input name="parity" type="number" min={0} label="Parity" defaultValue={patient.parity} />
+        <Input name="parity" type="number" min={0} label="Parity (previous births)" defaultValue={patient.parity} />
         <Input name="heightCm" type="number" step="0.1" label="Height (cm)" defaultValue={patient.heightCm ?? ""} />
         <Input name="weightKg" type="number" step="0.1" label="Weight (kg)" defaultValue={patient.weightKg ?? ""} />
-        <Textarea
-          name="preExistingConditions"
-          label="Pre-existing conditions"
-          defaultValue={(Array.isArray(patient.preExistingConditions) ? patient.preExistingConditions : []).join(", ")}
-          placeholder="Hypertension, sickle cell, diabetes"
-        />
+        <fieldset className="space-y-2">
+          <legend className="text-label text-navy">Obstetric and medical history</legend>
+          <p className="text-caption text-ink-muted">
+            These flags feed the risk engine. Tick what a clinician has already confirmed.
+          </p>
+          <div className="grid gap-2 sm:grid-cols-2">
+            {OBSTETRIC_HISTORY_OPTIONS.map((option) => (
+              <label key={option.value} className="flex items-start gap-2 text-sm text-ink">
+                <input
+                  type="checkbox"
+                  name="history"
+                  value={option.value}
+                  defaultChecked={patient.preExistingConditions.includes(option.value)}
+                  className="mt-1 h-4 w-4 rounded border-line"
+                />
+                {option.label}
+              </label>
+            ))}
+          </div>
+          <Textarea
+            name="historyNotes"
+            label="Other history"
+            defaultValue={patient.preExistingConditions
+              .filter((item) => !OBSTETRIC_HISTORY_OPTIONS.some((option) => option.value === item))
+              .join(", ")}
+            placeholder="Anything else not listed above"
+          />
+        </fieldset>
         <div className="grid gap-3 sm:grid-cols-2">
           <Input
             name="locationLat"

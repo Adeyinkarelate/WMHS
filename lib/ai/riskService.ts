@@ -7,6 +7,11 @@ import type {
   RiskLevel,
   RiskRecommendation,
 } from "@/types";
+import {
+  obstetricHistoryBoost,
+  obstetricHistoryFactors,
+  obstetricHistoryFlags,
+} from "@/lib/clinical/history";
 import { bodyMassIndex, gestationalAgeWeeks, meanArterialPressure } from "@/lib/utils/clinical";
 import { clamp } from "@/lib/utils/helpers";
 
@@ -28,25 +33,12 @@ export function extraSymptomsForContext(
   return symptoms.filter((s) => s.severity >= 1 && !ENGINE_SYMPTOM_PATTERN.test(s.symptomType));
 }
 
-function historyFlags(conditions: string[] | undefined) {
-  const hay = (conditions ?? []).join(" ").toLowerCase();
-  return {
-    hypertension: /hypertens|pre-?eclamp|\bpet\b/.test(hay),
-    diabetes: /diabet/.test(hay),
-    sickle: /sickle/.test(hay),
-  };
-}
-
 function historyScoreBoost(context: Context): number {
-  const flags = historyFlags(context.preExistingConditions);
-  return (flags.hypertension ? 0.08 : 0) + (flags.diabetes ? 0.06 : 0) + (flags.sickle ? 0.05 : 0);
+  return obstetricHistoryBoost(obstetricHistoryFlags(context.preExistingConditions));
 }
 
 function applyHistoryFactors(factors: string[], context: Context) {
-  const flags = historyFlags(context.preExistingConditions);
-  if (flags.hypertension) factors.push("History of hypertension / pre-eclampsia");
-  if (flags.diabetes) factors.push("Pre-existing or family history of diabetes");
-  if (flags.sickle) factors.push("Sickle cell disease");
+  factors.push(...obstetricHistoryFactors(obstetricHistoryFlags(context.preExistingConditions)));
   for (const symptom of context.otherSymptoms ?? []) {
     factors.push(`${symptom.symptomType} (severity ${symptom.severity})`);
   }
@@ -234,7 +226,7 @@ function screenComplications(
   const oliguria = (context.otherSymptoms ?? []).some(
     (s) => s.symptomType.toLowerCase().includes("urine") && s.severity >= 1
   );
-  const history = historyFlags(context.preExistingConditions);
+  const history = obstetricHistoryFlags(context.preExistingConditions);
 
   const preReasons: string[] = [];
   if (features.systolicBp != null && features.systolicBp >= 140) preReasons.push("SBP ≥ 140 mmHg");
@@ -246,7 +238,9 @@ function screenComplications(
   if (features.blurredVision) preReasons.push("Visual disturbance");
   if (features.swelling) preReasons.push("Oedema");
   if (oliguria) preReasons.push("Reduced urine output");
-  if (history.hypertension) preReasons.push("History of hypertension / pre-eclampsia");
+  if (history.hypertension) preReasons.push("History of hypertension");
+  if (history.previousPreEclampsia) preReasons.push("History of pre-eclampsia");
+  if (history.multiplePregnancy) preReasons.push("Multiple pregnancy");
   const preProb = clamp(
     (features.systolicBp != null && features.systolicBp >= 140 ? 0.35 : 0) +
       (features.diastolicBp != null && features.diastolicBp >= 90 ? 0.25 : 0) +
@@ -254,7 +248,9 @@ function screenComplications(
       (features.blurredVision ? 0.2 : 0) +
       (features.swelling ? 0.1 : 0) +
       (oliguria ? 0.1 : 0) +
-      (history.hypertension ? 0.1 : 0),
+      (history.hypertension ? 0.1 : 0) +
+      (history.previousPreEclampsia ? 0.12 : 0) +
+      (history.multiplePregnancy ? 0.05 : 0),
     0,
     1
   );
@@ -266,10 +262,12 @@ function screenComplications(
     gdmReasons.push("Glucose ≥ 95 mg/dL (fasting threshold)");
   }
   if (history.diabetes) gdmReasons.push("Pre-existing or family history of diabetes");
+  if (history.previousGdm) gdmReasons.push("Previous gestational diabetes");
   const sugar = features.bloodSugar;
   const gdmProb = clamp(
     (sugar == null ? 0 : sugar >= 200 ? 0.9 : sugar >= 140 ? 0.7 : sugar >= 95 ? 0.4 : 0.05) +
-      (history.diabetes ? 0.15 : 0),
+      (history.diabetes ? 0.15 : 0) +
+      (history.previousGdm ? 0.1 : 0),
     0,
     1
   );

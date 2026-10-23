@@ -86,7 +86,7 @@ export async function runAndStoreRisk(patientId: string) {
       });
     }
     const assignments = await prisma.patientAssignment.findMany({
-      where: { patientId },
+      where: { patientId, status: "ACTIVE" },
       include: { provider: true },
     });
     for (const row of assignments) {

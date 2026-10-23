@@ -1,5 +1,6 @@
+import Link from "next/link";
 import { cn } from "@/lib/utils/helpers";
-import { ButtonHTMLAttributes, forwardRef } from "react";
+import { ButtonHTMLAttributes, MouseEventHandler, ReactNode, forwardRef } from "react";
 
 type Variant = "primary" | "secondary" | "ghost" | "danger" | "outline" | "inverse" | "ghostDark";
 type Size = "sm" | "md" | "lg";
@@ -26,6 +27,63 @@ type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
   size?: Size;
   loading?: boolean;
 };
+
+export function buttonClassName({
+  variant = "primary",
+  size = "md",
+  className,
+}: {
+  variant?: Variant;
+  size?: Size;
+  className?: string;
+}) {
+  return cn(
+    "inline-flex items-center justify-center gap-2 rounded-full font-heading font-semibold tracking-[0.02em] transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0",
+    variants[variant],
+    sizes[size],
+    className
+  );
+}
+
+/** Button-styled link. Use this instead of wrapping a Button in `<a>` or `Link`. */
+export function ButtonLink({
+  href,
+  variant = "primary",
+  size = "md",
+  className,
+  children,
+  external,
+  onClick,
+}: {
+  href: string;
+  variant?: Variant;
+  size?: Size;
+  className?: string;
+  children: ReactNode;
+  external?: boolean;
+  onClick?: MouseEventHandler<HTMLAnchorElement>;
+}) {
+  const classes = buttonClassName({ variant, size, className });
+  const isExternal = external ?? /^(https?:|tel:|mailto:)/.test(href);
+  if (isExternal) {
+    const newTab = href.startsWith("http");
+    return (
+      <a
+        href={href}
+        className={classes}
+        onClick={onClick}
+        {...(newTab ? { target: "_blank", rel: "noreferrer" } : {})}
+      >
+        {children}
+      </a>
+    );
+  }
+  return (
+    <Link href={href} className={classes} onClick={onClick}>
+      {children}
+    </Link>
+  );
+}
 
 export const Button = forwardRef<HTMLButtonElement, Props>(function Button(
   { className, variant = "primary", size = "md", loading, children, disabled, ...props },

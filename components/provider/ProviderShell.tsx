@@ -34,6 +34,12 @@ export function ProviderShell({
   const pathname = usePathname();
   return (
     <div className="min-h-screen bg-canvas bg-mesh-warm">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-white focus:px-4 focus:py-2 focus:text-navy"
+      >
+        Skip to content
+      </a>
       <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 border-r border-line/70 bg-white/90 backdrop-blur-xl lg:flex lg:flex-col">
         <div className="px-5 py-5">
           <Logo />
@@ -100,7 +106,9 @@ export function ProviderShell({
             </Button>
           </div>
         </header>
-        <div className="px-4 py-6 pb-24 sm:px-8">{children}</div>
+        <main id="main-content" className="px-4 py-6 pb-24 sm:px-8">
+          {children}
+        </main>
         <nav className="fixed inset-x-0 bottom-0 z-20 flex border-t border-line/70 bg-white/95 backdrop-blur-xl lg:hidden">
           {links.map((l) => (
             <Link
@@ -114,7 +122,9 @@ export function ProviderShell({
               <span className="relative">
                 <l.icon size={18} />
                 {l.href === "/provider/alerts" && activeAlertCount > 0 && (
-                  <span className="absolute -right-2 -top-1 h-1.5 w-1.5 rounded-full bg-danger" />
+                  <span className="absolute -right-2 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-danger px-1 font-heading text-[9px] text-white">
+                    {activeAlertCount > 9 ? "9+" : activeAlertCount}
+                  </span>
                 )}
               </span>
               {l.label}

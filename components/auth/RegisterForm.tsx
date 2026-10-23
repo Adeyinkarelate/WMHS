@@ -1,13 +1,16 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Input } from "@/components/ui/Input";
+import { Select } from "@/components/ui/Select";
 import { Button } from "@/components/ui/Button";
 import { Icons } from "@/components/shared/Icons";
 import { cn } from "@/lib/utils/helpers";
+
+type FacilityOption = { id: string; name: string; address: string };
 
 type Role = "PATIENT" | "PROVIDER";
 
@@ -27,6 +30,22 @@ export function RegisterForm() {
   const [role, setRole] = useState<Role>("PATIENT");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [facilities, setFacilities] = useState<FacilityOption[]>([]);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch("/api/facilities")
+      .then((res) => (res.ok ? res.json() : []))
+      .then((rows: FacilityOption[]) => {
+        if (!cancelled && Array.isArray(rows)) setFacilities(rows);
+      })
+      .catch(() => {
+        if (!cancelled) setFacilities([]);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   function goNext(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -51,7 +70,7 @@ export function RegisterForm() {
     const form = new FormData(e.currentTarget);
     const payload: Record<string, unknown> = Object.fromEntries(form.entries());
     payload.role = role;
-    payload.terms = true;
+    payload.terms = form.get("terms") === "on";
     try {
       const res = await fetch("/api/auth/register", {
         method: "POST",
@@ -201,14 +220,50 @@ export function RegisterForm() {
               />
               <Input name="parity" type="number" min={0} label="Previous births (parity)" defaultValue={0} />
             </div>
+            <Select
+              name="facilityId"
+              label="Antenatal clinic"
+              required={step === 2}
+              placeholder="Select a clinic"
+              defaultValue=""
+              options={facilities.map((f) => ({
+                value: f.id,
+                label: `${f.name} — ${f.address}`,
+              }))}
+            />
+            <p className="text-caption text-ink-muted">
+              You join that clinic’s waiting list. A clinician there names themselves as your midwife or doctor.
+            </p>
           </>
         ) : (
-          <Input
-            name="specialization"
-            label="Specialisation"
-            required={step === 2}
-            placeholder="e.g. Obstetrics"
-          />
+          <>
+            <Input
+              name="specialization"
+              label="Specialisation"
+              required={step === 2}
+              placeholder="e.g. Obstetrics"
+            />
+            <Select
+              name="facilityId"
+              label="Facility you work at"
+              required={step === 2}
+              placeholder="Select a facility"
+              defaultValue=""
+              options={facilities.map((f) => ({
+                value: f.id,
+                label: `${f.name} — ${f.address}`,
+              }))}
+            />
+            <Input
+              name="inviteCode"
+              label="Facility invite code"
+              hint="Ask your facility administrator. Required on production deployments."
+              autoComplete="off"
+            />
+            <p className="text-caption text-ink-muted">
+              Your caseload starts empty. Claim mothers from this facility’s waiting list.
+            </p>
+          </>
         )}
         <label className="flex items-start gap-2.5 text-sm leading-relaxed text-ink-muted">
           <input
@@ -217,7 +272,17 @@ export function RegisterForm() {
             required={step === 2}
             className="mt-1 h-4 w-4 shrink-0 rounded border-line"
           />
-          I agree to the terms of use and consent to WMHS processing my health data under NDPR.
+          <span>
+            I agree to the{" "}
+            <Link href="/terms" className="font-semibold text-primary">
+              terms of use
+            </Link>{" "}
+            and{" "}
+            <Link href="/privacy" className="font-semibold text-primary">
+              privacy notice
+            </Link>
+            , and consent to WMHS processing my health data under NDPR.
+          </span>
         </label>
       </div>
 

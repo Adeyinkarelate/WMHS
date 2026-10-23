@@ -7,14 +7,16 @@ import { StatCard } from "@/components/shared/StatCard";
 import { Card, CardTitle } from "@/components/ui/Card";
 import { StatusBadge } from "@/components/shared/StatusBadge";
 import { PatientList } from "@/components/provider/PatientList";
+import { WaitingList } from "@/components/provider/WaitingList";
 import { RiskDistributionChart } from "@/components/provider/RiskDistributionChart";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { Icons } from "@/components/shared/Icons";
 import { formatDateTime } from "@/lib/utils/formatters";
 import { alertTypeLabel } from "@/lib/alerts/labels";
+import { getFacilityWaitingList, toWaitingRows } from "@/lib/assignments/queries";
 
 export default async function ProviderDashboardPage() {
-  const { session } = await getProviderContext();
+  const { session, provider } = await getProviderContext();
   const where = assignedPatientsWhere(session.user);
 
   const patients = await prisma.patient.findMany({
@@ -35,6 +37,7 @@ export default async function ProviderDashboardPage() {
     where: { status: "PENDING", ...assignedCaseloadWhere(session.user) },
   });
 
+  const waiting = await getFacilityWaitingList(provider?.facilityId);
   const high = patients.filter((p) => p.riskAssessments[0]?.riskLevel === "HIGH").length;
   const medium = patients.filter((p) => p.riskAssessments[0]?.riskLevel === "MEDIUM").length;
   const low = patients.filter((p) => p.riskAssessments[0]?.riskLevel === "LOW").length;
@@ -45,7 +48,7 @@ export default async function ProviderDashboardPage() {
       <PageHeader
         eyebrow="Clinic"
         title="Caseload"
-        description="Risk first. Then names. Who needs a call this morning."
+        description="Your named caseload first. Mothers waiting at this clinic sit below until you take them on."
       />
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard label="Patients" value={patients.length} icon={<Icons.users size={18} />} />
@@ -93,6 +96,12 @@ export default async function ProviderDashboardPage() {
             score: p.riskAssessments[0]?.riskScore ?? 0,
             alerts: p.alerts.length,
           }))}
+        />
+      </div>
+      <div className="mt-8">
+        <WaitingList
+          facilityName={provider?.facility?.name ?? null}
+          patients={toWaitingRows(waiting)}
         />
       </div>
     </PageTransition>

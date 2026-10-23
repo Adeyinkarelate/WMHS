@@ -11,7 +11,7 @@ export async function GET() {
     where:
       user.role === "ADMIN"
         ? {}
-        : { assignments: { some: { providerId: user.providerId } } },
+        : { assignments: { some: { providerId: user.providerId, status: "ACTIVE" } } },
     include: {
       user: { select: { name: true, email: true } },
       riskAssessments: { orderBy: { assessedAt: "desc" }, take: 1 },

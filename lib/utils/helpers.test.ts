@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { safeInternalPath } from "@/lib/utils/helpers";
+import { safeInternalPath, telHref } from "@/lib/utils/helpers";
 import { profileSchema } from "@/lib/utils/validators";
 import { mapsDirectionsUrl } from "@/lib/utils/haversine";
 
@@ -29,6 +29,14 @@ describe("maps URLs", () => {
   });
 });
 
+describe("telHref", () => {
+  it("builds a tel link from a clinic number", () => {
+    expect(telHref("+234 1 585 0737")).toBe("tel:+23415850737");
+    expect(telHref("112")).toBe("tel:112");
+    expect(telHref("")).toBeNull();
+  });
+});
+
 describe("profileSchema", () => {
   const base = { name: "Amina Bello", phone: "+2348035550142", address: "Ikeja, Lagos" };
 
@@ -45,5 +53,27 @@ describe("profileSchema", () => {
   it("accepts a cleared LMP", () => {
     const parsed = profileSchema.parse({ ...base, lmp: "" });
     expect(parsed.lmp).toBe("");
+  });
+
+  it("stores obstetric history from checkboxes", () => {
+    const parsed = profileSchema.parse({
+      ...base,
+      preExistingConditions: ["Previous caesarean section", "Sickle cell disease"],
+    });
+    expect(parsed.preExistingConditions).toEqual([
+      "Previous caesarean section",
+      "Sickle cell disease",
+    ]);
+  });
+
+  it("keeps a free-text history note as one item", () => {
+    const parsed = profileSchema.parse({
+      ...base,
+      preExistingConditions: ["Hypertension", "IUGR in last pregnancy, on aspirin"],
+    });
+    expect(parsed.preExistingConditions).toEqual([
+      "Hypertension",
+      "IUGR in last pregnancy, on aspirin",
+    ]);
   });
 });

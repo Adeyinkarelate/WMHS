@@ -1,10 +1,9 @@
-import Link from "next/link";
 import { getPatientContext } from "@/lib/auth/patientContext";
 import { prisma } from "@/lib/db/prisma";
 import { PageTransition } from "@/components/shared/PageTransition";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { Card } from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
+import { ButtonLink } from "@/components/ui/Button";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { formatDate } from "@/lib/utils/formatters";
 import { LabFileLink } from "@/components/shared/LabFileLink";
@@ -27,11 +26,7 @@ export default async function TestsPage({
         eyebrow="Labs & vitals"
         title="Test results"
         description="Blood pressure, glucose, haemoglobin and lab files in one timeline."
-        action={
-          <Link href="/patient/tests/upload">
-            <Button size="sm">Upload test</Button>
-          </Link>
-        }
+        action={<ButtonLink href="/patient/tests/upload" size="sm">Upload test</ButtonLink>}
       />
       <QueryNotice notice={searchParams?.notice} />
       {tests.length === 0 ? (

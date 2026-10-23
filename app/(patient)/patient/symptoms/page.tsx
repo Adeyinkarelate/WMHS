@@ -1,10 +1,9 @@
-import Link from "next/link";
 import { getPatientContext } from "@/lib/auth/patientContext";
 import { prisma } from "@/lib/db/prisma";
 import { PageTransition } from "@/components/shared/PageTransition";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { Card } from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
+import { ButtonLink } from "@/components/ui/Button";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { formatDateTime } from "@/lib/utils/formatters";
 import { QueryNotice } from "@/components/shared/QueryNotice";
@@ -26,11 +25,7 @@ export default async function SymptomsPage({
         eyebrow="How you feel"
         title="Symptoms"
         description="Log danger signs as they happen so your risk stays current."
-        action={
-          <Link href="/patient/symptoms/new">
-            <Button size="sm">Log symptom</Button>
-          </Link>
-        }
+        action={<ButtonLink href="/patient/symptoms/new" size="sm">Log symptom</ButtonLink>}
       />
       <QueryNotice notice={searchParams?.notice} />
       {symptoms.length === 0 ? (

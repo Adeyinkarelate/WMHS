@@ -1,5 +1,4 @@
-import Link from "next/link";
-import { Button } from "@/components/ui/Button";
+import { ButtonLink } from "@/components/ui/Button";
 
 export default function NotFound() {
   return (
@@ -9,9 +8,9 @@ export default function NotFound() {
       <p className="mt-2 max-w-md text-sm text-ink-muted">
         The record you asked for does not exist, or the link is incomplete.
       </p>
-      <Link href="/" className="mt-6">
-        <Button>Back to WMHS</Button>
-      </Link>
+      <ButtonLink href="/" className="mt-6">
+        Back to WMHS
+      </ButtonLink>
     </div>
   );
 }

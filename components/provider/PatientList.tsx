@@ -70,7 +70,7 @@ export function PatientList({ patients }: { patients: Row[] }) {
               <tr>
                 <td colSpan={4} className="py-8 text-center text-sm text-ink-muted">
                   {patients.length === 0
-                    ? "No patients on this caseload yet."
+                    ? "No mothers on your named caseload yet. Claim from the facility waiting list below."
                     : "No patients match your search."}
                 </td>
               </tr>

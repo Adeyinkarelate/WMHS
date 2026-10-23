@@ -7,6 +7,8 @@ import { parseDateOnly } from "@/lib/utils/formatters";
 import { jsonError } from "@/lib/utils/helpers";
 import { fromJsonString, toJsonString } from "@/lib/utils/json";
 import { runAndStoreRisk } from "@/lib/ai/runAssessment";
+import { ASSIGNMENT_STATUS } from "@/lib/assignments/rules";
+import { releasePatient } from "@/lib/assignments/service";
 
 type Ctx = { params: { id: string } };
 
@@ -60,6 +62,14 @@ export async function PUT(req: Request, { params }: Ctx) {
   const lmp = parseDateOnly(parsed.data.lmp);
   if (lmpRaw && !lmp) return jsonError("Enter a valid last menstrual period");
 
+  if (parsed.data.bookedFacilityId) {
+    const clinic = await prisma.facility.findUnique({ where: { id: parsed.data.bookedFacilityId } });
+    if (!clinic) return jsonError("Select a valid antenatal clinic", 400);
+  }
+
+  const nextFacilityId = parsed.data.bookedFacilityId ?? existing.bookedFacilityId;
+  const facilityChanged = Boolean(nextFacilityId && nextFacilityId !== existing.bookedFacilityId);
+
   const patient = await prisma.patient.update({
     where: { id: params.id },
     data: {
@@ -72,19 +82,33 @@ export async function PUT(req: Request, { params }: Ctx) {
       weightKg: parsed.data.weightKg ?? null,
       locationLat: parsed.data.locationLat ?? null,
       locationLng: parsed.data.locationLng ?? null,
+      ...(parsed.data.bookedFacilityId
+        ? { bookedFacilityId: parsed.data.bookedFacilityId }
+        : {}),
       ...(parsed.data.notifyAlerts === undefined ? {} : { notifyAlerts: parsed.data.notifyAlerts }),
-      preExistingConditions: toJsonString(
-        parsed.data.preExistingConditions
-          .split(",")
-          .map((item) => item.trim())
-          .filter(Boolean)
-      ),
+      preExistingConditions: toJsonString(parsed.data.preExistingConditions),
     },
   });
   await prisma.user.update({
     where: { id: existing.userId },
     data: { name: parsed.data.name },
   });
+
+  if (facilityChanged) {
+    const active = await prisma.patientAssignment.findMany({
+      where: { patientId: params.id, status: ASSIGNMENT_STATUS.ACTIVE },
+      include: { provider: { select: { id: true, facilityId: true } } },
+    });
+    for (const row of active) {
+      if (row.provider.facilityId !== nextFacilityId) {
+        try {
+          await releasePatient({ patientId: params.id, providerId: row.provider.id });
+        } catch {
+          // Already ended or not on that caseload.
+        }
+      }
+    }
+  }
 
   const hadAssessment = await prisma.riskAssessment.count({ where: { patientId: params.id } });
   if (hadAssessment) {

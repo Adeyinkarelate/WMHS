@@ -4,7 +4,7 @@ import { prisma } from "@/lib/db/prisma";
 import { PageTransition } from "@/components/shared/PageTransition";
 import { RiskIndicator } from "@/components/shared/RiskIndicator";
 import { Card, CardTitle } from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
+import { ButtonLink } from "@/components/ui/Button";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { StatusBadge } from "@/components/shared/StatusBadge";
 import { Icons } from "@/components/shared/Icons";
@@ -16,6 +16,9 @@ import { photos } from "@/lib/media";
 import { alertTypeLabel } from "@/lib/alerts/labels";
 import { AncSchedule } from "@/components/shared/AncSchedule";
 import { MaternalSummary } from "@/components/shared/MaternalSummary";
+import { NamedClinicianCard } from "@/components/shared/NamedClinicianCard";
+import { EmergencyActions } from "@/components/shared/EmergencyActions";
+import { contactsFromBooking } from "@/lib/clinical/emergency";
 import { fromJsonString } from "@/lib/utils/json";
 
 export default async function PatientDashboardPage() {
@@ -49,6 +52,16 @@ export default async function PatientDashboardPage() {
     prisma.ancAttendance.findMany({ where: { patientId: patient.id } }),
   ]);
 
+  const named = patient.assignments.find((row) => row.role === "PRIMARY") ?? patient.assignments[0];
+  const contacts = contactsFromBooking({
+    facility: patient.bookedFacility,
+    originLat: patient.locationLat,
+    originLng: patient.locationLng,
+    clinicianName: named?.provider.user.name ?? null,
+  });
+  const urgent =
+    latestRisk?.riskLevel === "HIGH" ||
+    alerts.some((a) => a.severity === "CRITICAL" || a.alertType === "EMERGENCY");
   const firstName = patient.user.name.split(" ")[0];
   const ancVisits = buildAncSchedule(patient.lmp, new Date(), attendances);
   const nextAnc = nextAncVisit(ancVisits);
@@ -76,18 +89,14 @@ export default async function PatientDashboardPage() {
               Your pregnancy record is here — symptoms, tests, risk and the next step, in one place.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
-              <Link href="/patient/symptoms/new">
-                <Button variant="inverse">
-                  <Icons.plus size={16} />
-                  Log symptoms
-                </Button>
-              </Link>
-              <Link href="/patient/tests/upload">
-                <Button variant="ghostDark">
-                  <Icons.upload size={16} />
-                  Upload test
-                </Button>
-              </Link>
+              <ButtonLink href="/patient/symptoms/new" variant="inverse">
+                <Icons.plus size={16} />
+                Log symptoms
+              </ButtonLink>
+              <ButtonLink href="/patient/tests/upload" variant="ghostDark">
+                <Icons.upload size={16} />
+                Upload test
+              </ButtonLink>
             </div>
           </div>
         </section>
@@ -100,11 +109,9 @@ export default async function PatientDashboardPage() {
               <p className="text-caption text-ink-muted">Risk</p>
               <p className="mt-2 font-heading text-2xl text-navy">Not assessed</p>
               <p className="mt-1 text-caption text-ink-muted">Log a symptom or test to run triage.</p>
-              <Link href="/patient/symptoms/new" className="mt-3 inline-block">
-                <Button size="sm" variant="outline">
-                  Log a symptom
-                </Button>
-              </Link>
+              <ButtonLink href="/patient/symptoms/new" size="sm" variant="outline" className="mt-3">
+                Log a symptom
+              </ButtonLink>
             </Card>
           )}
           <Card className="bg-gradient-to-br from-white to-sage-light/50">
@@ -118,6 +125,14 @@ export default async function PatientDashboardPage() {
             <p className="mt-1 text-caption text-ink-muted">Previous births on record</p>
           </Card>
         </div>
+
+        <NamedClinicianCard
+          clinicianName={named?.provider.user.name ?? null}
+          clinicianFacility={named?.provider.facility?.name ?? null}
+          bookedFacility={patient.bookedFacility?.name ?? null}
+        />
+
+        {urgent && <EmergencyActions contacts={contacts} />}
 
         {alerts.length > 0 && (
           <Card className="border-danger/20 bg-danger-soft">
@@ -144,12 +159,10 @@ export default async function PatientDashboardPage() {
             { href: "/patient/tests/upload", label: "Add a test", icon: Icons.flask },
             { href: "/patient/assistant", label: "Ask the assistant", icon: Icons.chat },
           ].map((a) => (
-            <Link key={a.href} href={a.href}>
-              <Button variant="outline" className="w-full justify-start">
-                <a.icon size={18} />
-                {a.label}
-              </Button>
-            </Link>
+            <ButtonLink key={a.href} href={a.href} variant="outline" className="w-full justify-start">
+              <a.icon size={18} />
+              {a.label}
+            </ButtonLink>
           ))}
         </div>
 
@@ -245,7 +258,14 @@ export default async function PatientDashboardPage() {
             </Link>
           </div>
           {referrals.length === 0 ? (
-            <p className="mt-3 text-sm text-ink-muted">No referrals yet. High-risk results can recommend a nearby facility.</p>
+            <div className="mt-4">
+              <EmptyState
+                title="No referrals yet"
+                description="High-risk results can recommend a nearby facility. You can also request one from Referrals."
+                actionLabel="Find a facility"
+                actionHref="/patient/referrals"
+              />
+            </div>
           ) : (
             <ul className="mt-4 space-y-3">
               {referrals.map((r) => (

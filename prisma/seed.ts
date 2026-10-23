@@ -142,6 +142,7 @@ async function main() {
           locationLat: 6.6018,
           locationLng: 3.3515,
           preExistingConditions: toJsonString(["Previous gestational hypertension"]),
+          bookedFacilityId: luth.id,
         },
       },
     },
@@ -167,6 +168,7 @@ async function main() {
           locationLat: 8.95,
           locationLng: 7.07,
           preExistingConditions: toJsonString([]),
+          bookedFacilityId: luth.id,
         },
       },
     },
@@ -192,6 +194,7 @@ async function main() {
           locationLat: 11.996,
           locationLng: 8.522,
           preExistingConditions: toJsonString(["Type 2 diabetes family history"]),
+          bookedFacilityId: createdFacilities[2].id,
         },
       },
     },
@@ -199,11 +202,15 @@ async function main() {
   });
 
   const providerId = providerUser.provider!.id;
-  for (const p of [amina.patient!, fatima.patient!, hadiza.patient!]) {
-    await prisma.patientAssignment.create({
-      data: { patientId: p.id, providerId },
-    });
-  }
+  await prisma.patientAssignment.create({
+    data: {
+      patientId: amina.patient!.id,
+      providerId,
+      role: "PRIMARY",
+      status: "ACTIVE",
+      assignedById: providerUser.id,
+    },
+  });
 
   await prisma.symptom.createMany({
     data: [
@@ -396,7 +403,7 @@ async function main() {
       {
         userId: providerUser.id,
         title: "Caseload ready",
-        content: "Three assigned patients are on your dashboard.",
+        content: "Amina Bello is on your named caseload. Fatima Yusuf is on the LUTH waiting list.",
       },
     ],
   });
