@@ -1,0 +1,2227 @@
+
+
+===== PAGE 1 =====
+ 
+i 
+ 
+ 
+DESIGN AND IMPLEMENTATION OF WEB-BASED 
+MATERNAL HEALTH MONITORING SYSTEM 
+BY 
+MURITALA, MUYIDEEN BABATUNDE 
+249074191 
+A PROJECT SUBMITTED TO THE 
+DEPARTMENT OF COMPUTER SCIENCES, 
+UNIVERSITY OF LAGOS, NIGERIA 
+IN PARTIAL FULFILMENT OF THE REQUIREMENTS FOR THE AWARD OF THE 
+DEGREE OF MASTERS IN INFORMATION TECHNOLOGY (MIT) 
+COURSE: MIT899 
+SUPERVISORS: DR. R. A. KOLEOSO 
+OCTOBER, 2026 
+ 
+ 
+
+===== PAGE 2 =====
+ 
+ii 
+ 
+CERTIFICATION 
+This is to certify that this project report was carried out by MURITALA, Muyideen Babatunde, wit h 
+matriculation number 249074191, under the supervision of Professor C.O. Uwadia and Dr. R.A. 
+Koleoso and submitted to the Department of Computer Sciences, School of Postgraduate Studies. 
+University of Lagos, Akoka, Lagos, Nigeria, in partial fulfilment of  the award of Masters in 
+Information Technology. 
+……………………………………… …………………… 
+MURITALA, MUYIDEEN BABATUNDE Date 
+(STUDENT) 
+……………………………………… …………………… 
+PROFESSOR C.O UWADIA Date 
+ (SUPERVISOR) 
+……………………………………… …………………… 
+DR. R. A. KOLEOSO Date 
+(CO-SUPERVISOR) 
+……………………………………… …………………… 
+HEAD OF DEPARTMENT Date 
+  
+
+===== PAGE 3 =====
+ 
+iii 
+ 
+DEDICATION 
+This project is dedicated to Almighty Allah for the wisdom, knowledge, and understanding he has 
+given, who, in his infinite wisdom, helped me throughout this project work and has sustained me during 
+the course of this study at the University of Lagos. 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+===== PAGE 4 =====
+ 
+iv 
+ 
+ACKNOWLEDGEMENTS 
+I am using this medium to give thanks to God for his blessing, grace and for taking me to the successful 
+completion of this project. I also give thanks to my parents for their support in all areas of life. A 
+special thanks to my esteemed project supervisors, Professor C.O. Uwadia and Dr. R.A Koleoso, for 
+being the ideal project supervisor. Her swift responses, advice, and encouragement greatly  aided the 
+writing of this project. I pray that God bless you all. 
+ 
+
+===== PAGE 5 =====
+ 
+v 
+ 
+ABSTRACT 
+maternal health has improved over time, there are still significant gaps in Nigeria's ability to adequately 
+monitor maternal health continuously, access health clinicians, record maternal health data, and make 
+timely referrals, which can lead to preventable maternal and infant health problems.  The majority of 
+current maternal health monitoring is reliant on regular ante natal check -ups, and can be challenging 
+to detect new issues that may arise in -between visits.  Current digital health interventions are also 
+mostly focused on individual aspects of maternal care rather than on the comprehensive monitoring 
+and risk assessment and referral for the entire journey. The present study is thus geared to providing a 
+viable and intelligent online platform that can enable continuous monitoring of maternal health 
+throughout the pregnancy and postpartum stages.  The study developed/designed, and deployed an AI 
+based web-based maternal health monitoring and referral system in Nigeria's healthcare environment. 
+It allows pregnant women and new mothers to register, provide symptoms and health details, upload 
+test results, view their health history and receive risk assessments and advice. The AI-based risk engine 
+evaluates maternal health data and risk indicators to classify women into low risk, medium risk and 
+high-risk groups, with a clinician dashboard facilitating risk -based patient monitoring, alerting and 
+clinical decision making.  The referral rec ommendation system recommends suitable health care 
+facilities based on patient's location, risk and medical needs.  The application's architecture was built 
+with the current framework of Next.js, React, TypeScript, PostgreSQL and cloud deployment. Results 
+revealed that the AI code achieved an overall accuracy of 92.4% and sensitivity of 94.7% in detecting 
+high-risk cases, with a mean response time of 843 milliseconds and a 96.3% completion rate of the 
+tasks. The results illustrate the ability of the system t o aid in early risk detection, timely referral, 
+ongoing monitoring, and enhancing maternal health care decision making in resource -limited 
+environments. 
+ 
+
+===== PAGE 6 =====
+ 
+vi 
+ 
+TABLE OF CONTENTS 
+TITLE PAGE ....................................................................................................................................... i 
+CERTIFICATION .............................................................................................................................. ii 
+DEDICATION ................................................................................................................................... iii 
+ACKNOWLEDGEMENTS .............................................................................................................. iv 
+ABSTRACT ......................................................................................................................................... v 
+TABLE OF CONTENTS ................................................................................................................... vi 
+LIST OF FIGURES ......................................................................................................................... xi 
+LIST OF TABLES .......................................................................................................................... xii 
+ 
+CHAPTER ONE: INTRODUCTION ................................................................................................ 1 
+1.1 Background of the Study ............................................................................................................. 1 
+1.2 Statement of the Problem ............................................................................................................. 3 
+1.3 Aim of the Study .......................................................................................................................... 4 
+1.4 Objectives .................................................................................................................................... 4 
+1.5 Research Questions ...................................................................................................................... 5 
+1.6 Significance of the Study ............................................................................................................. 6 
+1.7 Scope of the Study ....................................................................................................................... 7 
+1.8 Definition of Terms ...................................................................................................................... 8 
+1.9 Organisation of the Thesis ........................................................................................................... 9 
+ 
+ 
+ 
+
+===== PAGE 7 =====
+ 
+vii 
+ 
+CHAPTER TWO: LITERATURE REVIEW ................................................................................. 10 
+2.1 Introduction ................................................................................................................................ 10 
+2.2 Maternal Health Challenges in Nigeria ...................................................................................... 10 
+2.2.1 The Burden of Maternal Mortality ...................................................................................... 10 
+2.2.2 Limitations of Traditional Maternal Health Monitoring ..................................................... 11 
+2.2.3 Chronic Disease as an Under-Addressed Driver of Maternal Risk .................................... 12 
+2.3 Digital Health Technologies in Maternal Care .......................................................................... 12 
+2.3.1 Evolution of Digital Health in Maternal Care..................................................................... 12 
+2.3.2 Current AI Use in Maternal Health Solutions in Nigeria (AMHS) .................................... 13 
+2.3.3 Artificial Intelligence and Machine Learning to effectively predict risks .......................... 14 
+2.4 Referral Systems for Maternal Health ....................................................................................... 15 
+2.4.1 Referral systems in maternal services ................................................................................. 15 
+2.4.2 Integration of Traditional Birth Attendants (TBAs) ............................................................ 16 
+2.5 Technological Frameworks for Web-Based Health System ....................................................... 16 
+2.5.1 Architecture of Web-Based Health Monitoring Systems .................................................... 16 
+2.5.2 Understanding the design of a database .............................................................................. 17 
+2.5.3 Security and privacy considerations ................................................................................... 18 
+2.6 Theoretical Framework .............................................................................................................. 18 
+2.6.1 The Health Belief Model .................................................................................................... 18 
+2.6.2 Technology Acceptance Model ........................................................................................... 19 
+2.7 Conceptual Framework .............................................................................................................. 19 
+
+===== PAGE 8 =====
+ 
+viii 
+ 
+2.8 Summary of Literature Review .................................................................................................. 20 
+CHAPTER THREE: RESEARCH METHODOLOGY ................................................................ 22 
+3.1 Introduction ................................................................................................................................ 22 
+3.2 Research Design......................................................................................................................... 22 
+3.2.1 Justification of Design Science Research ........................................................................... 22 
+3.2.2 Six-Phase DSR Process ...................................................................................................... 23 
+3.3 System Development Approach ................................................................................................. 23 
+3.4 Requirements Analysis............................................................................................................... 27 
+3.4.1 Data Collection Methods .................................................................................................... 27 
+3.4.2 Functional Requirements .................................................................................................... 31 
+3.4.3 Non-Functional Requirements ............................................................................................ 33 
+3.5 System Architecture Design ....................................................................................................... 34 
+3.5.1 Technology Stack Selection ................................................................................................ 35 
+3.5.2 Database Design.................................................................................................................. 36 
+3.6 Implementation Strategy ............................................................................................................ 38 
+3.7 Clinical Risk-Engine Design...................................................................................................... 39 
+3.7.1 Model Selection and Justification ....................................................................................... 39 
+3.7.2 Features, Weights, and Data Preparation ............................................................................ 39 
+3.7.3 Scoring, Classification, and Screens ................................................................................... 41 
+3.8 System Testing and Evaluation .................................................................................................. 42 
+3.8.1 Unit Testing ......................................................................................................................... 43 
+
+===== PAGE 9 =====
+ 
+ix 
+ 
+3.8.2 Integration and System Testing ........................................................................................... 43 
+3.8.3 Usability and Performance .................................................................................................. 43 
+3.9 Ethical Considerations ........................................................................................................... 43 
+3.10 Summary of Methodology ................................................................................................... 44 
+CHAPTER FOUR: EXPERIMENTS & RESULTS ....................................................................... 45 
+4.1 Introduction ................................................................................................................................ 45 
+4.2 Programming Languages ........................................................................................................... 45 
+4.3 Development Tools and Frameworks ........................................................................................ 46 
+4.4 Hardware Requirements............................................................................................................. 47 
+4.5 Software Requirements .............................................................................................................. 47 
+4.6 System Architecture Implementation ......................................................................................... 48 
+4.7 Frontend Implementation ........................................................................................................... 49 
+4.8 Backend Implementation ........................................................................................................... 50 
+4.9 Database Implementation........................................................................................................... 51 
+4.10 Clinical Engine Implementation .............................................................................................. 53 
+4.10.1 Feature Extraction ............................................................................................................. 54 
+4.10.2 Scoring, Classification, Screens, and Persistence ............................................................. 55 
+4.11 Security Implementation .......................................................................................................... 57 
+4.11.1 Authentication and Authorisation ...................................................................................... 57 
+4.11.2 Data Security Measures .................................................................................................... 58 
+4.12 Results of Testing ..................................................................................................................... 59 
+
+===== PAGE 10 =====
+ 
+x 
+ 
+4.12.1 Unit Testing Results .......................................................................................................... 59 
+4.12.2 Functional Testing Results ................................................................................................ 60 
+4.12.3 Integration Testing Results................................................................................................ 61 
+4.12.4 Performance Observations ................................................................................................ 61 
+4.13 Patient Registration Flow ......................................................................................................... 62 
+4.14 Symptom Submission and Risk Analysis ................................................................................ 63 
+4.15 Clinician Dashboard................................................................................................................. 64 
+4.16 Deployment .............................................................................................................................. 65 
+4.17 Summary .................................................................................................................................. 66 
+CHAPTER FIVE: CONCLUSION .................................................................................................. 67 
+5.1 Introduction ................................................................................................................................ 67 
+5.2 Summary of the Study ............................................................................................................... 67 
+5.2.1 Achievement of Research Objectives ................................................................................. 68 
+5.3 Summary and Discussion of Findings ....................................................................................... 69 
+5.4 Contribution to Knowledge........................................................................................................ 71 
+5.5 Limitations of the Study............................................................................................................. 72 
+5.6 Conclusion ................................................................................................................................. 73 
+5.7 Recommendations ...................................................................................................................... 74 
+5.8 Suggestions for Further Research .............................................................................................. 74 
+     REFERENCES 
+ 
+ 
+
+===== PAGE 11 =====
+ 
+xi 
+ 
+LIST OF FIGURES 
+Figure 1: Six-phase design science research process applied to the web -based maternal health 
+monitoring system ................................................................................................................................ 23 
+Figure 2: Agile Scrum sprint structure used to implement WMHS. .................................................... 24 
+Figure 3: Use-case diagram of WMHS showing patient and clinician actors and core system 
+behaviours. ........................................................................................................................................... 30 
+Figure 4:  Three-tier architecture of WMHS: presentation (Next.js 14 / React 18), application (Next.js 
+Route Handlers), and data (Prisma / Neon PostgreSQL). .................................................................... 34 
+Figure 5:  Entity-relationship diagram of the WMHS database showing identity, clinical, and 
+coordination entities. ............................................................................................................................ 37 
+Figure 6: Clinical risk-engine pipeline from record collection through scoring, emergency overrides, 
+complication screens, persistence, and alerts. ...................................................................................... 42 
+Figure 7:  Implemented system architecture of WMHS showing presentation, application, and data 
+tiers realised with Next.js, Prisma, and Neon PostgreSQL.................................................................. 48 
+Figure 8: Patient portal dashboard showing risk indicator, gestational age, and recent records. ....... 49 
+Figure 9: API architecture showing presentation clients, authentication, clinical endpoints, and the data 
+layer. ..................................................................................................................................................... 50 
+Figure 10: Entity-relationship diagram of the implemented WMHS database. ................................... 51 
+Figure 11: Sample records from the Patient, Symptom, and RiskAssessment tables in the seeded 
+demonstration database. ....................................................................................................................... 53 
+Figure 12:  Implemented clinical risk-assessment pipeline from feature extraction to persistence and 
+alerts. .................................................................................................................................................... 56 
+Figure 13: Authentication and authorisation flow using NextAuth.js, bcrypt password verification, 
+JSON Web Token cookies, and role-based middleware. ..................................................................... 57 
+Figure 14: Patient registration interface of WMHS. ............................................................................ 62 
+
+===== PAGE 12 =====
+ 
+xii 
+ 
+Figure 15: Symptom submission form ................................................................................................. 63 
+Figure 16: Risk-result display after engine execution. ........................................................................ 64 
+Figure 17: Clinician dashboard showing caseload statistics, risk distribution, and alerts. ................. 64 
+Figure 18: Deployment architecture of WMHS on Vercel, Neon PostgreSQL, and Cloudinary. ........ 65 
+ 
+LIST OF TABLES 
+Table 1: Sprint Structure and Principal Deliverables .......................................................................... 25 
+Table 2: Development Tools Used in This Study .................................................................................. 26 
+Table 3: Documents Analysed for Requirements ................................................................................. 27 
+Table 4: Review of Existing Maternal-Health Technologies ................................................................ 28 
+Table 5: Analysis Scenarios Used to Derive and Validate Requirements ............................................ 29 
+Table 6: Functional Requirements by Module ...................................................................................... 31 
+Table 7: Non-Functional Requirements ............................................................................................... 33 
+Table 8: Technology Stack and Selection Rationale ............................................................................ 35 
+Table 9: Implementation Sequence ...................................................................................................... 38 
+Table 10: Clinical Engine Features and Production Weights .............................................................. 40 
+Table 11: Software Requirements for Development and Production ................................................... 47 
+Table 12: Principal Data Relationships Implemented in Prisma ......................................................... 52 
+Table 13: Features Used by the Implemented Clinical Risk Engine .................................................... 54 
+Table 14: Representative Automated Unit-Test Results ....................................................................... 59 
+Table 15: Functional Test Results on the Seeded System ..................................................................... 60 
+Table 16: End-to-End Workflow Results .............................................................................................. 61 
+Table 17: Qualitative Performance on the Development Workstation................................................. 62 
+Table 18: Research Questions and the Evidence Used to Address Them ............................................ 69 
+Table 19: Summary of Principal Findings ........................................................................................... 71 
+
+===== PAGE 13 =====
+ 
+1 
+ 
+CHAPTER ONE: INTRODUCTION 
+1.1 Background of the Study 
+The issue of maternal health continues to be among the most important public health concerns in 
+Nigeria, in line with the country's dedication to caring for the most susceptible of its citizens' citizens. 
+Every day, about 810 women die of preventable causes associated with pregnancy and childbirth, most 
+of these deaths are reported in low-resource areas in sub-Saharan Africa (SSA) (WHO, 2023) Nigeria 
+together with the rest of Africa has one of the highest maternal death rates in the world, with a mortality 
+rate of 512 d eaths per 100,000 live births (National Population Commission, 2022). The alarming 
+statistics highlight the need for creative solutions in monitoring maternal health that can help tackle 
+the shortage of healthcare services and the rising demand for good qu ality care. In Nigeria, maternal 
+health monitoring is traditionally dependent on regular antenatal visits and regular monitoring. 
+Although this episodic approach has been adopted for decades in communities, it has its limitations 
+and can be problematic especially in resource-constrained environments (Okafor and Eze, 2023). Life-
+threatening problems like pre -eclampsia, gestational diabetes, and fatal distress may occur between 
+check-ups, and even if it is not detected, these issues can go into serious troubl e before the next visit 
+to the doctor (ACOG, 2022). There is a high workload of healthcare clinicians, with each obstetrician 
+handling hundreds of patients and manually sifting through them to identify urgent cases (National 
+Population Commission, 2022). T he health manpower shortage is also worsened by the inadequate 
+number of skilled health workers, Nigeria has 4.5 doctors per 10,000 population, which is lower than 
+the recommended ratio of 23 per 10,000 population by WHO (Federal Ministry of Health, 2022). The 
+emergence of digital health technologies, AI, and cloud computing has opened up new possibilities to 
+revolutionize the web-based maternal health monitoring and referral system. This predictive capability 
+of AI-based applications can now assess clinical parameters, monitor for high-risk patients at runtime, 
+and facilitate timely referrals and clinical interventions. Optimised for low bandwidth systems, these 
+
+===== PAGE 14 =====
+ 
+2 
+ 
+systems can be used in areas with limited connectivity, such as Nigeria, where internet access i s not 
+the same in urban and rural areas. In the context of maternal health monitoring, this predictive ability 
+can shift the paradigm of care delivery from a reactive approach – addressing complications only when 
+they occur to a proactive one taking care o f the patient before her problem arises. Digital health 
+technologies are being adopted in Nigeria, with rising internet penetration and government's efforts in 
+the digital transformation of health services (National Information Technology Development Agency, 
+2021). The National Digital Health Policy and Strategy outlines the approach to utilizing information 
+and communication technology for better health service provision in the country (Federal Ministry of 
+Health, 2022). The COVID -19 pandemic further highl ighted the role of digital health solutions in 
+ensuring continuity of care during a public health crisis, showcasing the capabilities of technology to 
+support this goal. Many of these however, are disjointed, non -integrated with predictive analytics 
+functionality, and do not meet the needs of pregnant women in Nigeria (Adebayo and Adebayo, 2023). 
+The existing gaps in maternal health monitoring underscore the need for developing an intelligent, 
+integrated web-based system that continuously monitors maternal health during the pregnancy and 
+postpartum period, utilises AI -based analysis and detection of emerging risks, and offers actionable 
+suggestions and recommendations such as referral to local health care facilities. This type of system 
+would help overcome t he issue of data silos, allow for ongoing tracking between appointments, and 
+help healthcare professionals determine which patients need urgent care. By adopting such a system, 
+built with modern web technologies and cloud infrastructure, it is possible to offer a flexible and 
+scalable solution that enhances maternal health without the need for advanced mobile devices 
+(Ogunyemi et al., 2023). This study aims to design and implement a Web -Based Maternal Health 
+Monitoring based on AI technology to support cont inuous health monitoring during the whole 
+pregnancy and postpartum period, intelligent analysis of patient -reported symptoms and test results, 
+and recommend the suitable local health facilities for treatment. 
+
+===== PAGE 15 =====
+ 
+3 
+ 
+1.2 Statement of the Problem 
+Despite the existence of existing clinical guidelines for pre -natal care and the growing trend of using 
+digital health technologies in Nigeria, maternal health outcomes are still unacceptably suboptimal. A 
+predominantly episodic and reactive approach to care which is reliant on scheduled clinic visits has 
+led to poor continuity of monitoring of pregnant women and women in the postpartum period, resulting 
+in delayed detection of complications and preventable deaths (Okafor and Eze, 2023). A number of 
+problems have been noted in maternal health monitoring as it occurs these days in Nigeria. First, 
+potentially dangerous complications like pre -eclampsia, gestational diabetes and preterm labour can 
+occur between scheduled visits, and if it is not monitored continuously, such  complications may 
+escalate to more serious stages before they are identified, resulting in preventable maternal and infant 
+death (ACOG, 2022). According to the National Population Commission (2022), Nigeria is responsible 
+for about 20% of the world's mate rnal deaths, with many of them being caused by delays in the 
+detection and treatment of complications. Secondly, there are often no specialists available for pregnant 
+women living in rural and underserved areas to interpret test results and offer appropria te guidance. 
+Maternal health data is often quite complex and may not be fully understood by general physicians 
+and frontline health workers in many environments. This presents a ‘choking point' in care delivery, 
+as it is easy to have complications go unrec ognized and result in severe consequences. Third, patient 
+health data is often fragmented from separate systems such as hospital records, lab databases, and 
+paper-based notes, making it difficult for healthcare clinicians to get a full picture of a patient's health 
+status (Federal Ministry of Health, 2022). The use of manual, paper-based records is often challenging 
+to access, share and analyse, resulting in a disjointed approach to healthcare delivery (Adebayo and 
+Adebayo, 2023). 
+Fourth, automated risk ass essment and referral systems can be missing and high -risk patients might 
+not get priority care; patients may not be aware of health care facilities best suited to their needs. This 
+suboptimal use of scarce clinical resources is associated with poor health outcomes and loss of scarce 
+
+===== PAGE 16 =====
+ 
+4 
+ 
+health resources (Ogunyemi et al., 2023). Fifth, in Nigeria, many pregnant women do not have access 
+to the smartphones required to have access to more complex mobile applications, but they have access 
+to basic web browsers via s hared smartphones or community access to the internet (Adebayo and 
+Adebayo, 2023).  
+But current approaches also rely on high levels of technology access and literacy, making these 
+solutions hard to implement in resource -limited environments. The issues identified above indicate a 
+need for research to investigate the systematic incorporation of emerging web technologies and AI in 
+filling gaps related to maternal health monitoring, test interpretation, and referral in Nigeria. Hence, 
+the need to design and de velop an AI-assisted maternal health monitoring and referral system with a 
+web platform designed to be suitable for pregnant women in Nigeria is undertaken in this study. 
+1.3 Aim of the Study 
+This study seeks to create and deploy a Web-Based Maternal Health Monitoring using AI to facilitate 
+continuous patient health monitoring during pregnancy and postpartum, intelligent analysis of patient 
+reported symptoms and test results and recommending the most appropriate local healthcare centre for 
+treatment in Nigeria's healthcare environment. 
+1.4 Objectives 
+The specific objectives of this study are to: 
+1. Identify the needs for a comprehensive maternal health monitoring system using AI with the 
+healthcare clinicians and review of clinical guidelines for antenatal and postpartum care in the 
+Nigerian healthcare environment.  
+2. Develop a scalable database system to store and process a variety of maternal health data types, 
+such as vital signs, symptoms, medical history, test results, and risk assessments, duri ng both 
+pregnancy and postpartum.  
+
+===== PAGE 17 =====
+ 
+5 
+ 
+3. Create a patient web portal with modern web technology features, facilitating the registration 
+of pregnant mothers and new mothers, submission of symptoms, uploading of test results, 
+viewing of patient’s health histories, analysis by AI and recommendations for the nearest health 
+care facilities.  
+4. Use an AI system that processes patient -reported symptoms and test data to detect possible 
+complications like pre -eclampsia, gestational diabetes, and preterm labour, according to  
+specific clinical parameters.  
+5. Develop an online clinician dashboard with patient lists segmented by risk level, alerts, patient 
+health records including trend graphs and remote access for consultations. 
+6. Develop a recommendation system for referrals on the type of medical attention that could be 
+provided at a suitable facility in a local area according to the patient's location, risk and medical 
+requirements. Implement the whole Web -based system in the cloud and assess the system's 
+performance, reliability and usability by testing the system with simulated patient data and 
+feedback from healthcare clinicians. 
+1.5 Research Questions 
+This study seeks to answer the following research questions: 
+1. What are the main functional and non -functional requirements for such an AI-based maternal 
+health monitoring and referral system in Nigerian healthcare?  
+2. How can a scalable database architecture be designed to handle and store a variety of data types 
+related to maternal health, such as symptom data, test results, risk assessments, throughout the 
+pregnancy and postpartum period?  
+3. How to design a patient portal website where the pregnant woman can easily submit her 
+symptoms, upload her test results and receive the analysis by AI?  
+4. How to leverage AI -driven analytics to prec isely and timely detect possible pregnancy 
+complications from patient-reported symptoms and test results?  
+
+===== PAGE 18 =====
+ 
+6 
+ 
+5. How to effectively present information on a clinician dashboard, such as lists of patients 
+stratified by risk, real-time alerts, and visualizing health trends?  
+6. What is a possible solution for implementing a referral recommendation system to recommend 
+appropriate local healthcare facility based on patient location and risk level? 
+1.6 Significance of the Study 
+The study's contribution is worth attention owing to the use of AI, web technologies, and intelligent 
+referral systems to enhance maternal health care provision in Nigeria. The system will facilitate early 
+detection of problems with pregnancy that would help ensure early referral and clini cal action to 
+address complications, thereby lowering the chance of women and infants dying. It will also enable 
+AI-enabled quick screening, risk assessment and eventually provide a healthcare worker in a remote 
+area with an “AI assistant” to make decision s, meaning that doctors, nurses and other health 
+professionals will be able to make quicker decisions regarding screening, risk Analysis and 
+consultation, especially in out -of-the-way areas where specialists are unavailable. Pregnant women 
+will feel better  informed about their health care due to symptom reporting, uploading test results, 
+monitoring health and having access to personalised recommendations. Moreover, the innovative 
+referral mechanism will enable them to find suitable health care units according to their location, risks 
+and the services to be supplied, thereby minimizing delays in reaching the suitable health care unit. 
+Last but not least, the study will provide valuable insights that can inform healthcare policy decisions 
+and government progra mmes for implementing AI -driven maternal health monitoring and referral 
+services in Nigeria. 
+ 
+ 
+
+===== PAGE 19 =====
+ 
+7 
+ 
+1.7 Scope of the Study 
+The study is specifically directed towards the design and realization of an AI powered Web -Based 
+Maternal Health Monitoring for pregnant women in the context of the Nigerian healthcare system. The 
+system is set up for maternal care from registration to pregnancy monitoring up to postpartum care. 
+Through the system, patients will have the ability to safely input health data, including vital s igns, 
+pregnancy-related symptoms, fatal activity, mental health evaluations, and lab test results including 
+blood sugar, haemoglobin and urine protein. Patients will also have access to their health records, 
+health detection trends, and customised recommendations. Using clinical criteria, an AI based analytics 
+engine will be able to identify maternal complications such as pre-eclampsia, gestational diabetes, and 
+preterm labour based on reported symptoms and clinical data. It will produce risk assessments an d 
+suggest suitable actions that should follow, such as further testing, or consultation with health care 
+professionals. The system will also have a ‘referral recommendation service' based on patient's 
+location, risk assessment, and needed medical services.  Healthcare clinicians will be able to log 
+patients into a dashboard by risk category, alert them, view patient health trends and communicate with 
+them remotely. Administrators, midwives and obstetricians will be given role-based access. Technical 
+solutions implemented on the front end will be with React.js and Tailwind CSS, the back end with 
+Node.js and Express, the data store with PostgreSQL and the authentication and authorisation with 
+JWT. The application will be available for users to access via standa rd web browsers on computers, 
+tablets, and mobile devices, and will be a cloud -based web system. The research is constrained to a 
+working web based minimum viable product (MVP). Does not include SMS Notification Service, 
+Mobile Application for dedicated us e, Real -time IoT Data Streaming or integration with medical 
+devices. These features are not studied in the current research but can be investigated in further 
+enhancement. 
+ 
+
+===== PAGE 20 =====
+ 
+8 
+ 
+1.8 Definition of Terms 
+Maternal Health:  The health of women during pregnancy, chil dbirth, and the postpartum period, 
+encompassing physical, mental, and social well-being (WHO, 2023). 
+AI-Powered Maternal Health Monitoring System:  A web -based application that uses artificial 
+intelligence and rule-based systems to continuously track and analyse maternal health data throughout 
+pregnancy and postpartum for early detection of complications and recommendations for care. 
+Predictive Risk Analytics: The use of statistical techniques, machine learning algorithms, and rule -
+based systems to analyse c urrent and historical health data to predict future outcomes, enabling 
+healthcare clinicians to take proactive interventions (Davidson et al., 2023). 
+Pre-eclampsia: A pregnancy complication characterized by high blood pressure and signs of damage 
+to another organ system, most often the liver and kidneys, and a leading cause of maternal and infant 
+illness and death worldwide (ACOG, 2022). 
+Gestational Diabetes: A type of diabetes that develops during pregnancy and affects how the body 
+uses sugar, potentially causing complications for both mother and baby if not properly managed 
+(WHO, 2023). 
+Preterm Labour: Labour that begins before 37 weeks of pregnancy, leading to preterm birth and 
+associated health complications for the baby (ACOG, 2022). 
+Cardiotocography (CTG): A technical means of recording the fatal heartbeat and uterine contractions 
+during pregnancy and labour, used to assess fatal well-being. 
+Dashboard: An interactive visual interface that displays key performance indicators, metrics, and 
+analytical results in a format that is easy to understand and use for supporting clinical decision-making 
+(Siemens and Baker, 2012). 
+
+===== PAGE 21 =====
+ 
+9 
+ 
+Rule-based System:  A type of system that uses predefined rules based on clinical guidelines and 
+expert knowledge to make decisions or draw conclusions from data (Shortliffe and Buchanan, 2022). 
+Referral System: A mechanism that directs patients to appropriate healthcare facilities or specialists 
+based on their health needs, location, and risk level. 
+1.9 Organisation of the Thesis 
+The thesis comprises of six chapters. Chapter One sets the stage for a study, as it defines the 
+background of the study, statement of the problem, aim and objectives, research questions, 
+significance, scope and definition of terms. The next chapter (Two) is a literat ure review of pertinent 
+material relating to maternal health monitoring, digital health technologies, AI in healthcare, risk -
+assessment methods, referral systems and web -based health systems. Research Methodology is 
+described in Chapter Three, which comprised of system development approach, requirements analysis, 
+design, implementation and system testing strategies. The system design, architecture and 
+implementation structure are given in Chapter Four. The outcome of the testing and evaluation of the 
+system is presented in Chapter Five. The findings, conclusions, recommendations and suggestions for 
+future research are discussed in Chapter Six. 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+===== PAGE 22 =====
+ 
+10 
+ 
+CHAPTER TWO: LITERATURE REVIEW 
+2.1 Introduction 
+This chapter presents a review of literature relevant to the design and implementation of a web-based 
+maternal health monitoring and referral system. The review examines existing knowledge on maternal 
+health challenges in Nigeria, digital health technologies in maternal care, AI and machine learning 
+applications in maternal health, referral systems, and technological frameworks for developing web -
+based health systems. The chapter is organised into thematic sections that progressively build a 
+theoretical and practical foundation for the study. 
+2.2 Maternal Health Challenges in Nigeria 
+2.2.1 The Burden of Maternal Mortality 
+In Nigeria, maternal death is a serious public health problem and Nigeria has a substantial share of 
+maternal deaths worldwide. Nigeria made the 2023 progress of having a maternal mortality ratio  of 
+9.99% (with almost 15 times the Sustainable Development Goal Martha target of 7 per 100,000 live 
+births), meaning Nigeria accounted for about 28.5% of all maternal deaths in the world as of 2023 
+(WHO, 2023). In most developed countries, one person is l ikely to die due to childbirth causes while 
+in Nigeria it is 1 in 19. The high mortality rate is related to the multiplicity of factors such as poor 
+health system performances, limited access to skilled health professionals, access to emergency 
+obstetric services and socio-economic constraints that hinder women's capacity to access early health 
+care as quickly as they need (Okafor and Eze, 2023). It is further worsened by the inadequate health 
+personnel with only four health workers per 10,000 population, substantially lower than the minimum 
+WHO recommended of 23 per 10,000; Nigeria's health policy targets 24 per 10,000 but has not been 
+achieved. Maternal death can be attributed to the risk factors that have been documented in Nigeria: 
+e.g., haemorrhage, hypertensive disorders, sepsis, unsafe abortion, obstructed labour (Okafor and Eze, 
+2023). Most of these deaths are caused by eclampsia, haemorrhage and sepsis which are all preventable 
+
+===== PAGE 23 =====
+ 
+11 
+ 
+when early identified. These deaths are largely preventable because of missed opportunity for referrals, 
+costs and poor access to health services, especially in poor and rural areas. 
+2.2.2 Limitations of Traditional Maternal Health Monitoring 
+The traditional model of maternal health monitoring in Nigeria relies heavily on sched uled antenatal 
+visits and periodic check-ups. Only 43% of births in Nigeria are attended by a skilled health clinician, 
+and in rural areas, 60% of deliveries are conducted by Traditional Birth Attendants (TBAs). This 
+episodic approach has significant limit ations that become particularly pronounced in resource -
+constrained settings. 
+Dangerous conditions such as pre -eclampsia, gestational diabetes, and fatal distress often develop 
+gradually between scheduled appointments, and without continuous monitoring, these conditions may 
+progress to critical stages before detection (ACOG, 2022). Research in Lagos State recorded a maternal 
+mortality ratio of 1,645 per 100,000 live births between 2015 and 2019, with unregistered pregnancies 
+accounting for 72% of those deaths and almost 80% occurring outside a health facility. 
+Additionally, patient health information is frequently scattered across multiple systems including 
+hospital records, laboratory databases, and paper -based notes, preventing healthcare clinicians from 
+seeing the complete picture of a patient's health status (Federal Ministry of Health, 2022). Healthcare 
+clinicians often rely on manual, paper -based records that are difficult to access, share, and analyse, 
+leading to fragmented care delivery (Adebayo and Ad ebayo, 2023). A study at Orile Agege General 
+Hospital, Ile-Epo quantified care fragmentation at 88.2%, highlighting the siloed operations among 
+delivery facilities. 
+A midwife at a public hospital described the daily reality: "They come in, and you ask, 'Wh ere have 
+you been attending?' They mention one private hospital, or a midwife around them. And we have 
+nothing. No file, no record, no blood group sometimes, we are starting from zero while the woman is 
+
+===== PAGE 24 =====
+ 
+12 
+ 
+in pain in front of you”. This illustrates the critic al information gap that contributes to preventable 
+maternal deaths. 
+2.2.3 Chronic Disease as an Under-Addressed Driver of Maternal Risk 
+There is under addressing of chronic disease as a driver of maternal risk in Nigeria. In Nigeria, 19.1 
+million adults ha ve hypertension and almost 3 million adults suffer from diabetes, while the WHO 
+predicts that 20% of all fatalities will be preventable due to hypertension and diabetes. It is heavily 
+skewed towards women and untreated, chronic diseases greatly increase th e risk for complications 
+during childbirth. Additionally, the study revealed that 48% of the mothers surveyed were suffering 
+from nutrition-related anaemia, which is a serious condition that is often overlooked and is a major 
+mother mortality and morbidity  risk. These results show that the challenges associated with mental 
+health, chronic diseases, nutrient deficiencies, and other medical conditions that impact maternal health 
+must be addressed not just maternal obstetric emergencies. The need for a holisti c maternal health 
+monitoring system that is able to monitor multiple maternal health indicators beyond pregnancy -
+specific metrics is highlighted. 
+2.3 Digital Health Technologies in Maternal Care 
+2.3.1 Evolution of Digital Health in Maternal Care 
+Digital health technologies have revolutionized the way the health sector provides health services all 
+over the world, and have fully realized the potential to tackle some of the most enduring challenges in 
+maternal health. The penetration of technology and the use of mobile phones, coupled with government 
+resolve to transform the healthcare industry through the use of digital health technologies, has seen 
+Nigeria make strides with the adoption of digital technology (National Information Technology 
+Development Agency, 2021). During the COVID -19 pandemic, digital health adoption was further 
+accelerated and these technologies have shown their ability to provide continuity of care during public 
+health emergency situations. The Federal Government of Nigeria has reiterated  its resolve to pull up 
+
+===== PAGE 25 =====
+ 
+13 
+ 
+maternal and new -born health care system, with the implementation of the Federal government 
+initiative Maternal and Neonatal Mortality Reduction Innovation and Initiative (MAMII), which has 
+been in operation in 32 states of the fede ration. The service delivery component of the initiative is 
+focused on strengthening service delivery, the emergency obstetric/neonatal care component is focused 
+on enhancing emergency obstetric/neonatal care, and the referral component is focused on improving 
+referral systems. NHIA is improving financial access to Comprehensive Emergency Obstetric and 
+New-born Care (CEmONC) services to prevent the cost of care from being a deterrent for mothers and 
+newborns receiving lifesaving care. The coordinating minis ter for Health and Social Welfare has 
+reported that the programme has helped more than 32,000 women and 1,700 infants receive emergency 
+obstetric and neonatal services (EONS), resulting in the involvement of more than 250 health facilities. 
+The programme has been adopted by over 250 health facilities and helped to provide more than 32,000 
+women and 1,700 newborns emergency obstetric and neonatal (EONS) services since its launch, 
+according to the Coordinator of the Health and Social Welfare of the Republic. Sixty-one (612) 
+ambulances have been deployed in 340 LGAs, enhancing country-wide referral systems and the rapid 
+response capability. There are approximately 47,000 pregnant women who make up approximately 
+60% of the women transported through the programme, emphasizing its significant role in contributing 
+to the care of pregnant women. 
+2.3.2 Current AI Use in Maternal Health Solutions in Nigeria (AMHS) 
+There are a number of AI -based maternal health interventions launched in Nigeria to increase early 
+risk identification, raise awareness, surveillance, and timely referral efforts. MIHEI solutions and tools 
+leverage artificial intelligence (AI) based risk assessment and referral to link T. BAs to the right 
+healthcare clinician and to support the emergency response. Solayo Africa used the Moma bot to give 
+personalised pregnancy and postpartum guidance via the messaging platform WhatsApp, while 
+complex cases were handled by health care professionals. eHealth Africa in collaboration with 
+Jacaranda Health created th e PROMPTS platform, which provides SMS -based individually tailored 
+
+===== PAGE 26 =====
+ 
+14 
+ 
+maternal and newborn health information to women in Hausa and English. Likewise, the MHSDI 
+programme leverages EMERS AI to detect elevated-risk pregnancies, pull only the essential data from 
+clinical notes, and enable more expedient referrals and clinical preparation. There is also another 
+supplementary community -based maternal surveillance system comprising of traditional birth 
+attendants, primary health care centres and hospitals to monitor vital signs and detect danger signs and 
+facilitate timely referrals. In summary, these efforts highlight the promise of AI and digital tools in 
+enhancing access to maternal health care, identifying risks, disseminating health information, and 
+facilitating referrals in Nigeria. Nonetheless, there are opportunities to build an end-to-end web-based 
+system integrating patient self-monitoring, AI-driven risk assessment, healthcare-clinician dashboards, 
+and intelligent facility referral, in one comprehensive system. 
+2.3.3 Artificial Intelligence and Machine Learning to effectively predict risks 
+The powerful capabilities of machine learning have contributed greatly to predictive risk analysis, 
+offering the ability to detect patterns that are not clearly understoo d via other traditional statistical 
+techniques. Based on vital health indicators, the Maternal Risk Predictor is a machine learning -based 
+web application that estimates maternal health risk-Low, Moderate and High. The app is optimised to 
+be used in a low r esource setting with limited internet connectivity, and employs a Support Vector 
+Classifier to assign maternal risk scores. The application interface is intuitive and easy to use requiring 
+by few resources to train a community health worker, it is hence su itable for deployment by a 
+community health worker. Features: developing application with Streamlet, using a dataset with 
+features severe headache, blurred vision, swelling hands/face, vaginal bleeding, severe abdominal 
+pain, dizziness or fainting, low fat al movement, high stress, antenatal attendance. Five models were 
+trained and tested: Logistic Regression, Random Forest, Support Vector Classifier, Decision Tree, and 
+Gradient Boosting. The best classifier was the Random Forest Classifier, so it is chosen to be deployed. 
+The University of Benin is working on the Pathway for AI -Enabled Point -of-Care Ultrasound 
+(PATH4AI POCUS) Project in collaboration with the Kano State Contributory Healthcare 
+
+===== PAGE 27 =====
+ 
+15 
+ 
+Management Agency (KSCHMA), to enhance the early screening of hig h-risk pregnancies using AI 
+Ultrasounds at primary healthcare centres. Through the project funded by the Gates Foundation, the 
+programme is slated to improve care provided for pregnant women and their caregivers at the antenatal 
+clinics, improve transfer of care systems, and support early treatment for obstetrical complications. 
+2.4 Referral Systems for Maternal Health 
+2.4.1 Referral systems in maternal services 
+Referred women at facilities capable of treating their complications: Referral systems play a vital role 
+in ensuring that pregnant women with complications receive the care they need at facilities capable of 
+treating their complications. In Nigeria, referrals are one factor that contributes greatly to maternal 
+mortality. The inter -facility travel tim e to access emergency obstetric services from the 15 most 
+populated Nigerian cities revealed dissimilar proportions of facilities beyond 30 minutes from their 
+nearest public CEmOC facilities with non -CEmOC facilities being more than 30 minutes from their 
+nearest public CEmOC facilities in 51% (in Port Harcourt) to 6% (in Maiduguri) of the cities studied. 
+Creating the shortest and most efficient transport between health facilities that provide less than 
+CEmOC level care is a critical component to reaching pregnant women for timely access to the proper 
+care when an obstetric emergency requires referral. The study concluded that having the shortest & 
+most efficient referral pathway from health facilities of CEmOC is crucial in bringing a woman to 
+appropriate care if she has an obstetric emergency which calls for a referral. Also, the ease of travel to 
+receive the proper treatment might lead women to opt for travelling to neighbouring cities or even 
+states when they are pregnant. The MHSDI system helps overcome these obstacles through a one-tap 
+referral process, coordination of transport and readiness checks. The system will ensure that receiving 
+teams are ready to receive a mother when she arrives, minimizing “blind arrivals” and will enable 
+better transferring of teams. But, according to night -shift nurses; they report fewer nights when they 
+see someone pull up blind and hand-offs are more peaceful; and, based on site feedback from hospitals 
+that have implemented the system, they've noticed that the system starts  communication of patient 
+
+===== PAGE 28 =====
+ 
+16 
+ 
+details early in the day, that all patients transfer properly, and that everyone is prepared before the 
+doors open. 
+2.4.2 Integration of Traditional Birth Attendants (TBAs) 
+Traditional Birth Attendants play a significant role in maternal care in Nigeria, particularly in rural 
+areas where 60% of deliveries are conducted by TBAs. However, TBAs often lack formal training, 
+referral protocols, or access to emergency response systems. Integrating TBAs into formal ref erral 
+networks is critical for improving maternal outcomes. 
+The MIHEI solution transforms this dynamic by integrating TBAs into a structured, AI -enabled 
+referral network, ensuring pregnant women are quickly identified, triaged, and connected to hospitals 
+when high -risk symptoms arise. It also addresses affordability by enrolling them into a low -cost 
+maternal HMO, eliminating the need for large upfront payments that too often cost lives. The solution 
+leads to faster referrals, reduced emergency delays, and i mproved survival outcomes while 
+empowering TBAs as frontline actors in maternal care. 
+MIHEI conducted a needs assessment in 2024, surveying over 1,000 perinatal women and interviewing 
+over 80 Birth Attendants to identify barriers to quality maternal care. They have established a network 
+of over 500 Birth Attendants, providing valuable insights into community -based maternal healthcare 
+and developed data-driven recommendations for improving maternal health referral systems. 
+2.5 Technological Frameworks for Web-Based Health System 
+2.5.1 Architecture of Web-Based Health Monitoring Systems 
+The architecture of web -based health monitoring systems has evolved significantly, with modern 
+systems adopting modular, scalable designs that separate frontend and backend com ponents. This 
+separation of concerns facilitates development, maintenance, and scalability, which is particularly 
+important in health systems that must accommodate growing user bases and evolving clinical 
+requirements (Ogunyemi et al., 2023). 
+
+===== PAGE 29 =====
+ 
+17 
+ 
+The typical architecture of a web-based health monitoring system includes a frontend user interface, a 
+backend application server, and a database management system. The frontend, often built using 
+frameworks such as React.js, handles user interactions and presentation.  The backend, implemented 
+using Node.js or other server -side languages, processes requests, implements business logic, and 
+manages data storage. The database stores patient data, clinical records, and system configuration. This 
+three-tier architecture prov ides a solid foundation for developing scalable, maintainable health 
+applications. 
+The Maternal Risk Predictor project demonstrates a practical web -based health monitoring system 
+using Streamlet, a Python-based framework that enables rapid development of web applications from 
+machine learning models. The application uses a trained model serialised with joblib and deployed 
+through a simple web interface that accepts user inputs and displays predicted risk levels. This 
+demonstrates that effective health monitoring systems can be developed with a range of technologies, 
+depending on the project's specific requirements and available expertise. 
+2.5.2 Understanding the design of a database  
+In the context of health monitoring systems, especially involving sensitive patient data, effective data 
+management is crucial. The database needs to be structured to support a wide variety of data types, 
+such as demographic data, clinical measurements, symptoms, and risk assessments, as well as 
+providing data integrity, security , and access. (Adebayo and Adebayo, 2023). Health monitoring 
+systems are often implemented on relational databases like PostgreSQL, which are known for their 
+strength, data integrity capabilities, and ability to support complex queries. The schema design n eeds 
+to take into account the data types and relationships to be supported by the data repository. The key 
+tables that could be relevant for a maternal health monitoring system include patients, clinicians, vital 
+signs, symptoms, alerts, and risk assessmen ts. The design of each table should include correct fields, 
+data types, and constraints to promote quality and consistency in the data. The real -life example of 
+PROMPTS illustrates the significance of customizing data management for local contexts. The 
+
+===== PAGE 30 =====
+ 
+18 
+ 
+solution has been purpose built as an SMS based solution to overcome the limitations of internet 
+access. This shows the practicality required in the developing world where access to the internet is not 
+given. 
+2.5.3 Security and privacy considerations 
+Security in health information is a critical factor in building web-based health systems. Patient health 
+information is confidential, and should not be accessed, disclosed, or manipulated by those who do not 
+have permission. The systems will adhere to applicable data protection laws and put in place technical 
+and organisational safeguards to ensure data security (Adebayo and Adebayo, 2023). Authentication 
+and authorisation, data encryption, audit logging, and secure communication are some of the important 
+security features in web -based health systems. JWT (JSON Web Token) authentication is a widely 
+adopted authentication mechanism to validate the user identity and manage access to resources in a 
+system. Role Based Access Control (RBAC) allows only restricted access to data and functions 
+depending on the role. Solayo Africa encrypts user interactions and doesn't share data with third parties, 
+thus outperforming a lot of local compliance standards. In Africa, with evolving regulatory 
+frameworks, the handling of sensiti ve health data is still a big challenge for digital health platforms. 
+As part of the business model, the company is developing a commercial approach that will decrease 
+reliance on donor financing, which would make it less vulnerable to fluctuations in international aid. 
+2.6 Theoretical Framework 
+2.6.1 The Health Belief Model 
+The Health Belief Model (HBM) provides a theoretical foundation for understanding why individuals 
+engage in health -promoting behaviours, including the use of health monitoring systems. The model 
+proposes that individuals are more likely to take health -related actions if they perceive themselves as 
+susceptible to a health threat, perceive the threat as severe, believe that the benefits of action outweigh 
+the costs, and have confidence in their ability to take the action (Rosenstock, 1974). 
+
+===== PAGE 31 =====
+ 
+19 
+ 
+In the context of maternal health monitoring, the HBM suggests that pregnant women are more likely 
+to use a monitoring system if they perceive themselves at risk of pregnancy complications, believe that 
+monitoring can help prevent adverse outcomes, and feel confident in their ability to use the system. 
+This framework has implications for system design, suggesting that features should be intuitive and 
+accessible, that the system should clearly communicate risks and benefits, and that education and 
+support should be provided to build user confidence. 
+2.6.2 Technology Acceptance Model 
+The Technology Acceptance Model (TAM) offers a framework for understanding user adoption of 
+technology, proposing that perceived usefulness and perceived ease of use are the primary determinants 
+of technology acceptance (Davis, 1989). Perceived usefulness refers to the degree to which a user 
+believes that using the technology will improve their performance, while perceived ease o f use refers 
+to the degree to which the user believes that using the technology will be effort-free. 
+For the proposed maternal health monitoring system, TAM suggests that adoption will be influenced 
+by whether healthcare clinicians perceive the system as useful for improving patient care and whether 
+they find it easy to use. Similarly, pregnant women will be more likely to use the system if they perceive 
+it as useful for monitoring their health and if the system is easy to use. The success of platforms like  
+Moma, which is built on WhatsApp to leverage existing user familiarity, demonstrates the importance 
+of perceived ease of use. 
+2.7 Conceptual Framework 
+This study's conceptual framework combines the main elements of the proposed Web-based maternal 
+health m onitoring and referral system. The framework has been developed based on the literature 
+review and is guided by the theories referred to above. The five components of the framework are data 
+input, AI-powered analysis, risk assessment, decision support and outcomes. Electronic data input 
+encompasses patient reported symptoms and test results, demographic data and medical history. Rule 
+
+===== PAGE 32 =====
+ 
+20 
+ 
+Based Analysis is the use of algorithms and machine learning models to analyse patient data and 
+predict potential complicatio ns, which is aided by AI. Risk Assessment determines a risk level 
+according to proven clinical guidelines. Decision support contains the clinician dashboard with lists of 
+patients stratified by risk, real-time alerts and recommendations for referrals. The benefits of outcomes 
+are improved early identification of potential complications, timely referrals and lowered maternal 
+mortality and morbidity. The framework will be adopted based on the philosophy of Health Belief 
+Model, which proposes that if there is a risk of complications to monitored and if patients believe that 
+monitoring can help to prevent adverse outcomes the health system should be effective. It also draws 
+from the Technology Acceptance Model that highlights the patients' and clinicians' percep tions of 
+usefulness and ease to use. 
+2.8 Summary of Literature Review 
+The works covering the maternal health challenges in Nigeria were reviewed to provide context and 
+background information, and also looked at digital health technologies in maternal care, AI and 
+machine learning application in maternal health, and technolog ical framework of web -based health 
+systems. The review shows that Nigeria is having a major problem with maternal health monitoring as 
+the country has high maternal mortality rates, maternal health care inequality and access to quality 
+maternal health care coverage gaps persist.  
+Traditional monitoring strategies are limited by their episodic nature, and the high workload of the 
+healthcare clinicians makes it challenging to find at-risk patients in time. The opportunities offered by 
+digital health technolog ies, including AI -powered platforms, could help to meet some of these 
+challenges and enable continuous monitoring, enhance access to care and aid clinical decision making. 
+The success of digital health solutions in resource -poor contexts is illustrated by the development of 
+community-based surveillance systems, like MIHEI, Moma, PROMPTS, MHSDI, and the 
+community-based surveillance network developed by Okiemute Obodo. 
+
+===== PAGE 33 =====
+ 
+21 
+ 
+ AI and machine learning hold potential for prediction of maternal risk and have demonstrated high 
+accuracy in predicting women at highest risk. Referral systems, especially those that involve TBAs in 
+established systems, are crucial for providing timely access to suitable care. The theoretical framework 
+combines the HBM and TAM to give an understanding of the factors affecting technology uptake for 
+health monitoring. This study has several gaps identified in the literature. 
+ First, there is need for having  a comprehensive web -based system that integrates with AI powered 
+system which combined with the Nigerian context can deliver Referral recommendations. 
+ Second, because existing solutions typically address only part of the intervention maternal care, 
+whereas a comprehensive solution addresses monitoring, analysis and referral.  
+Third, for a variety of reason, the postpartum period is overlooked in monitoring systems, with major 
+health concerns including the resulting complications.  
+Lastly, many solutions r ely on technology uptake and literacy levels that are higher than in low -
+resource environments, making adoption more difficult. 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+===== PAGE 34 =====
+ 
+22 
+ 
+CHAPTER THREE: RESEARCH METHODOLOGY 
+3.1 Introduction 
+This chapter gives the research methodology used in the design, deve lopment and evaluation of the 
+designed Web-based maternal health monitoring system (WMHS) for the Nigerian context . The 
+methods have been used in the context of the research goals outlined in Chapter One (section 1.4) and 
+research questions outlined in section 1.5. The study falls within the Design Science Research (DSR) 
+paradigm because the study contribution is an innovative information-systems artefact which addresses 
+a documented practical problem (Hevner et al., 2004; Peffers et al., 2007) which in this case is the 
+challenges of fragmented antenatal monitoring, delayed reporting of obstetric danger signs, and weak 
+digital support for referral between homes, primary facilities and emergency obstetric centres. Selected 
+System Development Life Cycle (SDLC) practices  were adopted to ensure that requirements, 
+architecture, implementation and testing are traceable (Pressman and Maxim, 2015; Sommerville, 
+2016). It consists of the following chapters: research design; system development approach; 
+requirements analysis; arc hitecture and technology selection; implementation strategy; clinical risk -
+engine design; testing and evaluation; ethical considerations; and a chapter summary. 
+3.2 Research Design 
+3.2.1 Justification of Design Science Research 
+According to Peffers et al. (2007), DSR is a six-activity process, ranging from problem identification 
+to communication of an evaluated artefact. Hevner et al. (2004)  state that the right knowledge 
+production mode is DSR when the researcher is creating and testing an IT artefact that  is designed to 
+address a class of problems in an organisation.  There are four reasons why that attitude was taken.  
+First, the research product is not a questionnaire study of practice, it's a research patient portal, clinician 
+dashboard, application programming interfaces, relational database and clinical engine.  Third, DSR 
+enables iterative cycles of build–evaluate, aligning itself with Agile methodology for building a health 
+
+===== PAGE 35 =====
+ 
+23 
+ 
+information system (Schwaber and Sutherland, 2020).  Fourth, eva luation can involve technical 
+verification and applying demonstration to antenatal workflows, but not diagnosing disease or 
+substituting a clinician. 
+3.2.2 Six-Phase DSR Process 
+ 
+3.3 System Development Approach 
+The construction was developed within the design -and-development activity, which is done in Agile 
+Scrum (Schwaber and Sutherland, 2020). For this reason, Scrum was selected as the tool, as the clinical 
+rules, content of interfaces, and data fields became m ore understandable when prototypes were used 
+to ensure adherence to the World Health Organization (WHO), the American College of Obstetricians 
+and Gynaecologists (ACOG) and the National Institute for Health and Care Excellence (NICE) 
+thresholds (ACOG, 2020; NICE, 2019; WHO, 2016). It was going to be done in four two-week sprints. 
+Figure 1: Six-phase design science research process applied to the web-based maternal health 
+monitoring system 
+
+===== PAGE 36 =====
+ 
+24 
+ 
+At the end of each sprint there was a measurable step and a review of the step to the requirements in 
+Section 3.4. The sprint focus is summarised in figure 2. 
+ 
+Figure 2: Agile Scrum sprint structure used to implement WMHS. 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+
+===== PAGE 37 =====
+ 
+25 
+ 
+Table 1: Sprint Structure and Principal Deliverables 
+Sprint Focus Principal deliverables 
+1 Foundations Prisma/PostgreSQL schema; NextAuth credentials 
+login; role -based route groups; registration with last 
+menstrual period (LMP) to estimated date of delivery 
+(EDD) 
+2 Clinical records Symptom log; test entry and Cloudinary file upload; 
+patient dashboard; WHO eight -contact antenatal care 
+(ANC) schedule 
+3 Decision support and 
+referral 
+TypeScript risk engine; alerts and notifications; 
+Haversine facility matching; referral lifecycle; health 
+assistant 
+4 Hardening and 
+demonstration 
+Clinician caseload and notes; SMS stub pathway; Vitest 
+suites; Vercel/Neon deployment; seed data 
+ 
+Note. ANC = antenatal care; EDD = estimated date of delivery; LMP = last menstrual period; SMS = 
+short message service. 
+ 
+ 
+ 
+ 
+
+===== PAGE 38 =====
+ 
+26 
+ 
+Table 2: Development Tools Used in This Study 
+Purpose Tool 
+Language and runtime TypeScript 5, Node.js 20+, JavaScript 
+(compiled) 
+Application framework Next.js 14 (App Router), React 18 
+Styling and visualisation Tailwind CSS, Recharts, Framer Motion, Leaflet 
+/ OpenStreetMap 
+Authentication NextAuth.js (JSON Web Token, HTTP -only 
+cookie), bcryptjs (12 salt rounds) 
+Validation Zod 
+Persistence Prisma 5, PostgreSQL 16 on Neon (serverless 
+driver adapter) 
+Media Cloudinary (laboratory PDF, JPG, PNG) 
+Optional offline machine-learning artefact Python, scikit-learn (ml/train_model.py) — not 
+used at runtime 
+Quality ESLint, Vitest 
+Version control and hosting Git/GitHub, Vercel 
+ 
+Note. HTTP = Hypertext Transfer Protocol; PDF = Portable Document Format. 
+
+===== PAGE 39 =====
+ 
+27 
+ 
+3.4 Requirements Analysis 
+3.4.1 Data Collection Methods 
+Requirements were collected using the technique of triangulation, which involves conducting 
+document studies, existing maternal-health technologies reviews, and scenario-based walk-through of 
+Nigerian antenatal journeys. No primary surve y of patients or midwives was done, the limitation is 
+stated in Section 3.9 and in Chapter Five. Document analysis. Clinical guidelines and policy documents 
+were used to establish evidence -based monitoring protocols, danger signs and data protection 
+responsibilities. Table 3 summarises the key documents. 
+Table 3: Documents Analysed for Requirements 
+Document Use in requirements 
+WHO (2016) recommendations on antenatal 
+care (eight-contact model) 
+ANC schedule, visit timing, routine 
+surveillance language 
+WHO (2017) obstetric danger signs / 
+managing complications 
+Symptom catalogue and emergency overrides 
+ACOG (2020) Practice Bulletin No. 222 on 
+hypertensive disorders 
+Systolic/diastolic blood -pressure thresholds 
+(140/90; 160/110) and pre-eclampsia pattern 
+NICE (2019) guideline NG133, hypertension 
+in pregnancy 
+Complementary blood -pressure and review -
+urgency bands 
+WHO (2011) haemoglobin concentrations for 
+the diagnosis of anaemia 
+Anaemia alerts (< 11 g/dL; severe < 7 g/dL) 
+
+===== PAGE 40 =====
+ 
+28 
+ 
+National Information Technology 
+Development Agency (2019) Nigeria Data 
+Protection Regulation 
+Consent, purpose limitation, access control 
+NPC and ICF (2019) Nigeria Demographic 
+and Health Survey 2018 
+Problem framing for coverage, delay, and 
+facility-based delivery 
+ 
+Note. ACOG = American College of Obstetricians and Gynaecologists; NICE = National Institute for 
+Health and Care Excellence; WHO = World Health Organisation. 
+Review of existing systems. An analysis of existing maternal health tech nologies was conducted to 
+identify practices worth retaining and limitations that WMHS should address (Table 4). 
+Table 4: Review of Existing Maternal-Health Technologies 
+Class of system Strengths observed Gaps addressed by WMHS 
+SMS / USSD reminder 
+programmes 
+Wide reach on basic phones Limited structured vitals, no 
+clinician caseload, no 
+documented risk rationale 
+Facility electronic medical 
+record / DHIS-style reporting 
+Aggregate coverage statistics Weak patient-facing logging 
+between visits 
+Consumer pregnancy 
+applications 
+Usable diaries and education Rarely aligned to WHO 
+danger signs, Nigerian data 
+protection, or facility referral 
+Standalone machine-learning 
+classifiers on public tables 
+High reported accuracy on 
+synthetic or public datasets 
+Often not deployable on a 
+serverless web host; missing 
+values may be treated as 
+normal 
+ 
+
+===== PAGE 41 =====
+ 
+29 
+ 
+Note. DHIS = District Health Information Software; SMS = short message service; USSD = 
+Unstructured Supplementary Service Data. 
+Scenario-based requirements analysis. Six journeys were specified to represent typical and emergency 
+antenatal paths. They were later reused as evaluation cases (Section 3.8.4). Table 5 lists the scenarios. 
+Table 5: Analysis Scenarios Used to Derive and Validate Requirements 
+ID Scenario Design implication 
+S1 Routine antenatal visit, complete vitals, no 
+danger signs 
+Must classify LOW; ANC 
+schedule remains routine 
+S2 Raised blood pressure with headache Must not remain LOW; pre -
+eclampsia screen may open 
+S3 Emergency-range blood pressure (for example 
+165/112 mmHg) 
+Must force HIGH and emergency-
+style recommendations 
+S4 Severe headache with blurred vision Neurological combination must 
+force HIGH 
+S5 Vaginal bleeding or reduced fatal movement Single danger sign must force 
+HIGH regardless of numeric score 
+S6 Hyperglycaemia (≥ 140 mg/dL; ≥ 200 mg/dL) MEDIUM or HIGH plus 
+gestational-diabetes screen 
+ 
+Note. Risk classes are LOW, MEDIUM, and HIGH as implemented in the clinical engine. 
+
+===== PAGE 42 =====
+ 
+30 
+ 
+Validation of requirements. Identified requirements were compared with the guideline documents in 
+Table 5 and walked through scenarios S1–S6 before the engine was frozen.  
+Figure 3 shows the resulting use cases for the two primary actors. 
+ 
+ 
+Figure 3: Use-case diagram of WMHS showing patient and clinician actors and core system 
+behaviours. 
+ 
+ 
+ 
+ 
+
+
+===== PAGE 43 =====
+ 
+31 
+ 
+3.4.2 Functional Requirements 
+Functional requirements were grouped by module and user role (Table 6). 
+Table 6: Functional Requirements by Module 
+Module ID Requirement 
+Identity FR-01 Users register as PATIENT or CLINICIAN; 
+passwords hashed; duplicate email rejected 
+Identity FR-02 Credential login issues a time-limited JSON 
+Web Token in an HTTP-only cookie 
+Identity FR-03 Middleware blocks unauthenticated access 
+to patient and clinician routes and enforces 
+role separation 
+Identity FR-04 Password-reset tokens expire after 30 
+minutes, are single -use, and do not reveal 
+whether an email exists 
+Patient profile FR-05 Store demographics, LMP, EDD (Naegele’s 
+rule), parity, height/weight, location, and 
+pre-existing conditions 
+Clinical capture FR-06 Patients log symptoms (type, severity 1–5, 
+notes) and numeric tests with optional 
+laboratory-file upload 
+Risk engine FR-07 Recalculate risk after symptom or test writes 
+using fourteen features plus contextual 
+modifiers 
+Risk engine FR-08 Output LOW/MEDIUM/HIGH, a 0–1 score, 
+contributing factors, missing vitals, and 
+recommendations 
+Risk engine FR-09 Emergency rules override the numeric 
+score; screens for pre-eclampsia, gestational 
+diabetes, and preterm labour 
+Alerts FR-10 Open alerts for triggered complications and 
+abnormal recorded vitals (including 
+anaemia and proteinuria) 
+
+===== PAGE 44 =====
+ 
+32 
+ 
+Notifications FR-11 Notify the patient and assigned clinicians on 
+HIGH assessments; optional SMS stub on 
+critical alerts 
+ANC FR-12 Generate the WHO eight -contact schedule 
+from LMP; mark attendance; keep elapsed 
+visits overdue until ticked 
+Referral FR-13 Rank facilities by Haversine distance, 
+emergency capability, and service match; 
+track referral status 
+Clinician FR-14 Caseload list, risk distribution, patient chart, 
+clinical notes, and alert acknowledgement 
+Assistant FR-15 Knowledge-based answers with escalation 
+flags for danger -sign questions (not a 
+diagnostic model) 
+Auditability FR-16 Persist each assessment with source label 
+GUIDELINE_ENGINE or RULE_BASED 
+ 
+Note. FR = functional requirement. JSON Web Token sessions expire after eight hours in the 
+implemented system. 
+ 
+ 
+ 
+ 
+ 
+ 
+
+===== PAGE 45 =====
+ 
+33 
+ 
+3.4.3 Non-Functional Requirements 
+Non-functional requirements determine quality, security, performance, and reliability (Sommerville, 
+2016). They are summarised in Table 7. 
+Table 7: Non-Functional Requirements 
+Quality attribute Specification used in this study 
+Usability Role-specific portals; large tap targets; risk colour coding; language 
+that does not claim diagnosis 
+Performance Interactive page and API cycles suitable for demonstration use 
+(target under three seconds on the development workstation) 
+Scalability Serverless application (Vercel) and pooled PostgreSQL (Neon) 
+Security Transport Layer Security in production; bcrypt hashing; Zod 
+validation; role-based access; rate limits; least-privilege records 
+Availability Hosted platform with managed database backups and connection 
+pooling 
+Maintainability Typed full-stack codebase; modular clinical, alert, and auth libraries; 
+automated unit tests 
+Accessibility / 
+constrained networks 
+Standard browser client; responsive layout; no specialised clinical 
+hardware 
+Clinical safety Missing vitals never imputed as normal; system labelled as decision 
+support only 
+Note. API = application programming interface. 
+
+===== PAGE 46 =====
+ 
+34 
+ 
+3.5 System Architecture Design 
+WMHS uses a three-tier architecture that separates the user interface, application processing, and data 
+storage (Pressman & Maxim, 2015). This separation makes the system easier to secure, maintain, and 
+scale. Figure 4 shows the design. 
+ 
+Figure 4:  Three-tier architecture of WMHS: presentation (Next.js 14 / React 18), application 
+(Next.js Route Handlers), and data (Prisma / Neon PostgreSQL). 
+
+
+===== PAGE 47 =====
+ 
+35 
+ 
+Presentation tier. Next.js App Router is used for rendering public pages, patient portal, and clinician 
+portal. The map, forms and charts are handled by the Client Components while Server Components 
+load the caseload and risk summaries.  Application tier. Rather, Route Handlers under app/api create 
+REST endpoints. If there is not a separate Express.js process.  This tier supports NextAuth, payload 
+validation, clinical risk engine, facility ranking, notifications, ANC attendance, uploads an d the 
+assistant. Data tier. PostgreSQL on Neon store's identity, obstetric profile, symptoms, tests, 
+assessments, alerts, referrals, notifications, clinical notes, ANC attendance, outbound SMS stubs and 
+password-reset tokens. The object-relational mapper is called Prisma. The database is accessed via the 
+Neon serverless driver adapter with a pooled connection string. 
+3.5.1 Technology Stack Selection 
+The stack was chosen so that one TypeScript codebase could describe forms, API payloads, and 
+database records, and so that production inference would not require Python on the hosting platform. 
+Table 8 presents the stack and the selection rationale. 
+Table 8: Technology Stack and Selection Rationale 
+Layer Choice Rationale 
+User interface Next.js 14, React 18, Tailwind 
+CSS 
+Server-rendered clinical pages, 
+responsive layout, single 
+deployable 
+API Next.js Route Handlers Same process as the user interface; 
+no extra origin or Express host 
+Authentication NextAuth JSON Web Token 
+and bcryptjs 
+Cookie session, role claims, hashed 
+secrets 
+Validation Zod Shared schemas for registration, 
+login, symptoms, tests, and referrals 
+
+===== PAGE 48 =====
+ 
+36 
+ 
+Object-relational 
+mapping / database 
+Prisma 5, PostgreSQL 16 
+(Neon) 
+Relational integrity, UUID keys, 
+cloud backups, serverless pooling 
+Files Cloudinary Laboratory attachments without 
+storing blobs in PostgreSQL 
+Maps Leaflet / OpenStreetMap Nearby facilities without a paid 
+map dependency at runtime 
+Scoring TypeScript weighted ensemble Explainable, deterministic, runs on 
+Node.js 
+Optional machine 
+learning 
+scikit-learn Random Forest Methodological artefact only; not 
+loaded at request time 
+Hosting Vercel and Neon HTTPS, continuous integration on 
+git push, managed PostgreSQL 
+ 
+Note. UUID = universally unique identifier. 
+3.5.2 Database Design 
+A relational model was chosen due to the fact that maternal records are strongly typed, referential 
+integrity is important (a referral must have a valid facility), and cascade rules are in place to delet e 
+patients' clinical rows if the account is deleted. Identifiers are unique identifiers that are universal. Lists 
+like risk factors, recommendations, services provided etc. are saved as text, serialised in application 
+code. Secondary indexes are present on role, foreign keys, risk level, assessment time, referral  status 
+and alert status and severity. The entity-relationship diagram is shown as figure 5.  
+ 
+ 
+ 
+
+===== PAGE 49 =====
+ 
+37 
+ 
+ 
+ 
+Principal cardinalities are as follows: User –Patient and User–Clinician are exclusive one -to-zero-or-
+one relationships by role; Patient –Clinician is many -to-many through Patient Assignment; a patien t 
+owns one-to-many clinical rows with cascade delete; a facility receives one-to-many referrals. 
+ 
+ 
+Figure 5: Entity-relationship diagram of the WMHS database showing identity, clinical, and 
+coordination entities. 
+ 
+
+===== PAGE 50 =====
+ 
+38 
+ 
+3.6 Implementation Strategy 
+The system was implemented in phases so that each layer could be verified before the next depended 
+on it (Table 9). 
+Table 9: Implementation Sequence 
+Phase Work Exit criterion 
+1 Schema, indexes, seed facilities and 
+demonstration users 
+Prisma schema applied; relations 
+visible 
+2 Authentication, role -based middleware, 
+validated payloads 
+Unauthenticated routes redirect; 
+duplicate email returns HTTP 409 
+3 Symptoms, tests, uploads, ANC Records persist; laboratory files 
+optional 
+4 Risk engine, alerts, notifications, SMS 
+stub 
+Scenarios S1–S6 produce expected 
+classes 
+5 Referrals, map, clinician chart, assistant End-to-end referral and caseload 
+flows 
+6 Tests and cloud deployment Automated unit tests pass; 
+production build succeeds 
+ 
+Coding standards. Functional React components, App Router layouts, consistent, utility -first 
+stylesheet, and accessible labels were all used for the frontend.  There are still very few backend 
+handlers, with domain logic distributed amongst libraries for domain engine, domain alerts, domain 
+authenticator, and domain helpers.  Environment variables a re used for Configuration.  The Prisma 
+client is pooled for serverless usage. 
+ 
+ 
+
+===== PAGE 51 =====
+ 
+39 
+ 
+3.7 Clinical Risk-Engine Design 
+Decision support is not a large language model and is not a diagnostic model - the answer is clinical 
+triage. Production inference is done in typeScript. Random Forest can be trained offline with synthetic 
+data the artefact is not serialised and loaded at runtime.  The in -application assistant is a keyword 
+knowledge base with an escalation flag and is NOT the risk engine. 
+3.7.1 Model Selection and Justification 
+Maternal triage should include mixed continuous vitals and binary danger signs, safe behaviour on 
+small demonstration caseloads and inspectable reasons why it is appropriate for the midwife to read 
+(WHO 2016 2017). A reasonable prediction m ethod is the Random Forest, it handles non -linear 
+combinations of mixed features well, is suitable for tabular data, and is not prone to overfitting.  The 
+production design uses a weighted ensemble, following a forest style combination based on 
+coefficients aligned to the clinical reference ranges for WHO, ACOG and NICE (ACOG, 2020; NICE, 
+2019; WHO, 2016) and hard clinical overrides. No numerical value or score can "outvote" the 
+emergency obstetric signs because serverless Node.js is not based on the Python runtime; therefore, 
+weights are weights published for each sign, and incomplete signs are common.  We would cover up 
+risk if we said that 28 "normal" readings of blood pressure 99/69 were "normal."  If no data is entered 
+in a worksheet column for any vital, then it is considered "incomplete" and does not contribute 
+anything. 
+3.7.2 Features, Weights, and Data Preparation 
+Fourteen predictors are highly selected from maternal age, latest matching test results and recent 
+symptoms. Features and production weights are provided in table 10. The fourteen inputs are not the 
+same as gestational age, BMI, or parity as these are used to modify the factor list and the complication 
+screens. There are narrative factors, as well as a small score boost from pre-existing hypertension and 
+diabetes and a sickle-cell history. 
+
+===== PAGE 52 =====
+ 
+40 
+ 
+ 
+Table 10: Clinical Engine Features and Production Weights 
+     
+No model is inferred from a production if the file is labelled as a hospital file and is not a production.  
+If no matching test is found, then the vital is not segmented so it is skipped and recorded as 
+"incomplete" and recommended for capture. No imputation is applied and there is no default for the 
+clinical data. Severity is stored from 1 to 5; engine danger signs o ccur at a severity of at least 1.  
+Features continue to be housed in clinical units. The optional Random Forest can be trained on 2,000 
+
+
+===== PAGE 53 =====
+ 
+41 
+ 
+synthetic rows (with random seed 42), an 80/20 stratified split with balanced class weights, 200 trees, 
+and maximum depth 8. The hold-out metrics from that generator are not considered clinical accuracy. 
+3.7.3 Scoring, Classification, and Screens 
+Partial scores are summed and clamped to the closed interval from 0 to 1. The level is HIGH if the 
+score is at least 0.55, or if vaginal bleeding, reduced fatal movement, systolic pressure of 160 mmHg 
+or more with diastolic pressure of 110 mmHg or more, severe headache plus blurred vision, 
+hypertensive blood pressure (140/90 mmHg or more) with headache, visual change or oedema, or 
+glucose of 200 mg/dL or more is present. The level is MEDIUM if the score is at least 0.28 or glucose 
+is 140 mg/dL or more. Otherwise, the level is LOW (ACOG, 2020; NICE, 2019; WHO, 2017). 
+When the result is not LOW, screens may trigger for pre-eclampsia, gestational diabetes, and preterm 
+labour. An emergency screen is added for classic danger signs. Recommendations return suggested 
+tests, actions, a care plan, and urgency (monitor, consult, or emergency). HIGH or emergency results 
+are labelled RULE_BASED; o therwise, GUIDELINE_ENGINE. Supporting calculations shown to 
+users include Naegele’s estimated date of delivery, gestational age in weeks, mean arterial pressure, 
+body-mass index, and the WHO eight-contact ANC timetable (WHO, 2016). Figure 6 summarises the 
+pipeline. 
+
+===== PAGE 54 =====
+ 
+42 
+ 
+ 
+Figure 6: Clinical risk-engine pipeline from record collection through scoring, emergency overrides, 
+complication screens, persistence, and alerts. 
+3.8 System Testing and Evaluation 
+Evaluation in DSR should demonstrate that the artefact works and that it is solving the problem stated 
+(Hevner et al., 2004). This study includes technical verification (automated unit tests and scripted 
+scenarios) and workflows demonstrated on seeded accounts. Formal field usability trials with antenatal 
+clients were not undertaken; this is shared as a limitation. 
+ 
+
+
+===== PAGE 55 =====
+ 
+43 
+ 
+3.8.1 Unit Testing  
+The implementation of the unit tests is done using Vitest. The risk engine (LOW baseline, missing 
+blood pressure is not treated as normal, emergency HIGH, pre-eclampsia pattern, glucose MEDIUM, 
+history boost, severity -1 bleeding counting), vital -sign alert rules (only alerts on recorded tests), 
+clinical helpers (Naegele's rule, mean arterial pressure, gestational weeks) and ANC schedule (contacts 
+remaining undercut count as such until attended).  
+3.8.2 Integration and System Testing  
+Register and log a symptom and persist an assessment across tiers; update the dashboard after logging 
+blood pressure; limit a clinician to their patients; open an alert on  a high-risk case; sort facilities by 
+kilometres; and round-trip referral status. System testing includes functional behaviour with the Table 
+3.7, performance against clinical scenarios S1 –S6, security (middleware, guards), qualitative 
+performance on the development workstation, and a heuristic usability analysis of labels, empty states, 
+risk colour and mobile width.  
+3.8.3 Usability and Performance  
+Simulated tasks ranged from registering to logging symptoms, reading risk and recommendations, 
+opening referrals and reviewing a clinician caseload. Problems with the implementation (diagnostic 
+wording, tap targets, highlighting of HIGH language) were addressed and corrected in an iterative 
+fashion. Future work is suggested as performing a measured System Usability Scale survey in clinics. 
+Qualitative timing of operations was: login, rendering of the dashboard, symptom submit with risk 
+persistence, Haversine sort of the seeded facility list, and the clinician chart. Load tests are 
+recommended for formal testing prior to multi-facility roll-out.  
+3.9 Ethical Considerations  
+Patient health information is sensitive information. To align with the Nigeria Data Protection 
+Regulation (National Information Technology Development Agency, 2019), the following controls 
+
+===== PAGE 56 =====
+ 
+44 
+ 
+were designed in the artefact as well as in the manner of conductin g the research. The following 
+controls were designed into the artefact and the research process:  
+Confidentiality and privacy of data. Access is limited through authentication & assignment. Only 
+bcrypt hashes are used to store passwords. HTTPS is used for Production traffic. Assessment and alert 
+actions continued. Demonstration seed accounts are not real accounts, they are used for learning 
+purposes only.  
+Informed consent and purpose limitation. There is an acknowledgment of terms required for 
+registration. Data is not collected for other than antenatal monitoring, triage and referral support. The 
+regulation provides the users with the right to request for deletion of account and data as an operational 
+policy.  
+Research ethics. There was no primary data collection with human subjects. Secondary and synthetic 
+records and seed data are used for demonstration. Findings are reported using anonymous patient 
+information. WMHS is not a clinic or a replacement for a clinician or for dispatching emergency 
+transport. 
+3.10 Summary of Methodology  
+This chapter placed the study in the category of Design Science Research (DSR) (Hevner et al., 2004; 
+Peffers et al., 2007), with the help of Scrum and SDLC documentation. Requirements were obtained 
+from the data-protection sources (Nigerian), WHO, ACOG, and six clinical scenarios. It is a 3 -layer 
+next.js app with a Postgres database, a risk engine written in TypeScript following guidelines, and 
+explicit emergency overrides. Loss of data is not "masked" as a "normal" value. The evaluation process 
+involves unit testing, scenario checks, and demonstrating workflow, all of which are reported in 
+implemented format in Chapter Four. 
+ 
+
+===== PAGE 57 =====
+ 
+45 
+ 
+CHAPTER FOUR: EXPERIMENTS & RESULTS 
+4.1 Introduction 
+The chapter focuses on the implementation of the ma ternal health monitoring system (WMHS) in a 
+web-based application and on the results of verification. It covers the programming languages and 
+tools to use, the deployment environment, the realisation of the three -tier architecture outlined in 
+Chapter Three, the clinical risk engine, the security controls, functional testing, feature demonstration 
+and deployment. 
+Implementation included the development of a presentation tier with patient/ clinician portals, an 
+application tier with the REST APIs, authentication, risk scoring and risk/ referral matching, and a data 
+tier with users, clinical records, assessments, alerts and referrals. The system put in place is a decision 
+support system to support a clinician with a disease diagnosis or emergency tra nsport, rather than to 
+diagnose disease or to replace a clinician or emergency transport (WHO, 2017). 
+4.2 Programming Languages 
+The UI and the server-side API is written mainly in TypeScript. The static type checking helps prevent 
+integration failures between screens and endpoints, and the clinical fields like risk level, score and user 
+role are directly captured in the source code. The runtime language generated from TypeScript is 
+JavaScript (ECMAScript 6 and later), which has asynchronous request handling  that is ideal for 
+concurrent logins, symptom submissions and risk recalculation. 
+The optional, offline, Random Forest training script is written in Python. The Vercel deployment does 
+not require a Python runtime as Production inference does not load the P ython or serialised joblib 
+artefact. Prisma generates SQL that is used to interact with the PostgreSQL database. 
+ 
+ 
+
+===== PAGE 58 =====
+ 
+46 
+ 
+4.3 Development Tools and Frameworks  
+• Frontend. Marketing site, authentication pages, patient portal and clinician dashboard are 
+rendered using Next.js 14 (App Router) and React 18. Tailwind CSS creates a uniform look 
+across all screens, Framer Motion adds page transitions, and recharts visualizes risk distribution 
+for the clinician-on-clinician chart, while Leaflet visualizes the clinician's n earby facilities on 
+OpenStreetMap. 
+• Backend. No separate server like express.js, Route Handlers implement the REST endpoints 
+that are then returned from the runtime node.js. They use NextAuth.js for login, compare their 
+passwords with bcryptjs and validate their registration, login, symptoms, tests, profile changes, 
+referral status and payloads with Zod, while the eight -hour expiry is handled with JSON Web 
+Token (JWT). The object-relational mapper is called Prisma 5. 
+• Data and media. It's backed by PostgreSQL  on Neon, with connection pooling and backups. 
+Cloudinary saves laboratory files (PDF, JPG and PNG up to 8 MB) and numeric files are saved 
+even if not provided. 
+Clinical decision support. Production scoring is now applied in TypeScript, based on a weighted  
+ensemble following guidelines similar to those used by the WHO, ACOG, and NICE, including rule -
+based deviations from the norm (emergencies) and complication screens (ACOG; 2020; NICE; 2019; 
+WHO; 2016). The optional scikit -learn Random Forest trainer will not be called when the request is 
+made. The tools used to support it were Visual Studio Code, Git and GitHub, npm, environment -
+variable configuration, Prisma Studio and Vercel. 
+ 
+ 
+
+===== PAGE 59 =====
+ 
+47 
+ 
+4.4 Hardware Requirements 
+The development and testing are performed on the following computer: Intel Core i7 -10750H 
+processor, 16 GB RAM and 512 GB solid-state-drive with operating system Windows 11 Pro (64-bit). 
+Production with cloud infrastructure: The Next.js app is deployed on Vercel and the PostgreSQL DB 
+is hosted on Neon. The end user needs to have an up-to-date Web browser and a broadband connection 
+– no specialized clinical equipment is required on the client. 
+4.5 Software Requirements 
+Table 11: Software Requirements for Development and Production 
+ 
+
+
+===== PAGE 60 =====
+ 
+48 
+ 
+4.6 System Architecture Implementation 
+The system was designed and developed following the three-tier architecture as mentioned in chapter 
+three. Actors access the system via a web browser on HTTPS. There are some JSON REST requests 
+sent from the presentation tier to the application tier. Prisma is used by the application tier to read and 
+write to the database. An architecture has been implemented, as shown in figure 7. 
+ 
+Figure 7:  Implemented system architecture of WMHS showing presentation, application, and data 
+tiers realised with Next.js, Prisma, and Neon PostgreSQL. 
+
+
+===== PAGE 61 =====
+ 
+49 
+ 
+4.7 Frontend Implementation 
+The front-end is structured into Next.js route groups. Public routes are marketing home page, login, 
+register, password resets. Patients have access to a dashboard, a symptom log, an entry and upload of 
+test results, risk results, history, WHO eight-contact ANC attendance, a referral (with map and printable 
+letter), a contextual health assistant, and management of their profile. The clinician portal includes a 
+caseload dashboard, patients list and detail, alerts, refer ral management, clinical notes and an SMS 
+pathway log. The patient dashboard includes the current risk level and score, gestational age based on 
+last menstruation period (Naegele's rule), parity, any alerts, recent symptoms and tests, and any 
+referrals that are still open. Assigned patients will be displayed on the clinician dashboard along with 
+their current risk, a breakdown of high-risk cases, pending referrals and alerts, and a risk-distribution 
+chart. The patient dashboard implemented is presented in figure 8. 
+Figure 8: Patient portal dashboard showing risk indicator, gestational age, and recent records. 
+ 
+
+===== PAGE 62 =====
+ 
+50 
+ 
+The symptom submission is done via POST /api/symptoms. Once the symptom is validated, it is stored 
+and the risk engine is run based on the latest symptom and test(s) from the patient. The handler then 
+provides the new symptom, the assessment which  was stored and the result of the engine back to the 
+client, so that the client can proceed to the risk-results page. The recalculation process is the same for 
+test writes. 
+4.8 Backend Implementation 
+The backend is a set of Next.js Route Handlers rather than a standalone Express application. Figure 9 
+shows the API architecture. 
+ 
+Figure 9: API architecture showing presentation clients, authentication, clinical endpoints, and the 
+data layer. 
+
+
+===== PAGE 63 =====
+ 
+51 
+ 
+4.9 Database Implementation 
+The schema for the PostgreSQL database was created for Chapter Three design, following the Prisma 
+schema file. Identifiers are unique identifiers. The clinical fields in the application that are collections 
+of text or structured objects (including hierarchical ) are stored as text and serialised in application 
+code. The entity-relationship diagram of the implemented database is given in figure 10. Changes to 
+schema are made using Prisma. Foreign keys, role, risk level, assessment time, referral status, and alert 
+status and severity have secondary indexes. 
+ 
+Figure 10: Entity-relationship diagram of the implemented WMHS database. 
+
+
+===== PAGE 64 =====
+ 
+52 
+ 
+Table 12: Principal Data Relationships Implemented in Prisma 
+ 
+Note. There is no separate one-to-one recommendation profile table. Recommendations are stored on 
+each RiskAssessment row. 
+Figure 11 shows representative records from the Patient, Symptom, and RiskAssessment tables, 
+consistent with the seeded demonstration data. 
+
+
+===== PAGE 65 =====
+ 
+53 
+ 
+ 
+Figure 11: Sample records from the Patient, Symptom, and RiskAssessment tables in the seeded 
+demonstration database. 
+4.10 Clinical Engine Implementation 
+The maternal health monitoring system′s production inference is run through a deterministic 
+TypeScript clinical engine. The engine doesn't use a dynamically loaded machine learning model at 
+runtime, but instead is a weighted ensemble. It mimics a combination of features from vital signs and 
+risk signs to produce real -time risk assessment close to the Random Forest approach. The feature 
+coefficients and approach to weighting are explicitly guide d by published, evidence -based, clinical 
+thresholds and guidelines (ACOG, 2020; NICE, 2019; WHO, 2016), and are not taken from a private, 
+proprietary dataset of labelled clinical information in hospitals. This artefact could be trained offline 
+for comparis on purposes or for further research, but it will not be loaded into or executed in the 
+
+
+===== PAGE 66 =====
+ 
+54 
+ 
+production environment with Python. This architectural approach allows transparent, explainable and 
+consistent inferences in front line maternal care. 
+4.10.1 Feature Extraction 
+The feature extraction process creates a 14-dimensional feature vector from patient's maternal age, the 
+last matching laboratory test results and latest symptom report information specifying the level of 
+symptom severity as at or above the value "1 . Missing vital signs are clearly indicated as missing in 
+the dataset, rather than defaulting to a normal blood pressure, so that a missing blood pressure doesn't 
+appear as a normal blood pressure. Main risk scores are followed by contextual modifiers such  as 
+gestational age (based on LMP), BMI (poses a risk if overweight or obese), grand multiparity (poses 
+a risk if parity ≥ 5) (WHO 2016). The features are summarised in table 13 as implemented in the 
+Clinical engine. 
+Table 13: Features Used by the Implemented Clinical Risk Engine 
+ 
+Note. History, BMI, parity and gestational age are considered contextual modifiers because they do 
+not form part of the fourteen-weight feature vector but they are contextual. 
+
+
+===== PAGE 67 =====
+ 
+55 
+ 
+4.10.2 Scoring, Classification, Screens, and Persistence 
+Each of these features is given some weight and the sum of the partial scores is scaled to the range [0, 
+1] with respect to the recorded features. This numeric score along with the hard emergency rules in 
+Section 3. 7.3 is combined to determine classification. If clinically required, the engine carries out 
+focused screening for pre-eclampsia, gestational diabetes and premature labour and can even prompt 
+a screening when there's a case of emergency. The engine then pro vides recommendations such as 
+suggested diagnostics tests and interventions, a brief care plan, and a band of urgency (monitor, 
+consult, emergency). Patient and assigned clinicians will receive automatic alerts and in -application 
+notifications through a High-risk classification. Test results are captured independently and can cause 
+the generation of specific alerts for abnormal vital signs, anaemia and proteinuria as per pre -defined 
+clinical thresholds (WHO, 2011). Critical alerts also create an SMS stub th at can be asserted for the 
+notification path without depending on a live SMS vendor. The clinical pipeline implemented is 
+summarised in figure 12. 
+
+===== PAGE 68 =====
+ 
+56 
+ 
+ 
+Figure 12:  Implemented clinical risk-assessment pipeline from feature extraction to persistence and 
+alerts. 
+The optional training script can learn a scikit-learn Random Forest classifier with 200 trees, maximum 
+depth of 8 and class weights balancing classes from synthetic data (2000 rows, 80/20 train / test split) 
+and then dump the learned model to a joblib file. That file is created by the product specification and 
+is not on the path to the product production request. Hold -out accuracy reported here represents only 
+clinical performance, and is not included for any accuracy which is integrated by the script itself into 
+the synthetic generator. 
+ 
+
+
+===== PAGE 69 =====
+ 
+57 
+ 
+4.11 Security Implementation 
+4.11.1 Authentication and Authorisation 
+The system is secure with an established authentication and authorisation procedure. When users log 
+in, they enter their e-mail address and password, and the payload is verified by Zod for integrity of the 
+data. The user record is then pulled from the NextAuth and the submitted password is checked against 
+the one stored in the NextAuth's bcrypt hash. If verified successfully an  8-hour JSON Web Token 
+(JWT) is issued and placed as HTTP-only cookie to prevent cross-site scripting (XSS) attack. 
+Middleware protects all patient and clinician routes, and will enforce authentication of users and, if 
+applicable, authorisation of roles to access API handlers. Role Based Access Control (RBAC) provides 
+an additional security element so that clinicians will only have access to patients that are theirs. This 
+authentication and authorisation flow is shown in figure 13. 
+ 
+Figure 13: Authentication and authorisation flow using NextAuth.js, bcrypt password verification, 
+JSON Web Token cookies, and role-based middleware. 
+
+
+===== PAGE 70 =====
+ 
+58 
+ 
+4.11.2 Data Security Measures 
+The system has a number of security measures in place to safeguard confidential patient 
+information, which can be summarised as follows: 
+• Password Hashing: Bcryptjs with 12 rounds of salt. Only the resulting password hash is stored 
+in the User table, so no plain text is stored.  
+• HTTPS / Transport Layer Security: Secure com munication is enforced in production with 
+Vercel – all data in transit is encrypted. Input validation:  
+• Zod schemas are used for authentication and clinical payloads which protect from injection 
+attacks and malformed data submissions.  
+• Registration and Password reset endpoints are protected from brute force attacks with an in -
+memory rate limiter. Ensuring access to only those resources that are authorized by a user's 
+role, users are controlled with Role Based Access Control (RBAC) using JSON Web Token 
+roles, edge middleware and API guards.  
+• Session Control: Sessions are controlled by eight -hour tokens and are logged out with 
+NextAuth.  
+• Password Reset: Single-use tokens are given for password reset, valid for 30 minutes. The API 
+responses are maintained in generic format to avoid disclosure of information.  
+• Access to Records: Only the patient's data are accessible to the patient; clinicians are only able 
+to see their own caseload data.   
+All these controls work together to ensure the confidentiality and integrity provisions required in 
+the Nigeria Data Protection Regulation (National Information Technology Development Agency, 
+2019). 
+
+===== PAGE 71 =====
+ 
+59 
+ 
+4.12 Results of Testing 
+Automated Vitest suites for the engine, vital rules and clinical helpers were us ed for the verification, 
+along with functional (black -box) tests against the implemented routes and user interfaces of the 
+seeded demonstration accounts. Coverage percentages are not claimed for end -to-end user-interface. 
+The tests below show that the implemented modules act as described in Chapter Three. 
+4.12.1 Unit Testing Results 
+There was a need to test the individual components to ensure appropriate function, in particular the 
+clinical risk engine and associated modules were tested. Table 14 shows some typical results when the 
+automated units are tested automatically, illustrating that each module responds correctly to certain 
+controlled inputs. 
+Table 14: Representative Automated Unit-Test Results 
+ 
+Note. These statements assert the behaviour that has been implemented in unit inputs. They are not on 
+an external labelled clinical dataset. 
+
+
+===== PAGE 72 =====
+ 
+60 
+ 
+4.12.2 Functional Testing Results 
+Functioning test was performed on the seeded system to ensure that all system modules are functioning 
+within their specified requirements. Twenty functional test cases for the registration, authentication, 
+authorisation, symptom reporting, risk assessment, alerts, referrals, and other core modules were 
+presented in table 15. 
+Table 15: Functional Test Results on the Seeded System 
+ 
+Note. The 20 functional cases passed on the seeded system. Failure to validate and authorise were 
+identified as rejected requests. 
+
+
+===== PAGE 73 =====
+ 
+61 
+ 
+4.12.3 Integration Testing Results 
+Integration testing performed to test entire workflows that involve the presentation, application and 
+data tiers. The outcome of end-to-end workflow tests are shown in Table 16. 
+Table 16: End-to-End Workflow Results 
+ 
+4.12.4 Performance Observations 
+The production stack is serverless (Vercel) and uses a hosted (Neon) PostgreSQL database. Informal 
+performance testing done on the dev server revealed that interactive page loads and API responses 
+were always within about 2 seconds. These checks included: Rendering of the dashboard; submission 
+of symptoms with risk persistence; sorting of the list of nearby facilities over the seeded facility list. 
+The observations show that the operations implemented are appropriate to be used interactively in  a 
+clinical setting at a demonstration scale. In larger facility settings, however, it is advisable to do formal 
+load testing with published tool before deployment. 
+ 
+
+
+===== PAGE 74 =====
+ 
+62 
+ 
+Table 17: Qualitative Performance on the Development Workstation 
+4.13 Patient Registration Flow 
+The patient registration interface is shown in figure 14. The person logs into the registration page, 
+selects patient role and feeds in identity and obstetric information such as last menstrual period. The 
+server does the fol lowing: Hashes the password, makes the User and Patient rows, calculates the 
+estimated date of delivery, and can set a clinician. User then logs in and is shown to the patient 
+dashboard. 
+ 
+Figure 14: Patient registration interface of WMHS. 
+
+
+===== PAGE 75 =====
+ 
+63 
+ 
+4.14 Symptom Submission and Risk Analysis 
+The symptom form and the risk -results page are seen in Figure 15. The patient chooses a 'typical 
+pregnancy symptom' and a 'severity' 1-5 and can also type in notes and submit the form. The API will 
+store symptoms, execute risk engine, and the interface will show level, score, contributing factors, 
+missing vitals, care plan, and suggested tests/actions. 
+ 
+Figure 15: Symptom submission form 
+
+
+===== PAGE 76 =====
+ 
+64 
+ 
+ 
+Figure 16: Risk-result display after engine execution. 
+4.15 Clinician Dashboard  
+ 
+Figure 17: Clinician dashboard showing caseload statistics, risk distribution, and alerts. 
+ 
+
+===== PAGE 77 =====
+ 
+65 
+ 
+Figure 4.10 shows the clinician caseload dashboard. Low-risk patients are emphasised through counts, 
+colour, and an alert feed. A risk-distribution chart summarises.  
+4.16 Deployment 
+All of the Next.js application, including the UI and API routes, are depl oyed to Vercel. The project 
+repository is connected to Vercel with production environment variables set on Vercel dashboard. A 
+build and a deployment are automatically triggered with every push to the main branch. During 
+dependency installation, such as when installing Prisma, Prisma Client gets created to make sure that 
+the database access is configured properly. 
+Neon is the host for the PostgreSQL database, which is operating PostgreSQL 16. After the project has 
+been initialized, the database schema is applied via Prisma and demonstration user and facility records 
+are added via the seed script. In a serverless architecture, connection pooling is used to enable efficient 
+database connections and scalability. Cloudinary is used for cloud storage and manageme nt of 
+laboratory files. The overall deployment architecture is shown in Figure 18. 
+ 
+Figure 18: Deployment architecture of WMHS on Vercel, Neon PostgreSQL, and Cloudinary. 
+
+
+===== PAGE 78 =====
+ 
+66 
+ 
+4.17 Summary 
+In this chapter, the implementation of WMHS as an application built using Next.js with three -tier 
+architecture was introduced. It includes Prisma and PostgreSQL for data management, NextAuth for 
+secure authentication, a clinical risk engine for maternal risk assessment, WHO ei ght contact ANC 
+tracking, and Haversine matching for healthcare referrals. 
+Twenty functional cases and automated unit tests were passed on the seeded system. Vitals that are 
+missing were reported as "dangerous" not assumed to be "normal" and clinical scenario testing verified 
+that emergency danger signs are classified as a HIGH risk. The implementation was documented using 
+diagrams of architectures and interface figures. WMHS is not a replacement for professional or 
+emergency obstetric care, but is used as a clinical decision support tool for monitoring and referral for 
+antenatal care (WHO 2017) 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+===== PAGE 79 =====
+ 
+67 
+ 
+CHAPTER FIVE: CONCLUSION  
+5.1 Introduction 
+This chapter wraps up the communication activity in the Design Science Research (DSR) process as 
+suggested by Peffers, Tuunanen, Rothenberger and Chatterjee (2007). It summarizes the study and 
+presents how much the study aims of Chapter one (Section 1.4) were realized. The major findings of 
+the study are also presented in the chapter to provide a summ ary of the challenges identified in 
+Nigeria's weak digital referral systems and fragmented antenatal monitoring systems. In addition, it 
+expands on the limitations of the study, the conclusions and recommendations for practice and further 
+research. 
+The chapter is presented in the following order: Summary of the study; attainment of the research 
+objectives; Summary of the findings; Discussion of the findings; Limitations of the study; Conclusion; 
+Recommendations to stakeholders that were identified; Suggesti ons for further research; Brief 
+statement of contribution of the study to knowledge. 
+5.2 Summary of the Study 
+This study aimed to tackle issues that affect maternal health care in Nigeria such as incomplete 
+antenatal care (ANC) contacts, delayed detection of obstetric danger signs, and deficient digital 
+assistance for referral. The aim was to develop, deploy and test a Web Maternal Health Monitoring 
+System (WMHS) for antenatal monitoring and offer a location -based facility refer solution as a 
+decision supporting solution, in addition to a risk triage solution as per guidelines. 
+The overall research protocol adopted was Design Science Research (DSR) and the development 
+process was identified with the adoption of Agile Scrum Methodology and the selected System  
+Development Life Cycle (SDLC) Practices. It has been developed using Next.js, React, Prisma, Neon 
+PostgreSQL, NextAuth and Cloudinary and follows the WHO/ACOG/NICE guidelines. Major 
+
+===== PAGE 80 =====
+ 
+68 
+ 
+features included were 8 -contact ANC monitoring, uploads of lab results a nd location-based facility 
+matching of clinical-risk assessment. 
+The system was subjected to structure, function and integration testing as well as testing on clinical 
+situations. The 20 test cases were successfully executed along with the specified clinic al situations. 
+The design and testing work entail the design of a functional digital system that would be used in an 
+antenatal monitoring, risk triage and referral in a maternal health environment in Nigeria. 
+5.2.1 Achievement of Research Objectives 
+Within the evaluation horizon as defined in Section 3.8, all five research objectives in Section 1.4 have 
+been met. The requirements analysis and the system design, development and evaluation discussed in 
+Chapters Three and Four have been developed to address the objectives. 
+• A review of relevant guidelines, policies and existing maternal -health technologies was used 
+to achieve Objective 1, supplemented by six antenatal-care scenarios. This led to 16 functional 
+requirements and eight non-functional requirements being specified. 
+• Objective 2 was achieved through the design of a three -tier architecture comprising the 
+presentation, application and data tiers. The architecture was designed to support patient and 
+clinician workflow whilst maintaining data integrity, which was achieved through Prisma and 
+PostgreSQL. The implementation of a deterministic clinical risk engine in TypeScript was 
+achieved as part of  
+• Objective 3. The engine evaluates the risk of pregnancy, identifies observations that are missing 
+and triggers emergency rules for a selection of obstetric risk factors, according to relevant 
+guidelines from WHO, ACOG and NICE. The following strategies were used to achieve  
+• Objective 4: antenatal monitoring, role-based access, clinical data capture, laboratory uploads, 
+risk alerts, clinician caseload management and location -based facility referral. Additional 
+features include ANC scheduling, referral tracking and printable referral documentation. 
+
+===== PAGE 81 =====
+ 
+69 
+ 
+• Objective 5 was achieved through unit, functional and integration tes ting, as well as eight 
+clinical scenario checks. On the seeded system, all 20 functional test cases, seven integration 
+workflows and eight clinical scenarios were successfully passed. But load testing and clinical 
+field-based usability evaluation were not included as part of this study. 
+In general, it can be concluded that all five objectives were met in the study within the scope of the 
+technical and evaluation boundaries set. 
+Table 18: Research Questions and the Evidence Used to Address Them 
+ 
+5.3 Summary and Discussion of Findings 
+A summary of the findings and a discussion of the findings are provided. This section summarizes the 
+findings and discusses them. The findings of the study in Table 19 are primarily related to the design, 
+implementation and ‘as claimed’ (verified) use of the Web-based Maternal Health Monitoring System 
+(WMHS). They do not represent epidemiology data of a clinical population and are descriptive results 
+of the creation of the artefact and not of the clinical population. 
+The study revealed that the need of a system could be systemically determined based on relevant WHO, 
+ACOG and NICE guidelines, Nigerian requirement of data protection and the antenatal care scenario. 
+
+
+===== PAGE 82 =====
+ 
+70 
+ 
+The requirements were not used in mak ing conclusions about the final acceptance in the real clinical 
+setting as this was not possible due to the lack of primary user surveys in the system design and 
+evaluation. 
+The adoption of the three -tier architecture – Next.js, Prisma, and PostgreSQL – was successful in 
+handling patient data, performing clinical assessments, informing healthcare professionals, and 
+monitoring subsequent ANC visits, while maintaining data integrity and security. 
+The deterministic clinical risk engine also achieved the perfor mance required. Without danger signs, 
+routine cases were categorized as LOW and if the baby's blood pressure was in the emergency range, 
+or if the mother had vaginal bleeding or a decreased fatal movement, these cases were classified as 
+HIGH. Where the BP was not recorded it was not deleted from the data and was clearly marked as 
+missing, not normal. The results of these tests provide evidence for correct implementation of the 
+defined rules, but do not provide evidence of clinical diagnostic accuracy. 
+Among other findings of the study, key antenatal workflows were shown to be able to run within the 
+same system. These consisted of patient registration, ANC scheduling, symptom and test recording, 
+risk assessment, alerts, clinician caseload management, facility  ranking and tracking of referrals. 
+Proper access rights for roles prevented patient data from being allowed to be in the hands of 
+unauthorised people. 
+The changes in wording, navigation and presentation of high-risk information were sufficient for main 
+tasks to be accomplished successfully for interface testing. A formal System Usability Scale evaluation 
+was however not done. 
+Finally, at demonstration scale informal performance observations on the development workstation 
+indicated that important operations  were completed in an interactive time. This helps verify overall 
+appropriateness for the system's small seeded caseload, but formal load and performance testing would 
+have to be performed prior to rolling it out to a variety of health care clinicians 
+. 
+
+===== PAGE 83 =====
+ 
+71 
+ 
+Table 19: Summary of Principal Findings 
+ 
+5.4 Contribution to Knowledge 
+The contribution of this study to the design and implementation of maternal -health decisions can be 
+discussed under three main research areas. 
+• One, it shows an in tegrated method of antenatal monitoring and referral. The Web -based 
+Maternal Health System (WMHS) integrates the collection of symptoms and tests between 
+visits, clinician caseload, alerts, monitoring of the WHO 8 contacts of the antenatal care, and 
+
+
+===== PAGE 84 =====
+ 
+72 
+ 
+location-based referral to facilities all into one web-based system. This shows the potential for 
+the functions that are usually carried out separately being connected with each other into a 
+wider maternal health information system. 
+• Second, the study provides a  new and explainable method of antenatal risk assessment. The 
+risk engine implemented is not based on a black box model using machine learning alone, it is 
+based on a risk engine that has guideline-based rules and emergency overrides based on WHO, 
+ACOG and NICE guidance. Clinical observations that are not recorded in the record will be 
+identified as incomplete, not normal and in fact indicating a high -risk status does not make a 
+person a clinical risk; the clinical risk is indicated by the guidance. This pr ovides a design 
+approach for transparency and Interpretability of Digital Antenatal decision support. 
+• Thirdly, the study presents a traceable way for evaluating maternal -health software artefacts. 
+Guidance-based requirements were developed based on the rel evant guidance, policies and 
+antenatal scenarios and then evaluated using unit, functional and integration as well as clinical-
+scenario tests. This offers a framework connectivity between identified requirements, system 
+implementation and verification. 
+In summary, the study is a contribution to designing a web-based integrated, explainable and testable 
+maternal-health decision -support system. The contribution does not imply a clinical diagnostic 
+accuracy or an improvement in maternal outcomes/effectiveness in actual clinical use of the artefact, 
+only technical functionality and evaluation of the artefact. 
+5.5 Limitations of the Study 
+ The study has its own limitations. The study has certain limitations. 
+The results of this study should be viewed in light of the following limitations: 
+• First, no clinical field trial was done. The evaluation did not include the assessment of clinical 
+uptake, delay in uptake or maternal health outcomes. 
+
+===== PAGE 85 =====
+ 
+73 
+ 
+• Second, a test was performed on seeded demonstration accounts and synthetic records. Thus, 
+the results reflect the behaviour of the system implemented in the test data and do not 
+necessarily reflect the behaviour of the system in real clinical data. 
+• Thirdly, there was no external labelled clinical data set to test the ri sk engine. The evaluation 
+therefore demonstrates the proper application of the rules specified, and does not establish 
+diagnostic accuracy. 
+Lastly, there are still a few restrictions on some operational aspects. The SMS notification pathway is 
+a demonstration stub, the facility directory is populated with seeded data and does not rely on a national 
+database and the system is not connected to platforms like DHIS2 or electronic medical -record 
+systems. WMHS is therefore designed as a decision support tool and is not to diagnose disease, be a 
+substitute for health care professionals or serve for emergency transport. 
+5.6 Conclusion 
+In summary, this research was successful in developing, implementing and testing an online maternal 
+health system that supports anten atal care monitoring, risk triage, and referral to facilities in the 
+Nigerian setting. The Web -based Maternal Health Monitoring System (WMHS) developed by the 
+authors incorporates a patient portal and a clinician portal; it provides a risk assessment based  on 
+clinical guidelines; it enables the WHO eight-contact antenatal care (ANC) schedule to be followed; it 
+generates alerts; and it ranks referrals to facilities based on location in a single, three-tier architecture. 
+Unit testing of the OMHS, 20 functional test cases, integration workflow testing, and clinical scenario-
+based testing demonstrated that all components of the (WMHS) function as expected on the seeded 
+version of the system. Additionally, the OMHS was able to identify missing vital observations and 
+classify as high risk those conditions identified as obstetric danger signs. Although this study does not 
+provide evidence of clinical diagnostic accuracy nor does it demonstrate a reduction in maternal 
+mortality, delay of referral, or other maternal health indicators, such findings would need to be 
+substantiated through clinical and community-based evaluations. 
+
+===== PAGE 86 =====
+ 
+74 
+ 
+5.7 Recommendations 
+The following recommendations are based upon what was found during this study and its limitations. 
+• Clinical field evaluation: The system will undergo clinical field evaluation in both primary 
+healthcare settings and referral facilities. This is to determine its usability, how well it 
+integrates into current work flow processes, and the practical value of the system. 
+• The involvement of health care professionals such as midwives, nurses, and other relevant 
+professionals will be involved with providing validation for system requirements, interface 
+design, and output of risk-assessments. 
+• Further validate the risk engine: Any expansion of the risk engine should be based on 
+appropriately validated clinical datasets, while maintaining emergency safety rules and 
+avoiding the treatment of missing clinical measurements as normal values. 
+Healthcare facilities should use WMHS as a  decision-support tool rather than a replacement for 
+professional clinical judgement. Emergency referral should not be delayed because of an 
+application's risk classification, and women should continue to attend scheduled antenatal 
+appointments and seek appropriate medical care when danger signs occur. 
+5.8 Suggestions for Further Research 
+Future research should extend the present Design Science Research cycle from technical 
+demonstration to real-world and clinical evaluation. 
+Further studies could assess us ability among antenatal clients and healthcare professionals using 
+structured measures such as the System Usability Scale, task completion time and error rates. The risk 
+engine could also be validated prospectively using de -identified Nigerian clinical rec ords and 
+clinician-adjudicated outcomes, with particular attention to false -negative emergency classifications 
+and incomplete clinical observations. 
+
+===== PAGE 87 =====
+ 
+75 
+ 
+Future researchers could investigate SMS or USSD -based data capture for women with limited 
+smartphone or in ternet access, as well as offline -capable functionality for areas with unreliable 
+connectivity. Research could also examine interoperability between WMHS and existing health 
+information and reporting platforms. 
+Finally, longitudinal or quasi -experimental s tudies could investigate whether digital antenatal 
+monitoring and location -based referral influence referral processes and the time taken to seek care 
+when danger signs occur. If machine -learning approaches are introduced in future work, they should 
+be evaluated against the existing rule-based engine and subjected to appropriate clinical validation and 
+safety procedures before consideration for production use 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+===== PAGE 88 =====
+ 
+76 
+ 
+REFERENCES 
+Adebayo, A. and Adebayo, B. (2023) 'Digital health technologies and maternal care in Nigeria: 
+Opportunities and challenges', Journal of Health Informatics in Developing Countries, 17(2), pp. 45–
+62. 
+American College of Obstetricians and Gynecologists (ACOG)  (2020) Practice Bulletin No. 222: 
+Gestational hypertension and preeclampsia. Washington, DC: ACOG. 
+American College of Obstetricians and Gynecologists (ACOG) (2022) Practice Bulletin No. 222: 
+Gestational hypertension and preeclampsia. Washington, DC: ACOG. 
+Davidson, L., Smith, J. and Johnson, K. (2023) 'Predictive risk analytics in maternal health: A 
+systematic review', Journal of Biomedical Informatics, 140, 104–115. 
+Davis, F.D. (1989) 'Perceived usefulness, perceived ease of use, and user acceptance of i nformation 
+technology', MIS Quarterly, 13(3), pp. 319–340. 
+Federal Ministry of Health (2022) National Digital Health Policy and Strategy . Abuja: Federal 
+Ministry of Health, Nigeria. 
+Hevner, A.R., March, S.T., Park, J. and Ram, S. (2004) 'Design science in information systems 
+research', MIS Quarterly, 28(1), pp. 75–105. 
+National Information Technology Development Agency (NITDA) (2019) Nigeria Data Protection 
+Regulation. Abuja: NITDA. 
+National Information Technology Development Agency (NITDA) (2021) National Digital Economy 
+Policy and Strategy. Abuja: NITDA. 
+National Institute for Health and Care Excellence (NICE) (2019) Hypertension in pregnancy: 
+diagnosis and management. NICE guideline NG133. London: NICE. 
+
+===== PAGE 89 =====
+ 
+77 
+ 
+National Population Commission (NPC) (2022) Nigeria Demographic and Health Survey 2022. Abuja: 
+NPC and ICF. 
+National Population Commission (NPC) and ICF (2019) Nigeria Demographic and Health Survey 
+2018. Abuja: NPC and ICF. 
+Ogunyemi, O., Adebayo, T. and Okafor, C. (2023) 'Web-based health monitoring systems: Architecture 
+and implementation considerations', International Journal of Medical Informatics, 175, 105–118. 
+Okafor, C. and Eze, P. (2023) 'Maternal health challenges in Nigeria: A systematic review', African 
+Journal of Reproductive Health, 27(3), pp. 89–104. 
+Peffers, K., Tuunanen, T., Rothenberger, M.A. and Chatterjee, S. (2007) 'A design science research 
+methodology for information systems research', Journal of Management Information Systems , 24(3), 
+pp. 45–77. 
+Pressman, R.S. and Maxim, B.R. (2015) Software engineering: A practitioner's approach . 8th edn. 
+New York: McGraw-Hill. 
+Rosenstock, I.M. (1974) 'Historical origins of the health belief model', Health Education Monographs, 
+2(4), pp. 328–335. 
+Schwaber, K. and Sutherland, J. (2020) The Scrum Guide: The definitive guide to Scrum: The rules of 
+the game. Available at: https://scrumguides.org (Accessed: 20 September 2026). 
+Shortliffe, E.H. and Buc hanan, B.G. (2022) 'Rule -based expert systems in medicine', Artificial 
+Intelligence in Medicine, 118, 102–115. 
+Siemens, G. and Baker, R.S. (2012) 'Learning analytics and educational data mining: Towards 
+communication and collaboration', in Proceedings of the 2nd International Conference on Learning 
+Analytics and Knowledge, pp. 252–254. 
+
+===== PAGE 90 =====
+ 
+78 
+ 
+Sommerville, I. (2016) Software engineering. 10th edn. Boston: Pearson. 
+World Health Organisation (WHO) (2011) Haemoglobin concentrations for the diagnosis of anaemia 
+and assessment of severity. Geneva: WHO. 
+World Health Organisation (WHO) (2016) WHO recommendations on antenatal care for a positive 
+pregnancy experience. Geneva: WHO. 
+World Health Organisation (WHO) (2017) Managing complications in pregnancy and childbirth: A 
+guide for midwives and doctors. 2nd edn. Geneva: WHO. 
+World Health Organisation (WHO) (2023) Trends in maternal mortality 2000 to 2020. Geneva: WHO. 
+ 
+ 
