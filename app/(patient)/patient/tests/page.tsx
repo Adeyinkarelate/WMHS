@@ -17,7 +17,7 @@ export default async function TestsPage({
   const { patient } = await getPatientContext();
   const tests = await prisma.testResult.findMany({
     where: { patientId: patient.id },
-    orderBy: { testDate: "desc" },
+    orderBy: [{ testDate: "desc" }, { createdAt: "desc" }],
   });
 
   return (

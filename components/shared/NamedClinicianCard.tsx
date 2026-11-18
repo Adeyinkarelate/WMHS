@@ -19,7 +19,8 @@ export function NamedClinicianCard({
         <>
           <h3 className="mt-2 font-heading text-h3 text-navy">{clinicianName}</h3>
           <p className="mt-1 text-sm text-ink-muted">
-            {[clinicianFacility, bookedFacility].filter(Boolean).join(" · ") || "Named antenatal clinician"}
+            {Array.from(new Set([clinicianFacility, bookedFacility].filter(Boolean))).join(" · ") ||
+              "Named antenatal clinician"}
           </p>
         </>
       ) : (

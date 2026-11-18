@@ -14,6 +14,9 @@
 # production
 /build
 
+# pptx generator vendor (local only)
+.pptx_vendor/
+
 # misc
 .DS_Store
 *.pem
@@ -43,3 +46,7 @@ next-env.d.ts
 # prisma
 prisma/*.db
 prisma/*.db-journal
+
+# python bytecode
+__pycache__/
+*.pyc

@@ -40,8 +40,8 @@ export default async function ProviderPatientPage({ params }: Ctx) {
     include: {
       user: true,
       bookedFacility: { select: { name: true } },
-      symptoms: { orderBy: { submissionDate: "desc" }, take: 10 },
-      testResults: { orderBy: { testDate: "desc" }, take: 10 },
+      symptoms: { orderBy: [{ submissionDate: "desc" }, { createdAt: "desc" }], take: 10 },
+      testResults: { orderBy: [{ testDate: "desc" }, { createdAt: "desc" }], take: 10 },
       riskAssessments: { orderBy: { assessedAt: "desc" }, take: 6 },
       alerts: { orderBy: { alertedAt: "desc" } },
       referrals: { include: { facility: true }, orderBy: { referredAt: "desc" } },

@@ -14,8 +14,9 @@ export async function runAndStoreRisk(patientId: string) {
     where: { id: patientId },
     include: {
       user: true,
-      symptoms: { orderBy: { submissionDate: "desc" }, take: 20 },
-      testResults: { orderBy: { testDate: "desc" }, take: 30 },
+      symptoms: { orderBy: [{ submissionDate: "desc" }, { createdAt: "desc" }], take: 20 },
+      // createdAt breaks same-day ties so the "latest" reading is truly the newest one.
+      testResults: { orderBy: [{ testDate: "desc" }, { createdAt: "desc" }], take: 30 },
     },
   });
   if (!patient) throw new Error("Patient not found");

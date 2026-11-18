@@ -41,7 +41,7 @@ export function RiskIndicator({
           animate={level === "HIGH" ? { scale: [1, 1.25, 1], opacity: [1, 0.7, 1] } : {}}
           transition={{ duration: 1.5, repeat: Infinity }}
         />
-        <p className="text-sm font-semibold uppercase tracking-wide">{riskLabel(level)} risk</p>
+        <p className="text-sm font-semibold uppercase tracking-wide">{riskLabel(level)}</p>
       </div>
       {!compact && typeof score === "number" && (
         <div className="mt-4">

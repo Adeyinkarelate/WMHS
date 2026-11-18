@@ -6,6 +6,8 @@ import type { AlertSeverity, AlertSource, AlertType } from "@/types";
 
 const OPEN_STATUSES = ["ACTIVE", "ACKNOWLEDGED"] as const;
 
+const SEVERITY_RANK: Record<AlertSeverity, number> = { LOW: 0, MEDIUM: 1, HIGH: 2, CRITICAL: 3 };
+
 export async function createClinicalAlert(input: {
   patientId: string;
   alertType: AlertType;
@@ -20,19 +22,38 @@ export async function createClinicalAlert(input: {
       status: { in: [...OPEN_STATUSES] },
     },
   });
-  if (existing) {
+  if (existing && SEVERITY_RANK[input.severity] <= SEVERITY_RANK[existing.severity as AlertSeverity]) {
+    // Same severity, newer reading: keep the open alert's details current without re-notifying.
+    if (
+      SEVERITY_RANK[input.severity] === SEVERITY_RANK[existing.severity as AlertSeverity] &&
+      input.notes &&
+      input.notes !== existing.notes
+    ) {
+      const refreshed = await prisma.alert.update({
+        where: { id: existing.id },
+        data: { notes: input.notes },
+      });
+      return { alert: refreshed, created: false as const };
+    }
     return { alert: existing, created: false as const };
   }
 
-  const alert = await prisma.alert.create({
-    data: {
-      patientId: input.patientId,
-      alertType: input.alertType,
-      severity: input.severity,
-      notes: input.notes,
-      source: input.source ?? "RISK_ENGINE",
-    },
-  });
+  // A worse reading than the open alert (e.g. HIGH -> CRITICAL) escalates it:
+  // update in place, re-open it, and notify again (critical severity also queues the SMS).
+  const alert = existing
+    ? await prisma.alert.update({
+        where: { id: existing.id },
+        data: { severity: input.severity, notes: input.notes, status: "ACTIVE" },
+      })
+    : await prisma.alert.create({
+        data: {
+          patientId: input.patientId,
+          alertType: input.alertType,
+          severity: input.severity,
+          notes: input.notes,
+          source: input.source ?? "RISK_ENGINE",
+        },
+      });
 
   await fanOutAlertNotifications(alert.id, input.patientId, {
     alertType: input.alertType,

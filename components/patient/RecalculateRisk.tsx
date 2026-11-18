@@ -8,10 +8,12 @@ export function RecalculateRisk({ patientId }: { patientId?: string }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [done, setDone] = useState(false);
 
   async function run() {
     setLoading(true);
     setError("");
+    setDone(false);
     try {
       const res = await fetch("/api/risk/assess", {
         method: "POST",
@@ -23,6 +25,7 @@ export function RecalculateRisk({ patientId }: { patientId?: string }) {
         setError(typeof data.error === "string" ? data.error : "Could not recalculate risk.");
         return;
       }
+      setDone(true);
       router.refresh();
     } catch {
       setError("Could not recalculate risk.");
@@ -36,6 +39,11 @@ export function RecalculateRisk({ patientId }: { patientId?: string }) {
       <Button type="button" variant="outline" size="sm" loading={loading} onClick={run}>
         Recalculate now
       </Button>
+      {done && !error ? (
+        <p className="mt-2 text-caption text-success-ink" role="status">
+          Risk recalculated just now.
+        </p>
+      ) : null}
       {error ? (
         <p className="mt-2 text-caption text-danger-ink" role="alert">
           {error}

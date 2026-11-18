@@ -74,6 +74,31 @@ function day(iso: string) {
   return parsed;
 }
 
+const DAY_MS = 24 * 60 * 60 * 1000;
+
+/** Today at 12:00 UTC, so seeded dates stay consistent with parseDateOnly(). */
+function todayNoon() {
+  const now = new Date();
+  return new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 12, 0, 0));
+}
+
+/** Date `n` days before today. Keeps demo data fresh whenever the seed is run. */
+function daysAgo(n: number) {
+  return new Date(todayNoon().getTime() - n * DAY_MS);
+}
+
+/** LMP that makes a patient exactly `weeks` weeks pregnant today. */
+function lmpForWeeks(weeks: number) {
+  // Midnight UTC (not noon) so gestational age never rounds down by a day.
+  const midnight = new Date(todayNoon().getTime() - 12 * 60 * 60 * 1000);
+  return new Date(midnight.getTime() - weeks * 7 * DAY_MS);
+}
+
+/** Date of a gestational-week milestone for a given LMP. */
+function atWeek(lmp: Date, week: number) {
+  return new Date(lmp.getTime() + week * 7 * DAY_MS);
+}
+
 async function main() {
   await prisma.notification.deleteMany();
   await prisma.outboundMessage.deleteMany();
@@ -119,9 +144,10 @@ async function main() {
     include: { provider: true },
   });
 
-  const aminaLmp = day("2026-01-15");
-  const fatimaLmp = day("2026-03-20");
-  const hadizaLmp = day("2026-04-10");
+  // Relative to today so the demo always looks current (Amina ~32w, Fatima ~18w, Hadiza ~28w).
+  const aminaLmp = lmpForWeeks(32);
+  const fatimaLmp = lmpForWeeks(18);
+  const hadizaLmp = lmpForWeeks(28);
 
   const amina = await prisma.user.create({
     data: {
@@ -219,28 +245,28 @@ async function main() {
         symptomType: "Severe Headache",
         severity: 4,
         notes: "Worse in the morning, not relieved by rest",
-        submissionDate: day("2026-08-24"),
+        submissionDate: daysAgo(2),
       },
       {
         patientId: amina.patient!.id,
         symptomType: "Swelling",
         severity: 3,
         notes: "Face and hands",
-        submissionDate: day("2026-08-25"),
+        submissionDate: daysAgo(1),
       },
       {
         patientId: hadiza.patient!.id,
         symptomType: "Dizziness",
         severity: 3,
         notes: "After meals",
-        submissionDate: day("2026-08-22"),
+        submissionDate: daysAgo(3),
       },
       {
         patientId: fatima.patient!.id,
         symptomType: "Nausea / Vomiting",
         severity: 2,
         notes: "Improving",
-        submissionDate: day("2026-08-20"),
+        submissionDate: daysAgo(5),
       },
     ],
   });
@@ -252,98 +278,98 @@ async function main() {
         testType: "Blood Pressure Systolic",
         resultValue: 148,
         resultUnit: "mmHg",
-        testDate: day("2026-08-25"),
+        testDate: daysAgo(1),
       },
       {
         patientId: amina.patient!.id,
         testType: "Blood Pressure Diastolic",
         resultValue: 96,
         resultUnit: "mmHg",
-        testDate: day("2026-08-25"),
+        testDate: daysAgo(1),
       },
       {
         patientId: amina.patient!.id,
         testType: "Blood Glucose",
         resultValue: 102,
         resultUnit: "mg/dL",
-        testDate: day("2026-08-25"),
+        testDate: daysAgo(1),
       },
       {
         patientId: amina.patient!.id,
         testType: "Heart Rate",
         resultValue: 98,
         resultUnit: "bpm",
-        testDate: day("2026-08-25"),
+        testDate: daysAgo(1),
       },
       {
         patientId: amina.patient!.id,
         testType: "Body Temperature",
         resultValue: 36.9,
         resultUnit: "°C",
-        testDate: day("2026-08-25"),
+        testDate: daysAgo(1),
       },
       {
         patientId: amina.patient!.id,
         testType: "Urine Protein",
         resultValue: 2,
         resultUnit: "+",
-        testDate: day("2026-08-25"),
+        testDate: daysAgo(1),
       },
       {
         patientId: fatima.patient!.id,
         testType: "Blood Pressure Systolic",
         resultValue: 112,
         resultUnit: "mmHg",
-        testDate: day("2026-08-21"),
+        testDate: daysAgo(4),
       },
       {
         patientId: fatima.patient!.id,
         testType: "Blood Pressure Diastolic",
         resultValue: 70,
         resultUnit: "mmHg",
-        testDate: day("2026-08-21"),
+        testDate: daysAgo(4),
       },
       {
         patientId: fatima.patient!.id,
         testType: "Blood Glucose",
         resultValue: 86,
         resultUnit: "mg/dL",
-        testDate: day("2026-08-21"),
+        testDate: daysAgo(4),
       },
       {
         patientId: fatima.patient!.id,
         testType: "Haemoglobin",
         resultValue: 11.4,
         resultUnit: "g/dL",
-        testDate: day("2026-08-21"),
+        testDate: daysAgo(4),
       },
       {
         patientId: hadiza.patient!.id,
         testType: "Blood Glucose",
         resultValue: 168,
         resultUnit: "mg/dL",
-        testDate: day("2026-08-23"),
+        testDate: daysAgo(2),
       },
       {
         patientId: hadiza.patient!.id,
         testType: "Blood Pressure Systolic",
         resultValue: 128,
         resultUnit: "mmHg",
-        testDate: day("2026-08-23"),
+        testDate: daysAgo(2),
       },
       {
         patientId: hadiza.patient!.id,
         testType: "Blood Pressure Diastolic",
         resultValue: 82,
         resultUnit: "mmHg",
-        testDate: day("2026-08-23"),
+        testDate: daysAgo(2),
       },
       {
         patientId: hadiza.patient!.id,
         testType: "Haemoglobin",
         resultValue: 9.2,
         resultUnit: "g/dL",
-        testDate: day("2026-08-23"),
+        testDate: daysAgo(2),
       },
     ],
   });
@@ -364,12 +390,12 @@ async function main() {
 
   await prisma.ancAttendance.createMany({
     data: [
-      { patientId: amina.patient!.id, contact: 1, attendedAt: day("2026-04-10"), markedById: providerUser.id },
-      { patientId: amina.patient!.id, contact: 2, attendedAt: day("2026-06-05"), markedById: providerUser.id },
-      { patientId: amina.patient!.id, contact: 3, attendedAt: day("2026-07-18"), markedById: providerUser.id },
-      { patientId: amina.patient!.id, contact: 4, attendedAt: day("2026-08-14"), markedById: providerUser.id },
-      { patientId: fatima.patient!.id, contact: 1, attendedAt: day("2026-06-12"), markedById: providerUser.id },
-      { patientId: hadiza.patient!.id, contact: 1, attendedAt: day("2026-07-02"), markedById: providerUser.id },
+      { patientId: amina.patient!.id, contact: 1, attendedAt: atWeek(aminaLmp, 12), markedById: providerUser.id },
+      { patientId: amina.patient!.id, contact: 2, attendedAt: atWeek(aminaLmp, 20), markedById: providerUser.id },
+      { patientId: amina.patient!.id, contact: 3, attendedAt: atWeek(aminaLmp, 26), markedById: providerUser.id },
+      { patientId: amina.patient!.id, contact: 4, attendedAt: atWeek(aminaLmp, 30), markedById: providerUser.id },
+      { patientId: fatima.patient!.id, contact: 1, attendedAt: atWeek(fatimaLmp, 12), markedById: providerUser.id },
+      { patientId: hadiza.patient!.id, contact: 1, attendedAt: atWeek(hadizaLmp, 14), markedById: providerUser.id },
     ],
   });
 

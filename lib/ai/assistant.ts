@@ -81,7 +81,11 @@ export const SUGGESTED_PROMPTS = [
 
 export function answerQuestion(question: string, ctx: AssistantContext): Answer {
   const q = question.toLowerCase();
-  const match = KNOWLEDGE.find((item) => item.keys.some((k) => q.includes(k)));
+  // Match keywords at word starts only, so "anc" does not match "pregnancy" and
+  // "eat" does not match "breathing".
+  const hasKeyword = (key: string) =>
+    new RegExp(`(^|[^a-z0-9])${key.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`).test(q);
+  const match = KNOWLEDGE.find((item) => item.keys.some(hasKeyword));
 
   const prefix =
     ctx.riskLevel === "HIGH"
