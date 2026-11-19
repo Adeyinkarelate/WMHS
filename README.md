@@ -21,6 +21,7 @@ Python training (`ml/train_model.py`) is optional. Inference does **not** requir
 | --- | --- | --- |
 | Patient | `patient@wmhs.ng` | `Password123!` |
 | Provider | `provider@wmhs.ng` | `Password123!` |
+| Administrator | `admin@wmhs.ng` | `Password123!` |
 
 Additional seeded patients: `fatima@wmhs.ng`, `hadiza@wmhs.ng` (same password).
 
@@ -64,6 +65,22 @@ npm test
 - `/provider/dashboard` caseload, patients, alerts, referrals, clinical notes, SMS pathway log
 - `/provider/patients/[id]` chart with visit entry (symptoms, vitals) and clinician-created referrals
 - `/terms` `/privacy` NDPR-aligned notices linked from registration
+- `/admin/dashboard` system overview: user counts by role, unassigned mothers, open alerts, recent activity
+- `/admin/users` create clinician or administrator accounts, change a role, deactivate or reactivate sign-in
+- `/admin/assignments` assign, move or release a mother's named clinician (the mother is notified)
+- `/admin/audit` append-only log of account, role and assignment changes, filterable and paginated
+
+## Administration and access control
+
+Three roles: **Mother**, **Clinician**, **Administrator**.
+
+- **Live role checks.** Sessions are JWTs, but `getSession()` re-reads the role and active flag from the database. A role change or deactivation takes effect on the next request, not after re-login. `/admin` and `/api/admin/*` require the live `ADMIN` role.
+- **Deactivation.** A deactivated account cannot sign in (the login form explains why) and loses any existing session. Deactivating a clinician ends their assignments so mothers return to the facility waiting list and are notified.
+- **Role rules** (`lib/admin/rules.ts`, unit tested). Mother accounts are never re-roled. Only clinician and administrator roles are assignable. Administrators cannot change their own role or status, and the last active administrator cannot be demoted or deactivated. An administrator can only become a clinician if they have a clinician profile.
+- **Assignments.** A clinician sees only mothers with an active assignment to them. Clinicians claim mothers from their own facility's waiting list; administrators can assign across facilities, which replaces the current primary clinician in one transaction.
+- **Audit log.** `AuditLog` records the actor (name and role snapshot), action, target and details for user creation, role changes, deactivation and reactivation, and every clinician or administrator assignment change. Admin changes are written in the same database transaction as the change itself.
+
+Administrators also have read oversight of clinical pages (alert notifications link to them). A dedicated clinical audit trail for every read is out of scope.
 
 ## Clinical engine
 

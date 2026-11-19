@@ -12,6 +12,7 @@ export const DEMO_ACCOUNTS = [
     email: "patient@wmhs.ng",
     password: DEMO_PASSWORD,
     label: "Try as mother",
+    short: "Mother",
     hint: "Amina Bello · high-risk walkthrough",
   },
   {
@@ -19,6 +20,15 @@ export const DEMO_ACCOUNTS = [
     email: "provider@wmhs.ng",
     password: DEMO_PASSWORD,
     label: "Try as clinician",
+    short: "Clinician",
     hint: "Dr. Chioma Okeke · caseload",
+  },
+  {
+    role: "ADMIN" as const,
+    email: "admin@wmhs.ng",
+    password: DEMO_PASSWORD,
+    label: "Try as admin",
+    short: "Admin",
+    hint: "System administrator · users, access, audit",
   },
 ];

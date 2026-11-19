@@ -75,6 +75,16 @@ export default async function ProviderPatientPage({ params }: Ctx) {
       : rec?.bmi ?? null;
   const liveWeeks = patient.lmp ? gestationalAgeWeeks(patient.lmp) : rec?.gestationalAgeWeeks ?? null;
 
+  // Latest reading per test type (testResults is newest first), same as the patient dashboard.
+  const lastVitals: string[] = [];
+  const seenTests = new Set<string>();
+  for (const t of patient.testResults) {
+    if (seenTests.has(t.testType)) continue;
+    seenTests.add(t.testType);
+    lastVitals.push(`${t.testType}: ${t.resultValue} ${t.resultUnit}`);
+    if (lastVitals.length >= 4) break;
+  }
+
   return (
     <PageTransition>
       <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
@@ -111,7 +121,7 @@ export default async function ProviderPatientPage({ params }: Ctx) {
               : ancVisits.length
                 ? "All eight contacts attended"
                 : null,
-            lastVitals: patient.testResults.slice(0, 4).map((t) => `${t.testType}: ${t.resultValue} ${t.resultUnit}`),
+            lastVitals,
             conditions,
           }}
         />

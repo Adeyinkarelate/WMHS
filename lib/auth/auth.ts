@@ -28,6 +28,8 @@ export const authOptions: NextAuthOptions = {
         if (!user) return null;
         const ok = await bcrypt.compare(parsed.data.password, user.passwordHash);
         if (!ok) return null;
+        // Checked after the password so the message does not reveal which emails exist.
+        if (!user.isActive) throw new Error("ACCOUNT_DISABLED");
         return {
           id: user.id,
           name: user.name,
@@ -62,8 +64,32 @@ export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
 };
 
-export function getSession() {
-  return getServerSession(authOptions);
+/** Live account state. JWTs last 8 hours, so role/status changes must not wait for re-login. */
+function loadLiveUser(id: string) {
+  return prisma.user.findUnique({
+    where: { id },
+    select: {
+      isActive: true,
+      role: true,
+      patient: { select: { id: true } },
+      provider: { select: { id: true } },
+    },
+  });
+}
+
+/**
+ * The session with role and profile ids refreshed from the database.
+ * A deactivated or deleted account has no session, even if its token is still valid.
+ */
+export async function getSession() {
+  const session = await getServerSession(authOptions);
+  if (!session?.user?.id) return null;
+  const live = await loadLiveUser(session.user.id);
+  if (!live || !live.isActive) return null;
+  session.user.role = live.role as Role;
+  session.user.patientId = live.patient?.id;
+  session.user.providerId = live.provider?.id;
+  return session;
 }
 
 export async function requireSession() {

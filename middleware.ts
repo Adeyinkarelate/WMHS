@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 const patient = ["/patient"];
 const provider = ["/provider"];
+const admin = ["/admin"];
 
 function isPublicApi(pathname: string) {
   if (pathname.startsWith("/api/auth")) return true;
@@ -13,9 +14,10 @@ export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
   const isPatient = patient.some((p) => pathname.startsWith(p));
   const isProvider = provider.some((p) => pathname.startsWith(p));
+  const isAdmin = admin.some((p) => pathname.startsWith(p));
   const isApi = pathname.startsWith("/api/");
 
-  if (!isPatient && !isProvider && !isApi) return NextResponse.next();
+  if (!isPatient && !isProvider && !isAdmin && !isApi) return NextResponse.next();
   if (isApi && isPublicApi(pathname)) return NextResponse.next();
 
   const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
@@ -33,9 +35,14 @@ export async function middleware(req: NextRequest) {
   if (isProvider && token.role !== "PROVIDER" && token.role !== "ADMIN") {
     return NextResponse.redirect(new URL("/patient/dashboard", req.url));
   }
+  // Mothers can never be administrators. Provider<->admin changes are applied from the live
+  // database role in the admin layout and API guards, so a stale token cannot widen access.
+  if (isAdmin && token.role === "PATIENT") {
+    return NextResponse.redirect(new URL("/patient/dashboard", req.url));
+  }
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/patient/:path*", "/provider/:path*", "/api/:path*"],
+  matcher: ["/patient/:path*", "/provider/:path*", "/admin/:path*", "/api/:path*"],
 };

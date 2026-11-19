@@ -200,3 +200,30 @@ export const createAlertSchema = z.object({
   severity: z.enum(["CRITICAL", "HIGH", "MEDIUM", "LOW"]),
   notes: z.string().min(3, "Add a clinical note").max(2000),
 });
+
+export const adminCreateUserSchema = z.object({
+  name: z.string().trim().min(2, "Full name is required").max(120),
+  email: z.string().trim().email("Enter a valid email address"),
+  password: z.string().min(8, "Temporary password must be at least 8 characters").max(128),
+  role: z.enum(["PROVIDER", "ADMIN"]),
+  specialization: z.string().trim().max(120).optional(),
+  facilityId: z.string().min(1).optional(),
+});
+
+export const adminUpdateUserSchema = z
+  .object({
+    role: z.enum(["PROVIDER", "ADMIN"]).optional(),
+    isActive: z.boolean().optional(),
+  })
+  .refine((data) => data.role !== undefined || data.isActive !== undefined, {
+    message: "Nothing to update",
+  });
+
+export const adminAssignSchema = z.object({
+  patientId: z.string().min(1, "Patient is required"),
+  providerId: z.string().min(1, "Select a clinician"),
+});
+
+export const adminReleaseSchema = z.object({
+  patientId: z.string().min(1, "Patient is required"),
+});

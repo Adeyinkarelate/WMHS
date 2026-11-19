@@ -178,4 +178,16 @@ export const Icons = {
       <path d="M6.7 6.7C4 8.6 2 12 2 12s3.5 7 10 7a10.6 10.6 0 0 0 4.4-1" />
     </Svg>
   ),
+  clipboard: (p: IconProps) => (
+    <Svg {...p}>
+      <rect x="6" y="4.5" width="12" height="16" rx="2" />
+      <path d="M9.5 4.5h5v2h-5zM9 11h6M9 14.5h6" />
+    </Svg>
+  ),
+  link: (p: IconProps) => (
+    <Svg {...p}>
+      <path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1" />
+      <path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1" />
+    </Svg>
+  ),
 };

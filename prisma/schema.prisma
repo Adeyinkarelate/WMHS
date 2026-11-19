@@ -10,43 +10,47 @@ datasource db {
 }
 
 model User {
-  id               String               @id @default(uuid())
-  name             String
-  email            String               @unique
-  passwordHash     String
-  role             String
-  createdAt        DateTime             @default(now())
-  updatedAt        DateTime             @updatedAt
-  patient          Patient?
-  provider         Provider?
-  notifications    Notification[]
-  passwordResets   PasswordResetToken[]
-  clinicalNotes    ClinicalNote[]
-  assignmentsMade  PatientAssignment[]  @relation("AssignmentActor")
+  id              String               @id @default(uuid())
+  name            String
+  email           String               @unique
+  passwordHash    String
+  role            String
+  isActive        Boolean              @default(true)
+  deactivatedAt   DateTime?
+  createdAt       DateTime             @default(now())
+  updatedAt       DateTime             @updatedAt
+  patient         Patient?
+  provider        Provider?
+  notifications   Notification[]
+  passwordResets  PasswordResetToken[]
+  clinicalNotes   ClinicalNote[]
+  assignmentsMade PatientAssignment[]  @relation("AssignmentActor")
+  auditLogs       AuditLog[]           @relation("AuditActor")
 
   @@index([role])
+  @@index([isActive])
 }
 
 model Patient {
-  id                    String             @id @default(uuid())
-  userId                String             @unique
-  user                  User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                    String              @id @default(uuid())
+  userId                String              @unique
+  user                  User                @relation(fields: [userId], references: [id], onDelete: Cascade)
   dateOfBirth           DateTime
   phone                 String
   address               String
   lmp                   DateTime?
   edd                   DateTime?
-  parity                Int                @default(0)
-  preExistingConditions String             @default("[]")
+  parity                Int                 @default(0)
+  preExistingConditions String              @default("[]")
   heightCm              Float?
   weightKg              Float?
   locationLat           Float?
   locationLng           Float?
   bookedFacilityId      String?
-  bookedFacility        Facility?          @relation("PatientBooking", fields: [bookedFacilityId], references: [id])
-  notifyAlerts          Boolean            @default(true)
-  createdAt             DateTime           @default(now())
-  updatedAt             DateTime           @updatedAt
+  bookedFacility        Facility?           @relation("PatientBooking", fields: [bookedFacilityId], references: [id])
+  notifyAlerts          Boolean             @default(true)
+  createdAt             DateTime            @default(now())
+  updatedAt             DateTime            @updatedAt
   symptoms              Symptom[]
   testResults           TestResult[]
   riskAssessments       RiskAssessment[]
@@ -280,4 +284,25 @@ model PasswordResetToken {
 
   @@index([userId])
   @@index([token])
+}
+
+/// Append-only trail of administrative and access-control actions.
+/// actorName/actorRole/targetLabel are snapshots so entries stay readable
+/// even if the user is later renamed or removed (actorId is nulled on delete).
+model AuditLog {
+  id          String   @id @default(uuid())
+  actorId     String?
+  actor       User?    @relation("AuditActor", fields: [actorId], references: [id], onDelete: SetNull)
+  actorName   String
+  actorRole   String
+  action      String
+  targetType  String
+  targetId    String?
+  targetLabel String
+  details     String   @default("{}")
+  createdAt   DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([action])
+  @@index([actorId])
 }

@@ -28,7 +28,11 @@ export function LoginForm() {
         redirect: false,
       });
       if (!res?.ok) {
-        setError("Email or password is incorrect.");
+        setError(
+          res?.error === "ACCOUNT_DISABLED"
+            ? "This account has been deactivated. Contact your administrator."
+            : "Email or password is incorrect."
+        );
         return;
       }
       const callback = safeInternalPath(params.get("callbackUrl"));
@@ -41,7 +45,9 @@ export function LoginForm() {
         const meRes = await fetch("/api/auth/me");
         const me = await meRes.json().catch(() => ({}));
         const role = me.user?.role;
-        if (role === "PROVIDER" || role === "ADMIN") {
+        if (role === "ADMIN") {
+          router.push("/admin/dashboard");
+        } else if (role === "PROVIDER") {
           router.push("/provider/dashboard");
         } else if (role === "PATIENT") {
           router.push("/patient/dashboard");
@@ -111,9 +117,9 @@ export function LoginForm() {
             Supervisor demo
           </p>
           <p className="mt-1 text-caption text-ink-muted">
-            Seeded walkthrough accounts. One tap signs in.
+            Seeded walkthrough accounts. One tap signs in as a mother, clinician or administrator.
           </p>
-          <div className="mt-3 grid gap-2 sm:grid-cols-2">
+          <div className="mt-3 grid gap-2 sm:grid-cols-3">
             {DEMO_ACCOUNTS.map((account) => (
               <Button
                 key={account.email}
@@ -123,9 +129,10 @@ export function LoginForm() {
                 className="w-full"
                 loading={loading && demoRole === account.role}
                 disabled={loading}
+                aria-label={account.label}
                 onClick={() => onDemo(account)}
               >
-                {account.label}
+                {account.short}
               </Button>
             ))}
           </div>

@@ -4,6 +4,8 @@ import { calculateEdd } from "../lib/utils/clinical";
 import { parseDateOnly } from "../lib/utils/formatters";
 import { runAndStoreRisk } from "../lib/ai/runAssessment";
 import { toJsonString } from "../lib/utils/json";
+import { AUDIT_ACTIONS } from "../lib/audit/actions";
+import { writeAudit } from "../lib/audit/log";
 
 const facilities = [
   {
@@ -100,6 +102,7 @@ function atWeek(lmp: Date, week: number) {
 }
 
 async function main() {
+  await prisma.auditLog.deleteMany();
   await prisma.notification.deleteMany();
   await prisma.outboundMessage.deleteMany();
   await prisma.ancAttendance.deleteMany();
@@ -145,6 +148,15 @@ async function main() {
   });
 
   // Relative to today so the demo always looks current (Amina ~32w, Fatima ~18w, Hadiza ~28w).
+  const adminUser = await prisma.user.create({
+    data: {
+      name: "Adaeze Nwosu",
+      email: "admin@wmhs.ng",
+      passwordHash,
+      role: "ADMIN",
+    },
+  });
+
   const aminaLmp = lmpForWeeks(32);
   const fatimaLmp = lmpForWeeks(18);
   const hadizaLmp = lmpForWeeks(28);
@@ -236,6 +248,24 @@ async function main() {
       status: "ACTIVE",
       assignedById: providerUser.id,
     },
+  });
+
+  const adminActor = { id: adminUser.id, name: adminUser.name, role: "ADMIN" };
+  await writeAudit({
+    actor: adminActor,
+    action: AUDIT_ACTIONS.USER_CREATED,
+    targetType: "USER",
+    targetId: providerUser.id,
+    targetLabel: providerUser.name,
+    details: { email: providerUser.email, role: "PROVIDER" },
+  });
+  await writeAudit({
+    actor: adminActor,
+    action: AUDIT_ACTIONS.ASSIGNMENT_ADMIN_ASSIGNED,
+    targetType: "PATIENT",
+    targetId: amina.patient!.id,
+    targetLabel: amina.name,
+    details: { clinician: providerUser.name, facility: luth.name, replacedClinicians: [] },
   });
 
   await prisma.symptom.createMany({
@@ -437,6 +467,7 @@ async function main() {
   console.log("Seeded WMHS demo data.");
   console.log("  patient@wmhs.ng / Password123!");
   console.log("  provider@wmhs.ng / Password123!");
+  console.log("  admin@wmhs.ng / Password123!");
 }
 
 main()
